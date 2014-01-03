@@ -5,3 +5,8 @@
  * @since 1.0.0
  * @package IT_Exchange_Variants_Addon
 */
+
+/**
+ * Sets up our post types. We have two post types. One for Variants and one for Variant Values
+*/
+include( 'lib/post-types.php' );
