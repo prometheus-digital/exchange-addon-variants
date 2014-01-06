@@ -24,7 +24,7 @@ function it_exchange_variants_addon_create_inital_presets() {
 			continue;
 
 		// Don't create it if it already exists, see if we need to update it
-		if ( ! empty( $existing_presets[$preset['slug'] ) ) {
+		if ( ! empty( $existing_presets[$preset['slug']] ) ) {
 			if ( it_exchange_variants_addon_core_preset_needs_updated( $preset ) )
 				it_exchange_variants_addon_update_core_preset( $preset );
 
@@ -117,4 +117,5 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'version' => '1.0.0',
 		),
 	);
+	return $args;
 }
