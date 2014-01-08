@@ -1,1 +1,65 @@
-#it-exchange-product-variants{color:red;}
+.it-exchange-existing-variants {
+	background: #FFF;
+	border: 1px solid #E8E8E8;
+}
+.it-exchange-existing-variant .variant-title {
+	padding: 1em;
+	border-bottom: 1px solid #E8E8E8;
+}
+.it-exchange-existing-variant .variant-title-values-preview {
+	margin-left: .5em;
+	font-size: .8em;
+	color: #AAA;
+}
+.it-exchange-existing-variant .variant-title-delete {
+	float: right;
+	margin: 0;
+	color: #AAA;
+	cursor: pointer;
+}
+.it-exchange-existing-variant .variant-values {
+	background: #F7F7F7;
+}
+.it-exchange-existing-variant .varient-values-list li {
+	position: relative;
+	max-width: 600px;
+	margin: 0 0 5px;
+	background: #FFF;
+	border: 1px solid #E8E8E8;
+}
+.it-exchange-existing-variant .varient-values-list li > div {
+	float: left;
+}
+.it-exchange-existing-variant .variant-value-info {
+	
+}
+.it-exchange-existing-variant .variant-value-info input {
+	margin-left: 10px;
+}
+.it-exchange-existing-variant .variant-value-name {
+	display: inline-block;
+	margin-top: 14px;
+}
+.it-exchange-existing-variant .variant-value-delete {
+	position: absolute;
+	right: -45px;
+}
+.it-exchange-existing-variant .variant-value-reorder {
+	width: 12px;
+	min-height: 44px;
+	background: #FFF url('../images/sorting-dots.jpg') no-repeat center center;
+	border-right: 1px solid #E8E8E8;
+}
+.it-exchange-existing-variant .variant-value-image {
+	position: absolute;
+	right: 8px;
+	top: 8px;
+}
+.it-exchange-existing-variant .edit-variant {
+	padding: 1em;
+}
+.it-exchange-existing-variant .save-variant {
+	padding: 1em;
+	border-top: 1px solid #E8E8E8;
+	border-bottom: 1px solid #E8E8E8;
+}
