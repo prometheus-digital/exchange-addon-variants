@@ -15,3 +15,13 @@ include( 'lib/post-types.php' );
  * Includes all of our internal helper functions
 */
 include( 'lib/functions.php' );
+
+/**
+ * Includes the code for the product feature
+*/
+include( 'lib/product-features/class.variants.php' );
+
+/**
+ * WP Hooks
+*/
+include( 'lib/hooks.php' );
