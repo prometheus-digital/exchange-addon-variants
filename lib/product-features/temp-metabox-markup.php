@@ -42,6 +42,13 @@
 					<span class="variant-value-delete variant-value-image-562"data-variant-value-id="562" data-variant-value-parent="543" >&times;</span>
 				</li>
 			</ul>
+			<div class="add-variant-value add-variant-value-543" data-variant-value-parent="543">
+				<input type="button" value="Add Value" />
+			</div>
+			<div class="save-variant save-variant-543" data-variant-id="543">
+				<input type="button" value="Cancel" />
+				<input type="button" value="Save" />
+			</div>
 		</div>
 	</div>
 
