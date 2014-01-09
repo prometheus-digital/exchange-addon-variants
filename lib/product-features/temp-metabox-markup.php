@@ -56,6 +56,9 @@
 				</div>
 			</div>
 			<div class="save-variant save-variant-543" data-variant-id="543">
+				<p class="save-as-preset">
+					<input type="checkbox" name="it-exchange-save-variant-as-preset" value="543" /> Save this variant and its values as a custom preset <?php it_exchange_admin_tooltip( 'Tooltip goes here' ); ?>
+				</p>
 				<input type="button" class="button" value="Cancel" />
 				<input type="button" class="button-primary" value="Save" />
 			</div>
