@@ -1,10 +1,54 @@
+/** -----------------------------------------------------:[ general ]:---------- */
 .it-exchange-existing-variants {
 	background: #FFF;
 	border: 1px solid #E8E8E8;
 }
+.it-exchange-existing-variants .sorting-placeholder {
+	opacity: .3;
+}
+#it-exchange-product-variants .variant-text-placeholder {
+	cursor: text;
+}
+#it-exchange-product-variants .it-exchange-existing-variants .it-exchange-existing-variant .variant-text-input {
+	font-size: 13px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	box-shadow: none;
+	line-height: 1.4em;
+	width: 80%;
+	max-width: 300px;
+}
+
+/** -----------------------------------------------------:[ sorting ]:---------- */
+.it-exchange-existing-variants.sorting .it-exchange-existing-variant.ui-sortable-helper {
+	border: 1px solid #E8E8E8;
+	background: #FFF;
+	border-bottom: 0;
+}
+.it-exchange-existing-variants.sorting .it-exchange-existing-variant.ui-sortable-helper .variant-title {
+	cursor: move;
+}
+
+/** -----------------------------------------------------:[ title ]:---------- */
 .it-exchange-existing-variant .variant-title {
-	padding: 1em;
+	position: relative;
+	padding: 12px 12px 12px 32px;
 	border-bottom: 1px solid #E8E8E8;
+	cursor: s-resize;
+}
+#it-exchange-product-variants .it-exchange-existing-variant[data-variant-open="true"] .variant-title {
+	cursor: n-resize;
+}
+.it-exchange-existing-variant .variant-title-move {
+	cursor: move;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 20px;
+	background: #FFF url('../images/sorting-dots.jpg') no-repeat center center;
+	border-right: 1px solid #E8E8E8;
 }
 .it-exchange-existing-variant .variant-title-values-preview {
 	margin-left: .5em;
@@ -17,17 +61,19 @@
 	color: #AAA;
 	cursor: pointer;
 }
+
+/** -----------------------------------------------------:[ values ]:---------- */
 .it-exchange-existing-variant .variant-values {
 	background: #F7F7F7;
 }
-.it-exchange-existing-variant .varient-values-list li {
+.it-exchange-existing-variant .variant-values-list li {
 	position: relative;
 	max-width: 600px;
 	margin: 0 0 5px;
 	background: #FFF;
 	border: 1px solid #E8E8E8;
 }
-.it-exchange-existing-variant .varient-values-list li > div {
+.it-exchange-existing-variant .variant-values-list li > div {
 	float: left;
 }
 .it-exchange-existing-variant .variant-value-info {
@@ -36,13 +82,22 @@
 .it-exchange-existing-variant .variant-value-info input {
 	margin-left: 10px;
 }
+.it-exchange-existing-variant .variant-values .variant-text-input,
 .it-exchange-existing-variant .variant-value-name {
 	display: inline-block;
-	margin-top: 14px;
+	margin-top: 14px !important;
+}
+.it-exchange-existing-variant .variant-values .variant-text-input.hidden,
+.it-exchange-existing-variant .variant-value-name.hidden {
+	display: none;
+}
+.it-exchange-existing-variant li:hover .variant-value-delete {
+	opacity: 1;
 }
 .it-exchange-existing-variant .variant-value-delete {
 	position: absolute;
 	right: -45px;
+	opacity: 0;
 }
 .it-exchange-existing-variant .variant-value-reorder {
 	width: 12px;
@@ -55,11 +110,13 @@
 	right: 8px;
 	top: 8px;
 }
+.it-exchange-existing-variant .variant-value-image-placeholder {
+	display: block;
+	width: 28px;
+	height: 28px;
+	background: url( '../images/upload.jpg' ) center center no-repeat;
+	border: 1px solid #E8E8E8;
+}
 .it-exchange-existing-variant .edit-variant {
 	padding: 1em;
-}
-.it-exchange-existing-variant .save-variant {
-	padding: 1em;
-	border-top: 1px solid #E8E8E8;
-	border-bottom: 1px solid #E8E8E8;
 }
