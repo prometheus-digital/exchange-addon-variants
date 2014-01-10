@@ -18,6 +18,7 @@ function it_exchange_variants_addon_create_inital_presets() {
 	$existing_presets    = it_exchange_variants_addon_get_presets( array( 'core_only' => true ) );
 
 	/*
+	die( ITUtility::print_r($existing_presets) );
 	foreach( $existing_presets as $preset ) {
 		wp_delete_post( $preset->ID, true );
 	}
@@ -54,15 +55,49 @@ function it_exchange_variants_addon_create_inital_presets() {
 */
 function it_exchange_variants_addon_get_core_presets_args() {
 	$args = array(
-		'blank'       => array(
-			'slug'    => 'blank',
-			'image'   => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/blank.png' ),
-			'title'   => __( 'Blank', 'LION' ),
-			'values'  => array(),
-			'default' => false,
-			'order'   => 0,
-			'core'    => true,
-			'version' => '0.0.1',
+		'template-select' => array(
+			'slug'     => 'template-select',
+			'image'    => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/blank.png' ),
+			'title'    => __( 'Select', 'LION' ),
+			'values'   => array(),
+			'default'  => false,
+			'order'    => 0,
+			'core'     => true,
+			'ui-type'  => 'select',
+			'version'  => '0.0.1',
+		),
+		'template-radio' => array(
+			'slug'     => 'template-radio',
+			'image'    => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/blank.png' ),
+			'title'    => __( 'Radio', 'LION' ),
+			'values'   => array(),
+			'default'  => false,
+			'order'    => 3,
+			'core'     => true,
+			'ui-type'  => 'radio',
+			'version'  => '0.0.1',
+		),
+		'tempalte-hex'   => array(
+			'slug'     => 'template-hex',
+			'image'    => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/blank.png' ),
+			'title'    => __( 'Color', 'LION' ),
+			'values'   => array(),
+			'default'  => false,
+			'order'    => 5,
+			'core'     => true,
+			'ui-type'  => 'color',
+			'version'  => '0.0.1',
+		),
+		'tempalte-image' => array(
+			'slug'     => 'template-image',
+			'image'    => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/blank.png' ),
+			'title'    => __( 'Image', 'LION' ),
+			'values'   => array(),
+			'default'  => false,
+			'order'    => 8,
+			'core'     => true,
+			'ui-type'  => 'image',
+			'version'  => '0.0.1',
 		),
 		'colors'       => array(
 			'slug'    => 'colors',
@@ -85,7 +120,8 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'default' => false,
 			'order'   => 5,
 			'core'    => true,
-			'version' => '0.0.2',
+			'ui-type' => 'color',
+			'version' => '0.0.1',
 		),
 		'sizes'  => array(
 			'slug'    => 'sizes',
@@ -126,7 +162,8 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'default' => false,
 			'order'   => 0,
 			'core'    => true,
-			'version' => '0.0.4',
+			'ui-type' => 'image',
+			'version' => '0.0.1',
 		),
 	);
 	return $args;
@@ -213,8 +250,9 @@ function it_exchange_variants_addon_create_variant_preset( $args ) {
 */
 function it_exchange_variants_addon_get_presets( $args=array() ) { 
 	$defaults = array(
-		'post_type' => 'it_exng_varnt_preset',
-		'core_only' => false,
+		'post_type'      => 'it_exng_varnt_preset',
+		'core_only'      => false,
+		'posts_per_page' => -1,
 	);  
 	$args = wp_parse_args( $args, $defaults );
 	$args['meta_query'] = empty( $args['meta_query'] ) ? array() : $args['meta_query'];
@@ -262,4 +300,80 @@ function it_exchange_variants_addon_get_preset( $post ) {
 function it_exchange_variants_addon_update_core_preset( $old_id, $new_preset_args ) {
 	wp_delete_post( $old_id, true );
 	it_exchange_variants_addon_create_variant_preset( $new_preset_args );
+}
+
+/**
+ * Creates an Exchange Variant
+ *
+ * @since 1.0.0
+ *
+ * @param array $args the args passed to wp_insert_post
+ * @return mixed id or false
+*/
+function it_exchange_variants_addon_create_variant( $args, $post_paerent=false ) {
+	$defaults = array(
+		'status'         => 'publish',
+		'ping_status'    => 'closed',
+		'comment_status' => 'closed',
+		'post_parent'    => $parent,
+		'menu_order'     => 0,
+		'post_title'     => __( 'New Variant', 'LION' ),
+		'values'         => array(),
+		'ui-type'        => false,
+		'image'          => false,
+		'color'          => false,
+		'preset-data'    => array(),
+	);   
+	$defaults = apply_filters( 'it_exchange_add_variant_defaults', $defaults );
+
+	// Merge passed args with defaults
+	$args = ITUtility::merge_defaults( $args, $defaults );
+
+	// Convert $args to insert post args
+	$post_args = array();
+	$post_args['post_status']  = $args['status'];
+	$post_args['post_type']    = 'it_exchange_variant';
+	$post_args['post_title']   = empty( $args['post_title'] ) ? __( 'New Variant', 'LION' ) : $args['post_title'];
+	$post_args['post_content'] = empty( $args['post_content'] ) ? '' : $args['post_content']; 
+
+	// Insert Post and get ID
+	if ( $product_id = wp_insert_post( $post_args ) ) {
+
+		// Setup metadata for top level variants and create variant values
+		if ( empty( $args['post_parent'] ) ) {
+			$meta = array();
+			if ( ! empty( $args['ui-type'] ) )
+				$meta['ui-type'] = $args['ui-type'];
+			if ( ! empty( $args['preset-data'] ) )
+				$meta['preset-data']   = $args['preset-data'];
+
+			// Save metadata
+			update_post_meta( $product_id, '_it_exchange_variants_addon_variant_meta', $meta );
+
+			// Create variant values (child posts)
+			foreach( (array) $args['values'] as $value_key => $value_args ) {
+				$value_args['preset-data'] = empty( $args['preset-data'] ) ? array() : $args['preset-data'];
+				$value_args['ui-type']     = empty( $args['ui-type'] ) ? false : $args['ui-type'];
+				it_exchange_variants_addon_create_variant( $value_args, $product_id );
+			}
+		} else {
+			// Setup metadata for varient values
+			$meta = array();
+			if ( ! empty( $args['ui-type'] ) )
+				$meta['ui-type'] = $args['ui-type'];
+			if ( ! empty( $args['preset-data'] ) )
+				$meta['preset-data']   = $args['preset-data'];
+			if ( ! empty( $args['image'] ) )
+				$meta['image']   = $args['image'];
+			if ( ! empty( $args['color'] ) )
+				$meta['color']   = $args['color'];
+
+			// Save metadata
+			update_post_meta( $product_id, '_it_exchange_variants_addon_variant_meta', $meta );
+		}
+
+		// Return the ID
+		return $product_id;
+	}    
+	return false;
 }
