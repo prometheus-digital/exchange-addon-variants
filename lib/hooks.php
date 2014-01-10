@@ -64,3 +64,15 @@ function it_exchange_variants_addon_admin_wp_enqueue_styles( $hook_suffix ) {
 		wp_enqueue_style( 'it-exchange-variants-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/css/add-edit-product.css' );
 }
 add_action( 'admin_print_styles', 'it_exchange_variants_addon_admin_wp_enqueue_styles' );
+
+/**
+ * Checks to see if the presets exist
+ *
+ * @since 1.0.0
+ *
+ * @return void
+*/
+function it_exchange_variants_addon_setup_preset_variants() {
+	it_exchange_variants_addon_create_inital_presets();
+}
+add_action( 'admin_init', 'it_exchange_variants_addon_setup_preset_variants' );
