@@ -252,6 +252,8 @@ function it_exchange_variants_addon_get_presets( $args=array() ) {
 		'post_type'      => 'it_exng_varnt_preset',
 		'core_only'      => false,
 		'posts_per_page' => -1,
+		'orderby'        => 'page_order',
+		'order'          => 'ASC',
 	);  
 	$args = wp_parse_args( $args, $defaults );
 	$args['meta_query'] = empty( $args['meta_query'] ) ? array() : $args['meta_query'];

@@ -93,6 +93,12 @@ class IT_Exchange_Variants_Addon_Preset {
 	var $postmeta = false;
 
 	/**
+	 * @var boolean $is_template Is this preset a template or an actual preset variant (left or right column for new variant button)
+	 * @since 1.0.0
+	*/
+	var $is_template;
+
+	/**
 	 * Constructor. Loads post data and variant preset data
 	 *
 	 * @since 1.0.0
@@ -146,6 +152,7 @@ class IT_Exchange_Variants_Addon_Preset {
 		$this->set_order();
 		$this->set_core();
 		$this->set_version();
+		$this->set_is_template();
 
 		unset( $this->postmeta );
 	}
@@ -247,6 +254,17 @@ class IT_Exchange_Variants_Addon_Preset {
 	*/
 	function set_version() {
 		$this->version = empty( $this->postmeta['version'] ) ? IT_Exchange_Variants_Addon_Version : $this->postmeta['version'];
+	}
+
+	/**
+	 * Sets the is_template var
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	*/
+	function set_is_template() {
+		return $this->is_template = substr( $this->slug, 0, 9 ) == 'template-';
 	}
 
 	/**
