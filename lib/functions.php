@@ -431,7 +431,6 @@ function it_exchange_variants_addon_get_add_edit_variant_form_field( $id, $is_ne
                 &times;
             </span>
         </div>
-		<?php foreach( $values
         <div class="variant-values">
             <div class="edit-variant">
                 <span class="label">Values <?php it_exchange_admin_tooltip( 'tooltip goes here' ); ?></span>
