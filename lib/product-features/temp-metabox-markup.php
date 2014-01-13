@@ -115,6 +115,34 @@
 			?>
 		</div>
 		<div class="it-exchange-variant-presets-saved">
+			<?php
+			$presets =  it_exchange_variants_addon_get_presets();
+
+			?><div class="label"><?php _e( 'My Presets', 'LION' ); ?></div><?php
+
+			foreach( (array) $presets as $key => $preset ) {
+				if ( $preset->is_template )
+					continue;
+
+				$id        = $preset->get_property( 'ID' );
+				$slug      = $preset->get_property( 'slug' );
+				$title     = $preset->get_property( 'title' );
+				$image_url = $preset->get_property( 'image' );
+				?>
+				<!-- Note for Koop: Right Column -->
+				<div class="it-exchange-variants-preset-saved-<?php esc_attr_e( $slug ); ?>" data-variant-presets-saved-id="<?php esc_attr_e( $id ); ?>">
+					<?php if ( $image_url ) : ?>
+						<img src="<?php esc_attr_e( $image_url ); ?>" alt="" />
+					<?php else : ?>
+						<img src="" alt="" />
+					<?php endif; ?>
+
+					<a href="" class="it-exchange-variant-preset-saved-title it-exchange-variant-preset-saved-title-<?php esc_attr_e( $slug ); ?>"><?php echo esc_html( $title ); ?></a>
+					<a href="" class="it-exchange-variant-preset-saved-delete">&times;</a>
+				</div>
+				<?php
+			}
+			?>
 		</div>
 	</div>
 </div>
