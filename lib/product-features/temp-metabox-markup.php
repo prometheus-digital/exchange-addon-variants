@@ -106,6 +106,12 @@
 			<div class="it-exchange-variant-column-inner">
 				<?php
 				$presets =  it_exchange_variants_addon_get_presets( array( 'core_only' => true ) );
+				$ajax_nonce = wp_create_nonce( 'it-exchange-variants-addon-add-preset-template' );
+				?>
+				<script type="text/javascript">
+				var itExchangeVariantsAddonAddPresetTemplateNonce = '<?php echo esc_js( $ajax_nonce ); ?>';
+				</script>
+				<?php
 				foreach( (array) $presets as $key => $preset ) {
 					if ( ! $preset->is_template )
 						continue;
