@@ -43,7 +43,6 @@ function it_exchange_variants_addon_create_inital_presets() {
 		// If we made it here, we need to add the preset
 		it_exchange_variants_addon_create_variant_preset( $preset );
 	}
-	ITUtility::print_r( it_exchange_variants_addon_get_presets( array( 'core_only' => true ) ) );
 }
 
 /**
