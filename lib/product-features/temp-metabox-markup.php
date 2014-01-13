@@ -15,6 +15,20 @@
 			<div class="edit-variant">
 				<span class="label">Values <?php it_exchange_admin_tooltip( 'tooltip goes here' ); ?></span>
 				<ul class="variant-values-list">
+					<li class="new-variant-value clearfix hidden" data-variant-value-id="" data-variant-value-parent="1">
+						<div class="variant-value-reorder" data-variant-value-order=""></div>
+						<div class="variant-value-info">
+							<input type="radio" class="variant-radio-option" name="default-for-variant-1"/>
+							<span class="variant-value-name variant-text-placeholder">New Value</span>
+							<input type="text" name="variant-value-name[]" value="New Value" class="variant-text-input hidden">
+							<a class="variant-value-image variant-value-has-image">
+								<span class="variant-value-image-placeholder"></span>
+							</a>
+						</div>
+						<div class="variant-value-delete">
+							<a href class="it-exchange-remove-item">&times;</a>
+						</div>
+					</li>
 					<li class="clearfix" data-variant-value-id="101" data-variant-value-parent="1">
 						<div class="variant-value-reorder" data-variant-value-order="1"></div>
 						<div class="variant-value-info">
@@ -49,7 +63,7 @@
 							<input type="radio" class="variant-radio-option" name="default-for-variant-1"/>
 							<span class="variant-value-name variant-text-placeholder">No Grain</span>
 							<input type="text" name="variant-value-name[103]" value="No Grain" class="variant-text-input hidden">
-							<a class="variant-value-image variant-value-has-image">
+							<a href class="variant-value-image variant-value-has-image">
 								<span class="variant-value-image-placeholder"></span>
 							</a>
 						</div>

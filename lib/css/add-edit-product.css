@@ -14,10 +14,12 @@
 .it-exchange-existing-variant .variant-title-delete{float:right;margin:0;color:#AAA;cursor:pointer;}
 /** -----------------------------------------------------:[ values ]:---------- */
 .it-exchange-existing-variant .variant-values{background:#F7F7F7;}
-.it-exchange-existing-variant .variant-values-list li{position:relative;max-width:600px;margin:0 0 5px;background:#FFF;border:1px solid #E8E8E8;}
+.it-exchange-existing-variant .variant-values-list li{position:relative;cursor:move;width: 95%;max-width:600px;margin:0 0 5px;background:#FFF;border:1px solid #E8E8E8;}
 .it-exchange-existing-variant .variant-values-list li > div{float:left;}
 .it-exchange-existing-variant .variant-value-info{}
 .it-exchange-existing-variant .variant-value-info input{margin-left:10px;}
+.it-exchange-existing-variant .variant-title-text{background-position:center right;-webkit-transition:all .2s ease;-moz-transition:all .2s ease;transition:all .2s ease;}
+.it-exchange-existing-variant .variant-title-text:hover{padding-right:15px;background:url( '../images/edit.png' ) center right no-repeat;}
 .it-exchange-existing-variant .variant-values .variant-text-input,
 .it-exchange-existing-variant .variant-value-name{display:inline-block;margin-top:14px !important;}
 .it-exchange-existing-variant .variant-values .variant-text-input.hidden,
@@ -25,7 +27,8 @@
 .it-exchange-existing-variant li:hover .variant-value-delete{opacity:1;}
 .it-exchange-existing-variant .variant-value-delete{position:absolute;right:-45px;opacity:0;}
 .it-exchange-existing-variant .variant-value-reorder{width:12px;min-height:44px;background:#FFF url('../images/sorting-dots.jpg') no-repeat center center;border-right:1px solid #E8E8E8;}
-.it-exchange-existing-variant .variant-value-image{position:absolute;right:8px;top:8px;}
+.it-exchange-existing-variant .variant-value-image{width:28px;height:28px;cursor:pointer;position:absolute;right:8px;top:8px;}
+.it-exchange-existing-variant .variant-value-image img{max-width:100%;height:auto;}
 .it-exchange-existing-variant .variant-value-image-placeholder{display:block;width:28px;height:28px;background:url( '../images/upload.jpg' ) center center no-repeat;border:1px solid #E8E8E8;}
 .it-exchange-existing-variant .edit-variant{padding:1em;}
 /** -----------------------------------------------------:[ add variant ]:---------- */
