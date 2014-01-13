@@ -1,122 +1,44 @@
 /** -----------------------------------------------------:[ general ]:---------- */
-.it-exchange-existing-variants {
-	background: #FFF;
-	border: 1px solid #E8E8E8;
-}
-.it-exchange-existing-variants .sorting-placeholder {
-	opacity: .3;
-}
-#it-exchange-product-variants .variant-text-placeholder {
-	cursor: text;
-}
-#it-exchange-product-variants .it-exchange-existing-variants .it-exchange-existing-variant .variant-text-input {
-	font-size: 13px;
-	margin: 0;
-	padding: 0;
-	border: none;
-	box-shadow: none;
-	line-height: 1.4em;
-	width: 80%;
-	max-width: 300px;
-}
-
+.it-exchange-existing-variants{background:#FFF;border:1px solid #E8E8E8;}
+.it-exchange-existing-variants .sorting-placeholder{opacity:.3;}
+#it-exchange-product-variants .variant-text-placeholder{cursor:text;}
+#it-exchange-product-variants .it-exchange-existing-variants .it-exchange-existing-variant .variant-text-input{font-size:13px;margin:0;padding:0;border:none;box-shadow:none;line-height:1.4em;width:80%;max-width:300px;}
 /** -----------------------------------------------------:[ sorting ]:---------- */
-.it-exchange-existing-variants.sorting .it-exchange-existing-variant.ui-sortable-helper {
-	border: 1px solid #E8E8E8;
-	background: #FFF;
-	border-bottom: 0;
-}
-.it-exchange-existing-variants.sorting .it-exchange-existing-variant.ui-sortable-helper .variant-title {
-	cursor: move;
-}
-
+.it-exchange-existing-variants.sorting .it-exchange-existing-variant.ui-sortable-helper{border:1px solid #E8E8E8;background:#FFF;border-bottom:0;}
+.it-exchange-existing-variants.sorting .it-exchange-existing-variant.ui-sortable-helper .variant-title{cursor:move;}
 /** -----------------------------------------------------:[ title ]:---------- */
-.it-exchange-existing-variant .variant-title {
-	position: relative;
-	padding: 12px 12px 12px 32px;
-	border-bottom: 1px solid #E8E8E8;
-	cursor: s-resize;
-}
-#it-exchange-product-variants .it-exchange-existing-variant[data-variant-open="true"] .variant-title {
-	cursor: n-resize;
-}
-.it-exchange-existing-variant .variant-title-move {
-	cursor: move;
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	width: 20px;
-	background: #FFF url('../images/sorting-dots.jpg') no-repeat center center;
-	border-right: 1px solid #E8E8E8;
-}
-.it-exchange-existing-variant .variant-title-values-preview {
-	margin-left: .5em;
-	font-size: .8em;
-	color: #AAA;
-}
-.it-exchange-existing-variant .variant-title-delete {
-	float: right;
-	margin: 0;
-	color: #AAA;
-	cursor: pointer;
-}
-
+.it-exchange-existing-variant .variant-title{position:relative;padding:12px 12px 12px 32px;border-bottom:1px solid #E8E8E8;cursor:s-resize;}
+#it-exchange-product-variants .it-exchange-existing-variant[data-variant-open="true"] .variant-title{cursor:n-resize;}
+.it-exchange-existing-variant .variant-title-move{cursor:move;position:absolute;top:0;left:0;bottom:0;width:20px;background:#FFF url('../images/sorting-dots.jpg') no-repeat center center;border-right:1px solid #E8E8E8;}
+.it-exchange-existing-variant .variant-title-values-preview{margin-left:.5em;font-size:.8em;color:#AAA;}
+.it-exchange-existing-variant .variant-title-delete{float:right;margin:0;color:#AAA;cursor:pointer;}
 /** -----------------------------------------------------:[ values ]:---------- */
-.it-exchange-existing-variant .variant-values {
-	background: #F7F7F7;
-}
-.it-exchange-existing-variant .variant-values-list li {
-	position: relative;
-	max-width: 600px;
-	margin: 0 0 5px;
-	background: #FFF;
-	border: 1px solid #E8E8E8;
-}
-.it-exchange-existing-variant .variant-values-list li > div {
-	float: left;
-}
-.it-exchange-existing-variant .variant-value-info {
-	
-}
-.it-exchange-existing-variant .variant-value-info input {
-	margin-left: 10px;
-}
+.it-exchange-existing-variant .variant-values{background:#F7F7F7;}
+.it-exchange-existing-variant .variant-values-list li{position:relative;max-width:600px;margin:0 0 5px;background:#FFF;border:1px solid #E8E8E8;}
+.it-exchange-existing-variant .variant-values-list li > div{float:left;}
+.it-exchange-existing-variant .variant-value-info{}
+.it-exchange-existing-variant .variant-value-info input{margin-left:10px;}
 .it-exchange-existing-variant .variant-values .variant-text-input,
-.it-exchange-existing-variant .variant-value-name {
-	display: inline-block;
-	margin-top: 14px !important;
-}
+.it-exchange-existing-variant .variant-value-name{display:inline-block;margin-top:14px !important;}
 .it-exchange-existing-variant .variant-values .variant-text-input.hidden,
-.it-exchange-existing-variant .variant-value-name.hidden {
-	display: none;
-}
-.it-exchange-existing-variant li:hover .variant-value-delete {
-	opacity: 1;
-}
-.it-exchange-existing-variant .variant-value-delete {
-	position: absolute;
-	right: -45px;
-	opacity: 0;
-}
-.it-exchange-existing-variant .variant-value-reorder {
-	width: 12px;
-	min-height: 44px;
-	background: #FFF url('../images/sorting-dots.jpg') no-repeat center center;
-	border-right: 1px solid #E8E8E8;
-}
-.it-exchange-existing-variant .variant-value-image {
-	position: absolute;
-	right: 8px;
-	top: 8px;
-}
-.it-exchange-existing-variant .variant-value-image-placeholder {
-	display: block;
-	width: 28px;
-	height: 28px;
-	background: url( '../images/upload.jpg' ) center center no-repeat;
-	border: 1px solid #E8E8E8;
-}
-.it-exchange-existing-variant .edit-variant {
-	padding: 1em;
-}
+.it-exchange-existing-variant .variant-value-name.hidden{display:none;}
+.it-exchange-existing-variant li:hover .variant-value-delete{opacity:1;}
+.it-exchange-existing-variant .variant-value-delete{position:absolute;right:-45px;opacity:0;}
+.it-exchange-existing-variant .variant-value-reorder{width:12px;min-height:44px;background:#FFF url('../images/sorting-dots.jpg') no-repeat center center;border-right:1px solid #E8E8E8;}
+.it-exchange-existing-variant .variant-value-image{position:absolute;right:8px;top:8px;}
+.it-exchange-existing-variant .variant-value-image-placeholder{display:block;width:28px;height:28px;background:url( '../images/upload.jpg' ) center center no-repeat;border:1px solid #E8E8E8;}
+.it-exchange-existing-variant .edit-variant{padding:1em;}
+/** -----------------------------------------------------:[ add variant ]:---------- */
+.it-exchange-new-variant{margin-top:1em;position:relative;}
+.it-exchange-new-variant .it-exchange-new-variant-presets{position:absolute;bottom:0;left:100px;width:265px;background:#FFF;border:1px solid #E8E8E8;box-shadow:#EEE 1px 1px 3px;}
+.it-exchange-new-variant .it-exchange-variant-presets-column{float:left;}
+.it-exchange-new-variant .it-exchange-variant-presets-templates{width:45%;}
+.it-exchange-new-variant .it-exchange-variant-presets-templates .it-exchange-variant-column-inner{border-right:1px solid #E8E8E8;}
+.it-exchange-new-variant .it-exchange-variant-presets-saved{width:55%;}
+.it-exchange-variant-presets-saved .label{width:100%;padding:5px 10px;border-bottom:1px solid #E8E8E8;font-size:.8em;text-transform:uppercase;}
+.it-exchange-new-variant .it-exchange-variants-preset{cursor:pointer;padding:8px 10px;-webkit-transition:background .2s ease;-moz-transition:background .2s ease;transition:background .2s ease;}
+.it-exchange-new-variant .it-exchange-variants-preset:hover{background:#ECECEC;}
+.it-exchange-new-variant .it-exchange-variants-preset a{text-decoration:none;color:#111;}
+.it-exchange-new-variant .it-exchange-variants-preset img{margin-top:2px;margin-right:5px;display:block;float:left;}
+.it-exchange-new-variant .it-exchange-variants-preset .it-exchange-variant-preset-saved-delete{float:right;color:#ED4D4D;opacity:0;-webkit-transition:opacity .2s ease;-moz-transition:opacity .2s ease;transition:opacity .2s ease;}
+.it-exchange-new-variant .it-exchange-variants-preset:hover .it-exchange-variant-preset-saved-delete{opacity:1;}

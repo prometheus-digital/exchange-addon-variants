@@ -84,65 +84,69 @@
 <div class="it-exchange-new-variant">
 
 	<div class="it-exchange-new-variant-add-button">
-		<a class="button primary"><?php _e( 'Add Variant', 'LION' ); ?></a>
+		<a class="button button-primary"><?php _e( 'Add Variant', 'LION' ); ?></a>
 	<div>
 
-	<div class="it-exchange-new-variant-presets">
-		<div class="it-exchange-variant-presets-templates">
-			<?php
-			$presets =  it_exchange_variants_addon_get_presets( array( 'core_only' => true ) );
-			foreach( (array) $presets as $key => $preset ) {
-				if ( ! $preset->is_template )
-					continue;
-
-				$id        = $preset->get_property( 'ID' );
-				$slug      = $preset->get_property( 'slug' );
-				$title     = $preset->get_property( 'title' );
-				$image_url = $preset->get_property( 'image' );
-				?>
-				<!-- Note for Koop: Left Column -->
-				<div class="it-exchange-variants-preset-template-<?php esc_attr_e( $slug ); ?>" data-variant-presets-template-id="<?php esc_attr_e( $id ); ?>">
-					<?php if ( $image_url ) : ?>
-						<img src="<?php esc_attr_e( $image_url ); ?>" alt="" />
-					<?php else : ?>
-						<img src="" alt="" />
-					<?php endif; ?>
-
-					<a href="" class="it-exchange-variant-preset-template-title it-exchange-variant-preset-template-title-<?php esc_attr_e( $slug ); ?>"><?php echo esc_html( $title ); ?></a>
-				</div>
+	<div class="it-exchange-new-variant-presets hidden clearfix">
+		<div class="it-exchange-variant-presets-templates it-exchange-variant-presets-column">
+			<div class="it-exchange-variant-column-inner">
 				<?php
-			}
-			?>
+				$presets =  it_exchange_variants_addon_get_presets( array( 'core_only' => true ) );
+				foreach( (array) $presets as $key => $preset ) {
+					if ( ! $preset->is_template )
+						continue;
+
+					$id        = $preset->get_property( 'ID' );
+					$slug      = $preset->get_property( 'slug' );
+					$title     = $preset->get_property( 'title' );
+					$image_url = $preset->get_property( 'image' );
+					?>
+					<!-- Note for Koop: Left Column -->
+					<div class="it-exchange-variants-preset it-exchange-variants-preset-template-<?php esc_attr_e( $slug ); ?>" data-variant-presets-template-id="<?php esc_attr_e( $id ); ?>">
+						<?php if ( $image_url ) : ?>
+							<img src="<?php esc_attr_e( $image_url ); ?>" alt="" />
+						<?php else : ?>
+							<img src="" alt="" />
+						<?php endif; ?>
+
+						<a href="" class="it-exchange-variant-preset-template-title it-exchange-variant-preset-template-title-<?php esc_attr_e( $slug ); ?>"><?php echo esc_html( $title ); ?></a>
+					</div>
+					<?php
+				}
+				?>
+			</div>
 		</div>
-		<div class="it-exchange-variant-presets-saved">
-			<?php
-			$presets =  it_exchange_variants_addon_get_presets();
-
-			?><div class="label"><?php _e( 'My Presets', 'LION' ); ?></div><?php
-
-			foreach( (array) $presets as $key => $preset ) {
-				if ( $preset->is_template )
-					continue;
-
-				$id        = $preset->get_property( 'ID' );
-				$slug      = $preset->get_property( 'slug' );
-				$title     = $preset->get_property( 'title' );
-				$image_url = $preset->get_property( 'image' );
-				?>
-				<!-- Note for Koop: Right Column -->
-				<div class="it-exchange-variants-preset-saved-<?php esc_attr_e( $slug ); ?>" data-variant-presets-saved-id="<?php esc_attr_e( $id ); ?>">
-					<?php if ( $image_url ) : ?>
-						<img src="<?php esc_attr_e( $image_url ); ?>" alt="" />
-					<?php else : ?>
-						<img src="" alt="" />
-					<?php endif; ?>
-
-					<a href="" class="it-exchange-variant-preset-saved-title it-exchange-variant-preset-saved-title-<?php esc_attr_e( $slug ); ?>"><?php echo esc_html( $title ); ?></a>
-					<a href="" class="it-exchange-variant-preset-saved-delete">&times;</a>
-				</div>
+		<div class="it-exchange-variant-presets-saved it-exchange-variant-presets-column">
+			<div class="it-exchange-variant-column-inner">
 				<?php
-			}
-			?>
+				$presets =  it_exchange_variants_addon_get_presets();
+
+				?><div class="label"><?php _e( 'My Presets', 'LION' ); ?></div><?php
+
+				foreach( (array) $presets as $key => $preset ) {
+					if ( $preset->is_template )
+						continue;
+
+					$id        = $preset->get_property( 'ID' );
+					$slug      = $preset->get_property( 'slug' );
+					$title     = $preset->get_property( 'title' );
+					$image_url = $preset->get_property( 'image' );
+					?>
+					<!-- Note for Koop: Right Column -->
+					<div class="it-exchange-variants-preset it-exchange-variants-preset-saved-<?php esc_attr_e( $slug ); ?>" data-variant-presets-saved-id="<?php esc_attr_e( $id ); ?>">
+						<?php if ( $image_url ) : ?>
+							<img src="<?php esc_attr_e( $image_url ); ?>" alt="" />
+						<?php else : ?>
+							<img src="" alt="" />
+						<?php endif; ?>
+
+						<a href="" class="it-exchange-variant-preset-saved-title it-exchange-variant-preset-saved-title-<?php esc_attr_e( $slug ); ?>"><?php echo esc_html( $title ); ?></a>
+						<a href="" class="it-exchange-variant-preset-saved-delete">&times;</a>
+					</div>
+					<?php
+				}
+				?>
+			</div>
 		</div>
 	</div>
 </div>
