@@ -398,7 +398,7 @@ function it_exchange_variants_addon_process_add_edit_variant_ajax() {
 		case 'addVariantFromTemplate' :
 			$return->status  = 1;
 			$return->message = false;
-			$return->html    = it_exchange_variants_addon_get_add_edit_variant_form_field( $_POST['itevTemplateID'], true );
+			$return->html    = it_exchange_variants_addon_get_add_edit_variant_form_field( 'template', $_POST['itevTemplateID'] );
 	}
 	die( json_encode( $return ) );
 
@@ -412,79 +412,9 @@ add_action( 'wp_ajax_ite_add_edit_variants', 'it_exchange_variants_addon_process
  *
  * @param int template_id
 */
-function it_exchange_variants_addon_get_add_edit_variant_form_field( $id, $is_new=false ) {
-	$variant = empty( $is_new ) ? false : it_exchange_variants_addon_get_preset( $id );
-	$id      = empty( $is_new ) ? $variant->get_property( 'ID' ) : 'new';
-	$title   = empty( $is_new ) ? $variant->get_property( 'title' ) : __( 'Variant Name', 'LION' );
-	$preview = 'preview, will, go, here';
-	ob_start();
-	?>
-    <div class="it-exchange-existing-variant" data-variant-id="<?php esc_attr_e( $id ); ?>" data-variant-open="true">
-        <div class="variant-title">
-            <span class="variant-title-move"></span>
-            <span class="variant-title-text variant-text-placeholder"><?php echo $title; ?></span>
-            <input type="text" name="variant_title_text" value="<?php esc_attr_e( $title ); ?>" class="variant-text-input hidden">
-            <span class="variant-title-values-preview">
-                <?php echo $preview; ?>
-            </span>
-            <span class="variant-title-delete it-exchange-remove-item">
-                &times;
-            </span>
-        </div>
-        <div class="variant-values">
-            <div class="edit-variant">
-                <span class="label">Values <?php it_exchange_admin_tooltip( 'tooltip goes here' ); ?></span>
-                <ul class="variant-values-list">
-                    <li class="clearfix" data-variant-value-id="101" data-variant-value-parent="1">
-                        <div class="variant-value-reorder" data-variant-value-order="1"></div>
-                        <div class="variant-value-info">
-                            <input type="radio" class="variant-radio-option" name="default-for-variant-1" />
-                            <span class="variant-value-name variant-text-placeholder">Full Grain</span>
-                            <input type="text" name="variant-value-name[101]" value="Full Grain" class="variant-text-input hidden" />
-                            <a class="variant-value-image variant-value-has-image">
-                                <img src="http://f.cl.ly/items/0B2o3K073h3o1T0m2Z0u/Screen%20Shot%202014-01-08%20at%2010.55.09%20AM.png" alt=""/>
-                            </a>
-                        </div>
-                        <div class="variant-value-delete">
-                            <a href class="it-exchange-remove-item">&times;</a>
-                        </div>
-                    </li>
-                    <li class="clearfix" data-variant-value-id="102" data-variant-value-parent="1" >
-                        <div class="variant-value-reorder" data-variant-value-order="2"></div>
-                        <div class="variant-value-info">
-                            <input type="radio" class="variant-radio-option" name="default-for-variant-1" />
-                            <span class="variant-value-name variant-text-placeholder">Top Grain</span>
-                            <input type="text" name="variant-value-name[102]" value="Top Grain" class="variant-text-input hidden" />
-                            <a class="variant-value-image variant-value-has-image">
-                                <span class="variant-value-image-placeholder"></span>
-                            </a>
-                        </div>
-                        <div class="variant-value-delete">
-                            <a href class="it-exchange-remove-item">&times;</a>
-                        </div>
-                    </li>
-                    <li class="clearfix" data-variant-value-id="103" data-variant-value-parent="1" >
-                        <div class="variant-value-reorder" data-variant-value-order="3"></div>
-                        <div class="variant-value-info">
-                            <input type="radio" class="variant-radio-option" name="default-for-variant-1"/>
-                            <span class="variant-value-name variant-text-placeholder">No Grain</span>
-                            <input type="text" name="variant-value-name[103]" value="No Grain" class="variant-text-input hidden">
-                            <a class="variant-value-image variant-value-has-image">
-                                <span class="variant-value-image-placeholder"></span>
-                            </a>
-                        </div>
-                        <div class="variant-value-delete">
-                            <a href class="it-exchange-remove-item">&times;</a>
-                        </div>
-                    </li>
-                </ul>
-                <div class="add-variant-value">
-                    <input type="button" class="button" value="Add Value" />
-                </div>
-            </div>
-        </div>
-    </div>
-	<?php
-	return ob_get_clean();
+function it_exchange_variants_addon_get_add_edit_variant_form_field( $type, $id ) {
+	include_once( 'class.variant-form-field.php' );
+	$field = new IT_Exchange_Variants_Addon_Form_Field( $type, $id );
+	return $field->div;
 }
 

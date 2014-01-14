@@ -1,4 +1,6 @@
 <div class="it-exchange-existing-variants">
+	<?php
+	/**
 	<div class="it-exchange-existing-variant" data-variant-id="1" data-variant-open="false">
 		<div class="variant-title">
 			<span class="variant-title-move"></span>
@@ -93,6 +95,8 @@
 			</span>
 		</div>
 	</div>
+	*/
+	?>
 </div>
 
 <div class="it-exchange-new-variant">
