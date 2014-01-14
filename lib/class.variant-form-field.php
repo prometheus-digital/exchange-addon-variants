@@ -20,7 +20,8 @@ class IT_Exchange_Variants_Addon_Form_Field {
 		if ( ! in_array( $type, array( 'template', 'saved', 'existing' ) ) )
 			return;
 
-		$this->id = $id;
+		$this->init_type = $type;
+		$this->id        = $id;
 
 		$init_func = 'init_' . $type;
 		$this->$init_func();
@@ -76,9 +77,7 @@ class IT_Exchange_Variants_Addon_Form_Field {
 							<input type="radio" class="variant-radio-option" name="default-for-variant-' . esc_attr( $this->id ) . '"/>
 							<span class="variant-value-name variant-text-placeholder">' . __( 'New Value', 'LION' ) . '</span>
 							<input type="text" name="variant-value-name[]" value="' . __( 'New Value', 'LION' ) . '" class="variant-text-input hidden">
-							<a class="variant-value-image variant-value-has-image">
-								<span class="variant-value-image-placeholder"></span>
-							</a>
+							' . $this->get_variant_value_visual() . '
 						</div>
 						<div class="variant-value-delete">
 							<a href class="it-exchange-remove-item">&times;</a>
@@ -130,5 +129,28 @@ class IT_Exchange_Variants_Addon_Form_Field {
 			case 'existing' :
 				die( __FILE__ . ' | ' . __LINE__ );
 		}
+	}
+
+	function get_variant_value_visual() {
+		$html = $this->init_type;
+		switch( $this->init_type ) {
+			case 'template' :
+				$slug = $this->object->get_property( 'slug' );
+				if ( 'template-image' == $slug ) {
+					$html = '
+					<a class="variant-value-image variant-value-has-image">
+						<span class="variant-value-image-placeholder"></span>
+					</a>
+					';
+				} elseif ( 'template-color' == $slug ) {
+					$html = '
+					<a class="variant-value-color">
+						<span class="variant-value-image-placeholder"></span>
+					</a>
+					';
+				}
+				break;
+		}
+		return $html;
 	}
 }
