@@ -63,7 +63,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 0,
 			'core'     => true,
 			'ui-type'  => 'select',
-			'version'  => '0.0.1',
+			'version'  => '0.0.10',
 		),
 		'template-radio' => array(
 			'slug'     => 'template-radio',
@@ -74,7 +74,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 3,
 			'core'     => true,
 			'ui-type'  => 'radio',
-			'version'  => '0.0.1',
+			'version'  => '0.0.10',
 		),
 		'tempalte-hex'   => array(
 			'slug'     => 'template-hex',
@@ -85,7 +85,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 5,
 			'core'     => true,
 			'ui-type'  => 'color',
-			'version'  => '0.0.1',
+			'version'  => '0.0.10',
 		),
 		'tempalte-image' => array(
 			'slug'     => 'template-image',
@@ -96,7 +96,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 8,
 			'core'     => true,
 			'ui-type'  => 'image',
-			'version'  => '0.0.1',
+			'version'  => '0.0.10',
 		),
 		'colors'       => array(
 			'slug'    => 'colors',
@@ -120,7 +120,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'   => 5,
 			'core'    => true,
 			'ui-type' => 'color',
-			'version' => '0.0.1',
+			'version' => '0.0.10',
 		),
 		'sizes'  => array(
 			'slug'    => 'sizes',
@@ -162,7 +162,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'   => 0,
 			'core'    => true,
 			'ui-type' => 'image',
-			'version' => '0.0.1',
+			'version' => '0.0.10',
 		),
 	);
 	return $args;
