@@ -75,6 +75,12 @@ class IT_Exchange_Variants_Addon_Preset {
 	var $order = 0;
 
 	/**
+	 * @var string $ui_type What type of variant UI is this?
+	 * @since 1.0.0
+	*/
+	var $ui_type = 'select';
+
+	/**
 	 * @var boolean $core Is this a core preset? The 'core' arg passed to it_exchange_variants_addon_create_variant_preset()
 	 * @since 1.0.0
 	*/
@@ -150,6 +156,7 @@ class IT_Exchange_Variants_Addon_Preset {
 		$this->set_values();
 		$this->set_default();
 		$this->set_order();
+		$this->set_ui_type();
 		$this->set_core();
 		$this->set_version();
 		$this->set_is_template();
@@ -224,6 +231,17 @@ class IT_Exchange_Variants_Addon_Preset {
 	}
 
 	/**
+	 * Sets the ui_type var
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	*/
+	function set_ui_type() {
+		$this->ui_type = empty( $this->postmeta['ui-type'] ) ? false : $this->postmeta['ui-type'];
+	}
+
+	/**
 	 * Sets the order var
 	 *
 	 * @since 1.0.0
@@ -276,7 +294,7 @@ class IT_Exchange_Variants_Addon_Preset {
 	 * @return mixed
 	*/
 	function get_property( $property ) {
-		if ( empty( $this->$property ) )
+		if ( ! property_exists( 'IT_Exchange_Variants_Addon_Preset', $property ) )
 			return new WP_Error( 'property-not-found', __( 'Coding Error: You requested a property that does not exist from a IT_Exchange_Variants_Addon_Preset object.', 'LION' ) );
 
 		return apply_filters( 'it_exchange_variants_addon_get_variant_preset_property', $this->$property, $property, $this );

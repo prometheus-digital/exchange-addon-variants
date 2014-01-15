@@ -40,6 +40,17 @@ class IT_Exchange_Variants_Addon_Form_Field {
 		$this->variant_title = sprintf( __( 'New %s Variant Title', 'LION' ), $this->object->get_property( 'title' ) );
 	}
 
+	function init_saved() {
+
+		// Load the template data
+		$this->object        = it_exchange_variants_addon_get_preset( $this->id );
+		$this->object_values = $this->object->get_property( 'values' );
+
+		// Set a temp ID for this new div
+		$this->id            = uniqid();
+		$this->variant_title = sprintf( __( 'New %s Variant Title', 'LION' ), $this->object->get_property( 'title' ) );
+	}
+
 	function start_div() {
 		$this->div .= '<div class="it-exchange-existing-variant" data-variant-id="' . esc_attr( $this->variant_id ) . '" data-variant-open="true">';
 	}
@@ -63,8 +74,8 @@ class IT_Exchange_Variants_Addon_Form_Field {
 	}
 
 	function add_variant_values() {
-		if ( ! $this->object->get_property( 'post_parent' ) )
-			return '';
+		if ( ! empty( $this->object->post_parent ) )
+			return;
 
 		$values = '
 		<div class="variant-values">
@@ -85,11 +96,13 @@ class IT_Exchange_Variants_Addon_Form_Field {
 					</li>';
 
 				$int = 0;
+
 				foreach( $this->object_values as $value ) {
 					$int++;
-					$value       = $this->get_child_variant( $value );
-					$value_id    = $value->get_property( 'ID' );
-					$value_title = $value->get_property( 'title' );
+					$value               = $this->get_child_variant( $value );
+					$this->current_value = $value;
+					$value_id            = $value->get_property( 'ID' );
+					$value_title         = $value->get_property( 'title' );
 
 					$values .= '
 					<li class="clearfix" data-variant-value-id="' . esc_attr( $value_id ) . '" data-variant-value-parent="' . esc_attr( $this->id ) . '">
@@ -98,9 +111,7 @@ class IT_Exchange_Variants_Addon_Form_Field {
 							<input type="radio" class="variant-radio-option" name="default-for-variant-' . esc_attr( $value_id ) . '" />
 							<span class="variant-value-name variant-text-placeholder">' . $value_title . '</span>
 							<input type="text" name="variant-value-name[101]" value="' . esc_attr( $value_title ) . '" class="variant-text-input hidden" />
-							<a class="variant-value-image variant-value-has-image">
-								<img src="http://f.cl.ly/items/0B2o3K073h3o1T0m2Z0u/Screen%20Shot%202014-01-08%20at%2010.55.09%20AM.png" alt=""/>
-							</a>
+							' . $this->get_variant_value_visual() . '
 						</div>
 						<div class="variant-value-delete">
 							<a href class="it-exchange-remove-item">&times;</a>
@@ -123,8 +134,10 @@ class IT_Exchange_Variants_Addon_Form_Field {
 	function get_child_variant( $value ) {
 		switch( $this->init_type ) {
 			case 'template' :
-			case 'saved'    :
 				return it_exchange_variants_addon_get_preset( $value );	
+				break;
+			case 'saved' :
+				return it_exchange_variants_addon_get_saved_preset_value( $value );
 				break;
 			case 'existing' :
 				die( __FILE__ . ' | ' . __LINE__ );
@@ -146,6 +159,28 @@ class IT_Exchange_Variants_Addon_Form_Field {
 					$html = '
 					<div class="variant-value-hex">
 						<input type="text" value="#F1FFDE" name="it-exchange-variant-value-color[]" class="it-exchange-variants-colorpicker" />
+					</div>
+					';
+				}
+				break;
+			case 'saved' :
+				if ( ! empty( $this->object->post_parent ) ) {
+					$parent = it_exchange_variant_addon_get_preset( $this->object->post_parent );
+					$ui_type = $parent->get_property->ui_type;
+				} else {
+					$ui_type = $this->object->get_property( 'ui_type' );
+				}
+				if ( 'image' == $ui_type ) {
+					$html = '
+					<a class="variant-value-image variant-value-has-image">
+						<span class="variant-value-image-placeholder"></span>
+					</a>
+					';
+				} elseif ( 'color' == $ui_type ) {
+					$default = empty( $this->current_value->color ) ? $this->object->get_property( 'default' ) : $this->current_value->get_property( 'color' );
+					$html = '
+					<div class="variant-value-hex">
+						<input type="text" value="' . esc_attr( $default ) . '" name="it-exchange-variant-value-color[]" class="it-exchange-variants-colorpicker" />
 					</div>
 					';
 				}

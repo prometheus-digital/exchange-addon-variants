@@ -104,16 +104,19 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'title'   => __( 'Colors', 'LION' ),
 			'values'  => array(
 				'000000' => array(
-					'slug'  => '000000',
-					'title' => __( 'Black', 'LION' ),
+					'slug'    => '000000',
+					'title'   => __( 'Black', 'LION' ),
+					'color'   => '#000000',
 				),
 				'ffffff' => array(
-					'slug'  => 'ffffff',
-					'title' => __( 'White', 'LION' ),
+					'slug'    => 'ffffff',
+					'title'   => __( 'White', 'LION' ),
+					'color'   => '#ffffff',
 				),
 				'ff0000' => array(
-					'slug'  => 'ff0000',
-					'title' => __( 'Red', 'LION' ),
+					'slug'    => 'ff0000',
+					'title'   => __( 'Red', 'LION' ),
+					'color'   => '#ff0000',
 				),
 			),
 			'default' => false,
@@ -227,6 +230,8 @@ function it_exchange_variants_addon_create_variant_preset( $args ) {
 			$meta['values']  = $args['values'];
 		if ( ! empty( $args['default'] ) )
 			$meta['default'] = $args['default'];
+		if ( ! empty( $args['ui-type'] ) )
+			$meta['ui-type'] = $args['ui-type'];
 		if ( ! empty( $args['core'] ) )
 			$meta['core']    = $args['core'];
 		if ( ! empty( $args['version'] ) )
@@ -399,6 +404,13 @@ function it_exchange_variants_addon_process_add_edit_variant_ajax() {
 			$return->status  = 1;
 			$return->message = false;
 			$return->html    = it_exchange_variants_addon_get_add_edit_variant_form_field( 'template', $_POST['itevTemplateID'] );
+			break;
+		case 'addVariantFromSaved' :
+			$return->status  = 1;
+			$return->message = false;
+			$return->html    = it_exchange_variants_addon_get_add_edit_variant_form_field( 'saved', $_POST['itevSavedID'] );
+			break;
+
 	}
 	die( json_encode( $return ) );
 
@@ -418,3 +430,15 @@ function it_exchange_variants_addon_get_add_edit_variant_form_field( $type, $id 
 	return $field->div;
 }
 
+/**
+ * Returns an object that mimicks the variant preset object for saved variant preset values.
+ *
+ * @since 1.0.0
+*/
+function it_exchange_variants_addon_get_saved_preset_value( $args ) {
+	include_once( 'class.variant-saved-preset-value.php' );
+    $preset = new IT_Exchange_Variants_Addon_Saved_Preset_Value( $args );
+    if ( $preset->title && $preset->slug )
+        return apply_filters( 'it_exchange_variants_addon_get_saved_preset_value', $preset, $args );
+    return apply_filters( 'it_exchange_variants_addon_get_saved_preset_value', false, $args );
+}

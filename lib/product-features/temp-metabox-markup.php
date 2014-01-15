@@ -157,7 +157,7 @@
 					$image_url = $preset->get_property( 'image' );
 					?>
 
-					<div class="it-exchange-variants-preset it-exchange-variants-preset-saved-<?php esc_attr_e( $slug ); ?>" data-variant-presets-saved-id="<?php esc_attr_e( $id ); ?>">
+					<div class="it-exchange-variants-preset it-exchange-variants-preset-saved it-exchange-variants-preset-saved-<?php esc_attr_e( $slug ); ?>" data-variant-presets-saved-id="<?php esc_attr_e( $id ); ?>">
 						<?php if ( $image_url ) : ?>
 							<img src="<?php esc_attr_e( $image_url ); ?>" alt="" />
 						<?php else : ?>
