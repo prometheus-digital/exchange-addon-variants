@@ -125,7 +125,7 @@
 					$title     = $preset->get_property( 'title' );
 					$image_url = $preset->get_property( 'image' );
 					?>
-					<!-- Note for Koop: Left Column -->
+
 					<div class="it-exchange-variants-preset it-exchange-variants-preset-template it-exchange-variants-preset-template-<?php esc_attr_e( $slug ); ?>" data-variant-presets-template-id="<?php esc_attr_e( $id ); ?>">
 						<?php if ( $image_url ) : ?>
 							<img src="<?php esc_attr_e( $image_url ); ?>" alt="" />
@@ -156,7 +156,7 @@
 					$title     = $preset->get_property( 'title' );
 					$image_url = $preset->get_property( 'image' );
 					?>
-					<!-- Note for Koop: Right Column -->
+
 					<div class="it-exchange-variants-preset it-exchange-variants-preset-saved-<?php esc_attr_e( $slug ); ?>" data-variant-presets-saved-id="<?php esc_attr_e( $id ); ?>">
 						<?php if ( $image_url ) : ?>
 							<img src="<?php esc_attr_e( $image_url ); ?>" alt="" />

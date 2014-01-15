@@ -56,7 +56,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 	$args = array(
 		'template-select' => array(
 			'slug'     => 'template-select',
-			'image'    => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/blank.png' ),
+			'image'    => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/select.png' ),
 			'title'    => __( 'Select', 'LION' ),
 			'values'   => array(),
 			'default'  => false,
@@ -67,7 +67,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 		),
 		'template-radio' => array(
 			'slug'     => 'template-radio',
-			'image'    => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/blank.png' ),
+			'image'    => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/radio.png' ),
 			'title'    => __( 'Radio', 'LION' ),
 			'values'   => array(),
 			'default'  => false,
@@ -78,7 +78,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 		),
 		'tempalte-hex'   => array(
 			'slug'     => 'template-hex',
-			'image'    => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/blank.png' ),
+			'image'    => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/colors.png' ),
 			'title'    => __( 'Color', 'LION' ),
 			'values'   => array(),
 			'default'  => false,
@@ -89,7 +89,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 		),
 		'tempalte-image' => array(
 			'slug'     => 'template-image',
-			'image'    => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/blank.png' ),
+			'image'    => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/image.png' ),
 			'title'    => __( 'Image', 'LION' ),
 			'values'   => array(),
 			'default'  => false,
