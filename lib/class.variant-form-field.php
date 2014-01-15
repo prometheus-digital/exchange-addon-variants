@@ -132,7 +132,7 @@ class IT_Exchange_Variants_Addon_Form_Field {
 	}
 
 	function get_variant_value_visual() {
-		$html = $this->init_type;
+		$html = '';
 		switch( $this->init_type ) {
 			case 'template' :
 				$slug = $this->object->get_property( 'slug' );
@@ -142,11 +142,11 @@ class IT_Exchange_Variants_Addon_Form_Field {
 						<span class="variant-value-image-placeholder"></span>
 					</a>
 					';
-				} elseif ( 'template-color' == $slug ) {
+				} elseif ( 'template-hex' == $slug ) {
 					$html = '
-					<a class="variant-value-color">
-						<span class="variant-value-image-placeholder"></span>
-					</a>
+					<div class="variant-value-hex">
+						<input type="text" value="#F1FFDE" name="it-exchange-variant-value-color[]" class="it-exchange-variants-colorpicker" />
+					</div>
 					';
 				}
 				break;

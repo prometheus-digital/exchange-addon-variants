@@ -27,8 +27,10 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 			$post_type = $post->post_type;
 	}   
 	
-	if ( isset( $post_type ) && 'it_exchange_prod' === $post_type )
-		wp_enqueue_script( 'it-exchange-variants-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/add-edit-product.js', array( 'jquery', 'jquery-ui-sortable', 'it-exchange-dialog' ) );
+	if ( isset( $post_type ) && 'it_exchange_prod' === $post_type ) {
+		wp_enqueue_script( 'it-exchange-variants-addon-colorpicker', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/colorpicker/colorpicker.js' );
+		wp_enqueue_script( 'it-exchange-variants-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/add-edit-product.js', array( 'jquery', 'jquery-ui-sortable', 'it-exchange-dialog', 'it-exchange-variants-addon-colorpicker' ) );
+	}
 }
 add_action( 'admin_enqueue_scripts', 'it_exchange_variants_addon_admin_wp_enqueue_scripts' );
 
@@ -60,8 +62,10 @@ function it_exchange_variants_addon_admin_wp_enqueue_styles( $hook_suffix ) {
 			$post_type = $post->post_type;
 	}   
 	
-	if ( isset( $post_type ) && 'it_exchange_prod' === $post_type )
+	if ( isset( $post_type ) && 'it_exchange_prod' === $post_type ) {
+		wp_enqueue_style( 'it-exchange-variants-addon-colorpicker', ITUtility::get_url_from_file( dirname( __FILE__) ) . '/js/colorpicker/colorpicker.css' );
 		wp_enqueue_style( 'it-exchange-variants-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/css/add-edit-product.css' );
+	}
 }
 add_action( 'admin_print_styles', 'it_exchange_variants_addon_admin_wp_enqueue_styles' );
 
