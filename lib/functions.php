@@ -58,12 +58,17 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'slug'     => 'template-select',
 			'image'    => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/select.png' ),
 			'title'    => __( 'Select', 'LION' ),
-			'values'   => array(),
+			'values'  => array(
+				'new' => array(
+					'slug'    => 'new',
+					'title'   => __( 'New Value', 'LION' ),
+				),
+			),
 			'default'  => false,
 			'order'    => 0,
 			'core'     => true,
 			'ui-type'  => 'select',
-			'version'  => '0.0.10',
+			'version'  => '0.0.13',
 		),
 		'template-radio' => array(
 			'slug'     => 'template-radio',
@@ -74,7 +79,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 3,
 			'core'     => true,
 			'ui-type'  => 'radio',
-			'version'  => '0.0.10',
+			'version'  => '0.0.13',
 		),
 		'tempalte-hex'   => array(
 			'slug'     => 'template-hex',
@@ -85,7 +90,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 5,
 			'core'     => true,
 			'ui-type'  => 'color',
-			'version'  => '0.0.10',
+			'version'  => '0.0.13',
 		),
 		'tempalte-image' => array(
 			'slug'     => 'template-image',
@@ -96,7 +101,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 8,
 			'core'     => true,
 			'ui-type'  => 'image',
-			'version'  => '0.0.10',
+			'version'  => '0.0.13',
 		),
 		'colors'       => array(
 			'slug'    => 'colors',
@@ -128,7 +133,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'   => 5,
 			'core'    => true,
 			'ui-type' => 'color',
-			'version' => '0.0.12',
+			'version' => '0.0.13',
 		),
 		'sizes'  => array(
 			'slug'    => 'sizes',
@@ -170,7 +175,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'   => 0,
 			'core'    => true,
 			'ui-type' => 'image',
-			'version' => '0.0.10',
+			'version' => '0.0.13',
 		),
 	);
 	return $args;
@@ -279,8 +284,7 @@ function it_exchange_variants_addon_get_presets( $args=array() ) {
 
 			$variant_presets[$preset_object->get_property( 'slug' )] = $preset_object;
 		}   
-	}   
-
+	}
 	return apply_filters( 'it_exchange_variants_addon_get_presets', $variant_presets, $args );
 }
 

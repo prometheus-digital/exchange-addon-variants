@@ -34,6 +34,7 @@ class IT_Exchange_Variants_Addon_Form_Field {
 
 		// Load the template data
 		$this->object = it_exchange_variants_addon_get_preset( $this->id );
+		$this->object_values = $this->object->get_property( 'values' );
 		
 		// Set a temp ID for this new div
 		$this->id            = uniqid();
@@ -134,7 +135,7 @@ class IT_Exchange_Variants_Addon_Form_Field {
 	function get_child_variant( $value ) {
 		switch( $this->init_type ) {
 			case 'template' :
-				return it_exchange_variants_addon_get_preset( $value );	
+				return is_array( $value ) ? it_exchange_variants_addon_get_saved_preset_value( $value ) : it_exchange_variants_addon_get_preset( $value );	
 				break;
 			case 'saved' :
 				return it_exchange_variants_addon_get_saved_preset_value( $value );
