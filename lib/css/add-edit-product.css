@@ -14,11 +14,11 @@
 .it-exchange-existing-variant .variant-title-delete{float:right;margin:0;color:#AAA;cursor:pointer;}
 /** -----------------------------------------------------:[ values ]:---------- */
 .it-exchange-existing-variant .variant-values{background:#F7F7F7;}
-.it-exchange-existing-variant .variant-values-list li{position:relative;cursor:move;width: 95%;max-width:600px;margin:0 0 5px;background:#FFF;border:1px solid #E8E8E8;}
+.it-exchange-existing-variant .variant-values-list li{position:relative;cursor:move;width:95%;max-width:600px;margin:0 0 5px;background:#FFF;border:1px solid #E8E8E8;}
 .it-exchange-existing-variant .variant-values-list li > div{float:left;}
 .it-exchange-existing-variant .variant-value-info{}
 .it-exchange-existing-variant .variant-value-info input{margin-left:10px;}
-.it-exchange-existing-variant .variant-title-text{background-position:center right;-webkit-transition:all .2s ease;-moz-transition:all .2s ease;transition:all .2s ease;}
+.it-exchange-existing-variant .variant-title-text{padding:1em 0;background-position:center right;}
 .it-exchange-existing-variant .variant-title-text:hover{padding-right:15px;background:url( '../images/edit.png' ) center right no-repeat;}
 .it-exchange-existing-variant .variant-values .variant-text-input,
 .it-exchange-existing-variant .variant-value-name{display:inline-block;margin-top:14px !important;}
@@ -31,7 +31,6 @@
 .it-exchange-existing-variant .variant-value-image img{max-width:100%;height:auto;}
 .it-exchange-existing-variant .variant-value-image-placeholder{display:block;width:28px;height:28px;border:1px solid #E8E8E8;background:url( '../images/upload.jpg' ) center center no-repeat;}
 .it-exchange-existing-variant .it-exchange-variants-colorpicker{display:block;width:28px;height:28px;border:1px solid #E8E8E8;cursor:pointer;position:absolute;right:8px;top:8px;}
-
 .it-exchange-existing-variant .edit-variant{padding:1em;}
 /** -----------------------------------------------------:[ add variant ]:---------- */
 .it-exchange-new-variant{margin-top:1em;position:relative;}
