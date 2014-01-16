@@ -101,29 +101,34 @@ function it_exchange_variants_addon_get_core_presets_args() {
 		'colors'       => array(
 			'slug'    => 'colors',
 			'image'   => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/colors.png' ),
-			'title'   => __( 'Colors', 'LION' ),
+			'title'   => __( 'iThemes Colors', 'LION' ),
 			'values'  => array(
-				'000000' => array(
-					'slug'    => '000000',
-					'title'   => __( 'Black', 'LION' ),
-					'color'   => '#000000',
+				'88C53E' => array(
+					'slug'    => '88C53E',
+					'title'   => __( 'iThemes Green', 'LION' ),
+					'color'   => '#88C53E',
 				),
-				'ffffff' => array(
-					'slug'    => 'ffffff',
-					'title'   => __( 'White', 'LION' ),
-					'color'   => '#ffffff',
+				'0082CA' => array(
+					'slug'    => '0082CA',
+					'title'   => __( 'iThemes Blue', 'LION' ),
+					'color'   => '#0082CA',
 				),
-				'ff0000' => array(
-					'slug'    => 'ff0000',
-					'title'   => __( 'Red', 'LION' ),
-					'color'   => '#ff0000',
+				'F1FFDE' => array(
+					'slug'    => 'F1FFDE',
+					'title'   => __( 'Exchange Green', 'LION' ),
+					'color'   => '#F1FFDE',
+				),
+				'334940' => array(
+					'slug'    => '334940',
+					'title'   => __( 'Exchange Dark Green', 'LION' ),
+					'color'   => '#334940',
 				),
 			),
 			'default' => false,
 			'order'   => 5,
 			'core'    => true,
 			'ui-type' => 'color',
-			'version' => '0.0.10',
+			'version' => '0.0.12',
 		),
 		'sizes'  => array(
 			'slug'    => 'sizes',
