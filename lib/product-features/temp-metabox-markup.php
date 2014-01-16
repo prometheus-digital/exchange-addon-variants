@@ -123,14 +123,14 @@
 					$id        = $preset->get_property( 'ID' );
 					$slug      = $preset->get_property( 'slug' );
 					$title     = $preset->get_property( 'title' );
-					$image_url = $preset->get_property( 'image' );
+					$ui_type   = $preset->get_property( 'ui_type' );
 					?>
 
 					<div class="it-exchange-variants-preset it-exchange-variants-preset-template it-exchange-variants-preset-template-<?php esc_attr_e( $slug ); ?>" data-variant-presets-template-id="<?php esc_attr_e( $id ); ?>">
-						<?php if ( $image_url ) : ?>
-							<img src="<?php esc_attr_e( $image_url ); ?>" alt="" />
+						<?php if ( $ui_type && is_file( dirname( dirname( __FILE__ ) ) . '/images/presets/' . $ui_type . '.png' ) ) : ?>
+							<img src="<?php esc_attr_e( ITUtility::get_url_from_file( dirname( dirname( __FILE__ ) ) . '/images/presets/' . $ui_type . '.png' ) ); ?>" alt="" />
 						<?php else : ?>
-							<img src="" alt="" />
+							<img src="" alt="<?php echo ITUtility::get_url_from_file( dirname( dirname( __FILE__ ) ) . '/images/presets/' . $ui_type . '.png' );?>" />
 						<?php endif; ?>
 
 						<a href="" class="it-exchange-variant-preset-template-title it-exchange-variant-preset-template-title-<?php esc_attr_e( $slug ); ?>"><?php echo esc_html( $title ); ?></a>
@@ -154,14 +154,14 @@
 					$id        = $preset->get_property( 'ID' );
 					$slug      = $preset->get_property( 'slug' );
 					$title     = $preset->get_property( 'title' );
-					$image_url = $preset->get_property( 'image' );
+					$ui_type   = $preset->get_property( 'ui_type' );
 					?>
 
 					<div class="it-exchange-variants-preset it-exchange-variants-preset-saved it-exchange-variants-preset-saved-<?php esc_attr_e( $slug ); ?>" data-variant-presets-saved-id="<?php esc_attr_e( $id ); ?>">
-						<?php if ( $image_url ) : ?>
-							<img src="<?php esc_attr_e( $image_url ); ?>" alt="" />
+						<?php if ( $ui_type && is_file( dirname( dirname( __FILE__ ) ) . '/images/presets/' . $ui_type . '.png' ) ) : ?>
+							<img src="<?php esc_attr_e( ITUtility::get_url_from_file( dirname( dirname( __FILE__ ) ) . '/images/presets/' . $ui_type . '.png' ) ); ?>" alt="" />
 						<?php else : ?>
-							<img src="" alt="" />
+							<img src="" alt="<?php echo ITUtility::get_url_from_file( dirname( dirname( __FILE__ ) ) . '/images/presets/' . $ui_type . '.png' );?>" />
 						<?php endif; ?>
 
 						<a href="" class="it-exchange-variant-preset-saved-title it-exchange-variant-preset-saved-title-<?php esc_attr_e( $slug ); ?>"><?php echo esc_html( $title ); ?></a>
