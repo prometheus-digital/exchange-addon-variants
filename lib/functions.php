@@ -68,7 +68,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 0,
 			'core'     => true,
 			'ui-type'  => 'select',
-			'version'  => '0.0.13',
+			'version'  => '0.0.16',
 		),
 		'template-radio' => array(
 			'slug'     => 'template-radio',
@@ -79,7 +79,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 3,
 			'core'     => true,
 			'ui-type'  => 'radio',
-			'version'  => '0.0.13',
+			'version'  => '0.0.16',
 		),
 		'tempalte-hex'   => array(
 			'slug'     => 'template-hex',
@@ -90,7 +90,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 5,
 			'core'     => true,
 			'ui-type'  => 'color',
-			'version'  => '0.0.13',
+			'version'  => '0.0.16',
 		),
 		'tempalte-image' => array(
 			'slug'     => 'template-image',
@@ -101,7 +101,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 8,
 			'core'     => true,
 			'ui-type'  => 'image',
-			'version'  => '0.0.13',
+			'version'  => '0.0.16',
 		),
 		'colors'       => array(
 			'slug'    => 'colors',
@@ -133,18 +133,13 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'   => 5,
 			'core'    => true,
 			'ui-type' => 'color',
-			'version' => '0.0.13',
+			'version' => '0.0.16',
 		),
 		'sizes'  => array(
 			'slug'    => 'sizes',
 			'image'   => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/sizes.png' ),
 			'title'   => __( 'Sizes', 'LION' ),
 			'values'  => array(
-				'xs'  => array(
-					'slug'  => 'xs',
-					'title' => __( 'XS', 'LION' ),
-					'order' => 3,
-				),
 				's'   => array(
 					'slug'  => 's',
 					'title' => __( 'S', 'LION' ),
@@ -165,17 +160,12 @@ function it_exchange_variants_addon_get_core_presets_args() {
 					'title' => __( 'XL', 'LION' ),
 					'order' => 15,
 				),
-				'xxl'  => array(
-					'slug'  => 'xxl',
-					'title' => __( 'XXL', 'LION' ),
-					'order' => 18,
-				),
 			),
 			'default' => false,
 			'order'   => 0,
 			'core'    => true,
-			'ui-type' => 'image',
-			'version' => '0.0.13',
+			'ui-type' => 'select',
+			'version' => '0.0.16',
 		),
 	);
 	return $args;
@@ -206,7 +196,7 @@ function it_exchange_variants_addon_create_variant_preset( $args ) {
 		'status'         => 'publish',
 		'ping_status'    => 'closed',
 		'comment_status' => 'closed',
-	);   
+	);
 	$defaults = apply_filters( 'it_exchange_add_variant_preset_defaults', $defaults );
 
 	// Convert our API keys to WP keys
@@ -225,7 +215,8 @@ function it_exchange_variants_addon_create_variant_preset( $args ) {
 	$post_args['post_type']    = 'it_exng_varnt_preset';
 	$post_args['post_title']   = empty( $args['title'] ) ? __( 'New Preset', 'LION' ) : $args['title'];
 	$post_args['post_name']    = empty( $args['post_name'] ) ? 'new-preset' : $args['post_name'];
-	$post_args['post_content'] = empty( $args['post_content'] ) ? '' : $args['post_content']; 
+	$post_args['post_content'] = empty( $args['post_content'] ) ? '' : $args['post_content'];
+	$post_args['menu_order']   = empty( $args['menu_order'] ) ? 0 : $args['menu_order'];
 
 	// Insert Post and get ID
 	if ( $product_id = wp_insert_post( $post_args ) ) {
@@ -252,7 +243,7 @@ function it_exchange_variants_addon_create_variant_preset( $args ) {
 
 		// Return the ID
 		return $product_id;
-	}    
+	}
 	return false;
 }
 
@@ -262,20 +253,20 @@ function it_exchange_variants_addon_create_variant_preset( $args ) {
  * @since 1.0.0
  * @return array  an array of IT_Exchange_Variant_Preset objects
 */
-function it_exchange_variants_addon_get_presets( $args=array() ) { 
+function it_exchange_variants_addon_get_presets( $args=array() ) {
 	$defaults = array(
 		'post_type'      => 'it_exng_varnt_preset',
 		'core_only'      => false,
 		'posts_per_page' => -1,
-		'orderby'        => 'page_order',
+		'orderby'        => 'menu_order',
 		'order'          => 'ASC',
-	);  
+	);
 	$args = wp_parse_args( $args, $defaults );
 	$args['meta_query'] = empty( $args['meta_query'] ) ? array() : $args['meta_query'];
 
 	$variant_presets = false;
-	if ( $presets = get_posts( $args ) ) { 
-		foreach( $presets as $key => $preset ) { 
+	if ( $presets = get_posts( $args ) ) {
+		foreach( $presets as $key => $preset ) {
 			$preset_object = it_exchange_variants_addon_get_preset( $preset );
 
 			// Don't add if requested only core and variant is not a core.
@@ -283,7 +274,7 @@ function it_exchange_variants_addon_get_presets( $args=array() ) {
 				continue;
 
 			$variant_presets[$preset_object->get_property( 'slug' )] = $preset_object;
-		}   
+		}
 	}
 	return apply_filters( 'it_exchange_variants_addon_get_presets', $variant_presets, $args );
 }
@@ -295,7 +286,7 @@ function it_exchange_variants_addon_get_presets( $args=array() ) {
  * @param mixed $post  post object or post id
  * @rturn object IT_Exchange_Variant_Preset object for passed post
 */
-function it_exchange_variants_addon_get_preset( $post ) { 
+function it_exchange_variants_addon_get_preset( $post ) {
 	include_once( 'class.variant-preset.php' );
     $preset = new IT_Exchange_Variants_Addon_Preset( $post );
     if ( $preset->ID )
@@ -338,7 +329,7 @@ function it_exchange_variants_addon_create_variant( $args, $post_paerent=false )
 		'image'          => false,
 		'color'          => false,
 		'preset-data'    => array(),
-	);   
+	);
 	$defaults = apply_filters( 'it_exchange_add_variant_defaults', $defaults );
 
 	// Merge passed args with defaults
@@ -349,7 +340,7 @@ function it_exchange_variants_addon_create_variant( $args, $post_paerent=false )
 	$post_args['post_status']  = $args['status'];
 	$post_args['post_type']    = 'it_exchange_variant';
 	$post_args['post_title']   = empty( $args['post_title'] ) ? __( 'New Variant', 'LION' ) : $args['post_title'];
-	$post_args['post_content'] = empty( $args['post_content'] ) ? '' : $args['post_content']; 
+	$post_args['post_content'] = empty( $args['post_content'] ) ? '' : $args['post_content'];
 
 	// Insert Post and get ID
 	if ( $product_id = wp_insert_post( $post_args ) ) {
@@ -389,7 +380,7 @@ function it_exchange_variants_addon_create_variant( $args, $post_paerent=false )
 
 		// Return the ID
 		return $product_id;
-	}    
+	}
 	return false;
 }
 
@@ -426,7 +417,7 @@ function it_exchange_variants_addon_process_add_edit_variant_ajax() {
 }
 add_action( 'wp_ajax_ite_add_edit_variants', 'it_exchange_variants_addon_process_add_edit_variant_ajax' );
 
-/** 
+/**
  * Builds a new variant form field from a template
  *
  * @since 1.0.0
