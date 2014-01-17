@@ -18,9 +18,11 @@ function it_exchange_variants_addon_create_inital_presets() {
 	$existing_presets    = it_exchange_variants_addon_get_presets( array( 'core_only' => true ) );
 
 	//die( ITUtility::print_r($existing_presets) );
+	/*
 	foreach( $existing_presets as $preset ) {
 		wp_delete_post( $preset->ID, true );
 	}
+	*/
 
 	// Loop through preset args and add, update or skip each preset
 	foreach( $core_presets_args as $preset ) {
