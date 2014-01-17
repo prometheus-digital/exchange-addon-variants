@@ -1,4 +1,4 @@
-<div class="it-exchange-existing-variants">
+<div class="it-exchange-existing-variants <?php echo (count($existing_variants) < 1 ) ? ' no-variants' : ''; ?>">
 	<?php
 	/**
 	<div class="it-exchange-existing-variant" data-variant-id="1" data-variant-open="false">
