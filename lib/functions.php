@@ -17,13 +17,10 @@ function it_exchange_variants_addon_create_inital_presets() {
 	$core_presets_args   = it_exchange_variants_addon_get_core_presets_args();
 	$existing_presets    = it_exchange_variants_addon_get_presets( array( 'core_only' => true ) );
 
-	/*
-	die( ITUtility::print_r($existing_presets) );
+	//die( ITUtility::print_r($existing_presets) );
 	foreach( $existing_presets as $preset ) {
 		wp_delete_post( $preset->ID, true );
 	}
-	die();
-	*/
 
 	// Loop through preset args and add, update or skip each preset
 	foreach( $core_presets_args as $preset ) {
@@ -71,7 +68,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 0,
 			'core'     => true,
 			'ui-type'  => 'select',
-			'version'  => '0.0.20',
+			'version'  => '0.0.21',
 		),
 		'template-radio' => array(
 			'slug'     => 'template-radio',
@@ -90,7 +87,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 3,
 			'core'     => true,
 			'ui-type'  => 'radio',
-			'version'  => '0.0.20',
+			'version'  => '0.0.21',
 		),
 		'tempalte-hex'   => array(
 			'slug'     => 'template-hex',
@@ -109,7 +106,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 5,
 			'core'     => true,
 			'ui-type'  => 'color',
-			'version'  => '0.0.20',
+			'version'  => '0.0.21',
 		),
 		'tempalte-image' => array(
 			'slug'     => 'template-image',
@@ -128,10 +125,10 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 8,
 			'core'     => true,
 			'ui-type'  => 'image',
-			'version'  => '0.0.20',
+			'version'  => '0.0.21',
 		),
-		'colors'       => array(
-			'slug'    => 'colors',
+		'ithemes-colors'       => array(
+			'slug'    => 'ithemes-colors',
 			'title'   => __( 'iThemes Colors', 'LION' ),
 			'values'  => array(
 				'88C53E' => array(
@@ -159,10 +156,10 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'   => 5,
 			'core'    => true,
 			'ui-type' => 'color',
-			'version' => '0.0.20',
+			'version' => '0.0.21',
 		),
-		'sizes'  => array(
-			'slug'    => 'sizes',
+		'ithemes-sizes'  => array(
+			'slug'    => 'ithemes-sizes',
 			'title'   => __( 'Sizes', 'LION' ),
 			'values'  => array(
 				's'   => array(
@@ -190,7 +187,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'   => 0,
 			'core'    => true,
 			'ui-type' => 'select',
-			'version' => '0.0.20',
+			'version' => '0.0.21',
 		),
 	);
 	return $args;
@@ -334,82 +331,6 @@ function it_exchange_variants_addon_update_core_preset( $old_id, $new_preset_arg
 }
 
 /**
- * Creates an Exchange Variant
- *
- * @since 1.0.0
- *
- * @param array $args the args passed to wp_insert_post
- * @return mixed id or false
-*/
-function it_exchange_variants_addon_create_variant( $args, $post_paerent=false ) {
-	$defaults = array(
-		'status'         => 'publish',
-		'ping_status'    => 'closed',
-		'comment_status' => 'closed',
-		'post_parent'    => $parent,
-		'menu_order'     => 0,
-		'post_title'     => __( 'New Variant', 'LION' ),
-		'values'         => array(),
-		'ui-type'        => false,
-		'image'          => false,
-		'color'          => false,
-		'preset-data'    => array(),
-	);
-	$defaults = apply_filters( 'it_exchange_add_variant_defaults', $defaults );
-
-	// Merge passed args with defaults
-	$args = ITUtility::merge_defaults( $args, $defaults );
-
-	// Convert $args to insert post args
-	$post_args = array();
-	$post_args['post_status']  = $args['status'];
-	$post_args['post_type']    = 'it_exchange_variant';
-	$post_args['post_title']   = empty( $args['post_title'] ) ? __( 'New Variant', 'LION' ) : $args['post_title'];
-	$post_args['post_content'] = empty( $args['post_content'] ) ? '' : $args['post_content'];
-
-	// Insert Post and get ID
-	if ( $product_id = wp_insert_post( $post_args ) ) {
-
-		// Setup metadata for top level variants and create variant values
-		if ( empty( $args['post_parent'] ) ) {
-			$meta = array();
-			if ( ! empty( $args['ui-type'] ) )
-				$meta['ui-type'] = $args['ui-type'];
-			if ( ! empty( $args['preset-data'] ) )
-				$meta['preset-data']   = $args['preset-data'];
-
-			// Save metadata
-			update_post_meta( $product_id, '_it_exchange_variants_addon_variant_meta', $meta );
-
-			// Create variant values (child posts)
-			foreach( (array) $args['values'] as $value_key => $value_args ) {
-				$value_args['preset-data'] = empty( $args['preset-data'] ) ? array() : $args['preset-data'];
-				$value_args['ui-type']     = empty( $args['ui-type'] ) ? false : $args['ui-type'];
-				it_exchange_variants_addon_create_variant( $value_args, $product_id );
-			}
-		} else {
-			// Setup metadata for varient values
-			$meta = array();
-			if ( ! empty( $args['ui-type'] ) )
-				$meta['ui-type'] = $args['ui-type'];
-			if ( ! empty( $args['preset-data'] ) )
-				$meta['preset-data']   = $args['preset-data'];
-			if ( ! empty( $args['image'] ) )
-				$meta['image']   = $args['image'];
-			if ( ! empty( $args['color'] ) )
-				$meta['color']   = $args['color'];
-
-			// Save metadata
-			update_post_meta( $product_id, '_it_exchange_variants_addon_variant_meta', $meta );
-		}
-
-		// Return the ID
-		return $product_id;
-	}
-	return false;
-}
-
-/**
  * Inits the AJAX response for add/edit page.
  *
  * @since 1.0.0
@@ -466,4 +387,144 @@ function it_exchange_variants_addon_get_saved_preset_value( $args ) {
     if ( $preset->title && $preset->slug )
         return apply_filters( 'it_exchange_variants_addon_get_saved_preset_value', $preset, $args );
     return apply_filters( 'it_exchange_variants_addon_get_saved_preset_value', false, $args );
+}
+
+/**
+ * Creates an Exchange Variant
+ *
+ * @since 1.0.0
+ *
+ * @param array $args the args passed to wp_insert_post
+ * @return mixed id or false
+*/
+function it_exchange_variants_addon_create_variant( $args ) {
+	$defaults = array(
+		'post_status'    => 'publish',
+		'ping_status'    => 'closed',
+		'comment_status' => 'closed',
+	);
+	$defaults = apply_filters( 'it_exchange_add_variant_defaults', $defaults );
+
+	$args = ITUtility::merge_defaults( $args, $defaults );
+
+	// Set our Post Type
+	$args['post_type'] = 'it_exchange_variant';
+
+	// Insert Post and get ID
+	if ( $variant_id = wp_insert_post( $args ) ) {
+
+		// Setup metadata
+		$meta = array();
+		if ( ! empty( $args['image'] ) )
+			$meta['image']   = $args['image'];
+		if ( ! empty( $args['color'] ) )
+			$meta['color']   = $args['color'];
+		if ( ! empty( $args['default'] ) )
+			$meta['default'] = $args['default'];
+		if ( ! empty( $args['ui_type'] ) )
+			$meta['ui-type'] = $args['ui_type'];
+		if ( ! empty( $args['preset_slug'] ) )
+			$meta['preset-slug'] = $args['preset_slug'];
+
+		// Save metadata
+		update_post_meta( $variant_id, '_it_exchange_variants_addon_variant_meta', $meta );
+
+		// Return the ID
+		return $variant_id;
+	}
+	return false;
+}
+
+/**
+ * Updates an existing variant
+ *
+ * Only update post_meta if that's all we're changing
+ *
+ * @since 1.0.0
+ *
+ * @param integer  $id    the WP post id for the variant
+ * @param array    $args  what we're updating
+ * @return boolean
+*/
+function it_exchange_variants_addon_update_variant( $id, $args ) {
+	$defaults = array(
+		'post_status'    => 'publish',
+		'ping_status'    => 'closed',
+		'comment_status' => 'closed',
+	);
+	$defaults = apply_filters( 'it_exchange_add_variant_defaults', $defaults );
+
+	$args = ITUtility::merge_defaults( $args, $defaults );
+
+	// Set our Post Type and post ID
+	$args['post_type'] = 'it_exchange_variant';
+	$args['ID']        = $id;
+
+	// Insert Post and get ID
+	wp_update_post( $args );
+
+	// Get existing meta
+	$meta = get_post_meta( $id, '_it_exchange_variants_addon_variant_meta', true );
+	if ( ! empty( $args['image'] ) )
+		$meta['image']   = $args['image'];
+	if ( ! empty( $args['color'] ) )
+		$meta['color']   = $args['color'];
+	if ( ! empty( $args['default'] ) )
+		$meta['default'] = $args['default'];
+	if ( ! empty( $args['ui_type'] ) )
+		$meta['ui-type'] = $args['ui_type'];
+	if ( ! empty( $args['preset_slug'] ) )
+		$meta['preset-slug'] = $args['preset_slug'];
+
+	// Save metadata
+	update_post_meta( $id, '_it_exchange_variants_addon_variant_meta', $meta );
+
+}
+
+/**
+ * Get IT_Exchange_Variant_Addon_Variant(s)
+ *
+ * @since 1.0.0
+ * @return array  an array of IT_Exchange_Variant_Preset objects
+*/
+function it_exchange_variants_addon_get_variants( $args=array() ) {
+	$defaults = array(
+		'include_values' => true,
+		'posts_per_page' => -1,
+		'orderby'        => 'menu_order',
+		'order'          => 'ASC',
+	);
+	$args = wp_parse_args( $args, $defaults );
+
+	// If we are only include post_parents, set post_parent to 0
+	if ( isset( $args['include_parents'] ) && false === $args['include_parents'] ) // isset is used rather than empty() because it could be set to 0
+		$args['post_parent'] = 0;
+
+	$args['post_type']  = 'it-exchange-variant';
+	$args['meta_query'] = empty( $args['meta_query'] ) ? array() : $args['meta_query'];
+
+	$variant_presets = false;
+	if ( $variants = get_posts( $args ) ) {
+		foreach( $variants as $key => $variant ) {
+			$variant_object = it_exchange_variants_addon_get_variant( $variant );
+
+			$variants[$variant_object->get_property( 'ID' )] = $variant_object;
+		}
+	}
+	return apply_filters( 'it_exchange_variants_addon_get_variants', $variants, $args );
+}
+
+/**
+ * Retreives a variant object by passing it the WP post object or post id
+ *
+ * @since 1.0.0
+ * @param mixed $post  post object or post id
+ * @rturn object IT_Exchange_Variant_Addon_Variant object for passed post
+*/
+function it_exchange_variants_addon_get_variant( $post ) {
+	include_once( 'class.variant.php' );
+    $variant = new IT_Exchange_Variants_Addon_Variant( $post );
+    if ( $variant->ID )
+        return apply_filters( 'it_exchange_variants_addon_get_variant', $variant, $post );
+    return apply_filters( 'it_exchange_variants_addon_get_variant', false, $post );
 }

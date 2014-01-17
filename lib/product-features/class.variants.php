@@ -115,6 +115,7 @@ class IT_Exchange_Product_Feature_Variants {
 	 * @return void
 	*/
 	function print_metabox( $post ) {
+		ITUtility::print_r( it_exchange_variants_addon_get_variants() );
 		// Grab the iThemes Exchange Product object from the WP $post object
 		$product = it_exchange_get_product( $post );
 
@@ -154,12 +155,102 @@ class IT_Exchange_Product_Feature_Variants {
 			return;
 
         // Save options
-		if ( isset( $_POST['it-exchange-product-variants'] ) ) {
-			it_exchange_update_product_feature( $product_id, 'variants', $_POST['it-exchange-product-variants'] );
+		if ( 'glenn' == 'disabling' && isset( $_POST['it-exchange-product-variants'] ) ) {
+
+			// Remove or hook to prevent endless loops.
+			remove_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ) );
+
+			// POST data
+			$new_variant_data = $_POST['it-exchange-product-variants'];
+			$new_variants     = empty( $_POST['it-exchange-product-variants']['variants'] ) ? array() : $_POST['it-exchange-product-variants']['variants'];
+
+			// Grab existing variants postmeta
+			$existing_variant_data = (array) it_exchange_get_product_feature( $product_id, 'variants' );
+
+			// Were variants just disabled? Save that if they were.
+			if ( 'no' == $new_variant_data['enabled'] ) {
+				$existing_variant_data['enabled'] = 'no';
+				it_exchange_update_product_feature( $product_id, 'variants', $existing_variant_data );
+			} else {
+				// Save variant details for product
+				$existing_variants = empty( $existing_variant_data['variants'] ) ? array() : (array) $existing_variant_data['variants'];
+
+				// Loop through saved data and delete anything that is not in the new data (because it was deleted)
+				foreach( $existing_variants as $variant_id ) {
+					if ( ! isset( $new_variants[$variant_id] ) ) {
+						// Delete removed existing variants
+						wp_delete_post( $variant_id, true );
+						unset( $existing_variants[$variant_id] );
+					} else {
+						// Update existing variants
+						it_exchange_variants_addon_update_variant( $variant_id, $new_variants[$variant_id] );
+
+						// Remove from new variants list so we don't add again
+						unset( $new_variants[$variant_id] );
+					}
+				}
+
+				// Init var for default cache
+				$defaults_needing_updated = array();
+
+				// Loop through remaining new variants and add them
+				foreach( $new_variants as $variant_id => $data ) {
+					// We shouldn't have any existing variants in the array by now but lets check just to make sure
+					if ( it_exchange_variants_addon_get_variant( $variant_id ) ) {
+						// Update if it was found
+						it_exchange_variants_addon_update_variant( $variant_id, $data );
+						continue;
+					}
+
+					// Add new variants
+					$args = array();
+					if ( ! empty( $data['title'] ) )
+						$args['post_title'] = $data['title'];
+					if ( ! empty( $data['post_parent'] ) )
+						$args['post_parent'] = $data['post_parent'];
+					if ( ! empty( $data['default'] ) )
+						$args['default'] = $data['default'];
+					if ( ! empty( $data['order'] ) )
+						$args['menu_order'] = $data['order'];
+					if ( ! empty( $data['image'] ) )
+						$args['image'] = $data['image'];
+					if ( ! empty( $data['color'] ) )
+						$args['color'] = $data['color'];
+					if ( ! empty( $data['ui_type'] ) )
+						$args['ui_type'] = $data['ui_type'];
+					if ( ! empty( $data['preset_slug'] ) )
+						$args['preset_slug'] = $data['preset_slug'];
+
+					// Default may not be added yet so we need to do some checking and temp caching
+					if ( ! empty( $data['default'] ) && ! it_exchange_variants_addon_get_variant( $data['default'] ) ) {
+						$defaults_needing_updated[$variant_id] = $data['default'];
+					} else if ( ! empty( $data['default'] ) ) {
+						$args['default'] = $data['default'];
+					}
+
+					// Create Variant
+					if ( $new_id = it_exchange_variants_addon_create_variant( $args ) ) {
+						// Check previously chached defaults. If this variant is a value, update the parent (key) with its new ID and unset from array
+						if ( $parent_id = array_search( $variant_id, $defaults_needing_updated ) ) {
+							it_exchange_variants_addon_update_variant( $parent_id, array( 'default', $new_id ) );
+							unset( $defaults_needing_updated[$parent_id] );
+						}
+						$existing_variants[] = $new_id;
+					}
+				}
+			}
+
+			$existing_variant_data['variants'] = $existing_variants;
+
+			// Update
+			it_exchange_update_product_feature( $product_id, 'variants', $existing_variant_data );
+
+			// Add our action back
+			add_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ) );
 		} else {
-			$existing_variants = (array) it_exchange_get_product_feature( $product_id, 'variants' );
-			$existing_variants['enabled'] = 'no';
-			it_exchange_update_product_feature( $product_id, 'variants', $existing_variants );
+			$existing_variant_data            = (array) it_exchange_get_product_feature( $product_id, 'variants' );
+			$existing_variant_data['enabled'] = 'no';
+			it_exchange_update_product_feature( $product_id, 'variants', $existing_variant_data );
 		}
 
 	}

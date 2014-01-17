@@ -20,8 +20,9 @@ class IT_Exchange_Variants_Addon_Form_Field {
 		if ( ! in_array( $type, array( 'template', 'saved', 'existing' ) ) )
 			return;
 
-		$this->init_type  = $type;
-		$this->variant_id = $id;
+		$this->init_type    = $type;
+		$this->variant_id   = $id;
+		$this->variant_slug = false;
 
 		$init_func = 'init_' . $type;
 		$this->$init_func();
@@ -33,7 +34,8 @@ class IT_Exchange_Variants_Addon_Form_Field {
 	function init_template() {
 
 		// Load the template data
-		$this->object = it_exchange_variants_addon_get_preset( $this->variant_id );
+		$this->object        = it_exchange_variants_addon_get_preset( $this->variant_id );
+		$this->variant_slug  = $this->object->get_property( 'slug' ); 
 		$this->object_values = $this->object->get_property( 'values' );
 		
 		// Set a temp ID for this new div
@@ -45,6 +47,7 @@ class IT_Exchange_Variants_Addon_Form_Field {
 
 		// Load the template data
 		$this->object        = it_exchange_variants_addon_get_preset( $this->variant_id );
+		$this->variant_slug  = $this->object->get_property( 'slug' ); 
 		$this->object_values = $this->object->get_property( 'values' );
 
 		// Set a temp ID for this new div
@@ -59,12 +62,14 @@ class IT_Exchange_Variants_Addon_Form_Field {
 	function add_variant_title() {
 		$title = '
 		<div class="variant-title">
-			<span class="variant-title-move"></span>
+			<span class="variant-title-move">
+				<input type="hidden" name="it-exchange-product-variants[variants][' . esc_attr( $this->id ) . '][order]" value="" class="parent-variant-order-input" />
+			</span>
 			<span class="variant-title-text variant-text-placeholder">' . $this->variant_title . '</span>
 			<input type="hidden" name="it-exchange-product-variants[variants][' . esc_attr( $this->id ) . '][id]" value="' . esc_attr( $this->id ) . '">
 			<input type="text" name="it-exchange-product-variants[variants][' . esc_attr( $this->id ) . '][title]" value="' . esc_attr( $this->variant_title ) . '" class="variant-text-input hidden">
 			<input type="hidden" name="it-exchange-product-variants[variants][' . esc_attr( $this->id ) . '][ui_type]" value="' . esc_attr( $this->object->ui_type ) . '">
-			<input type="hidden" name="it-exchange-product-variants[variants][' . esc_attr( $this->id ) . '][preset_id]" value="' . esc_attr( $this->variant_id ) . '">
+			<input type="hidden" name="it-exchange-product-variants[variants][' . esc_attr( $this->id ) . '][preset_slug]" value="' . esc_attr( $this->variant_slug ) . '">
 			<span class="variant-title-values-preview">
 				' . $this->variant_values_preview . '
 			</span>
@@ -87,9 +92,11 @@ class IT_Exchange_Variants_Addon_Form_Field {
 				<span class="label">' . __( 'Values', 'LION' ) . ' ' . it_exchange_admin_tooltip( 'tooltip goes here', false ) .'</span>
 				<ul class="variant-values-list">
 					<li class="new-variant-value clearfix hidden" data-variant-value-id="" data-variant-value-parent="' . esc_attr( $this->id ) . '">
-						<div class="variant-value-reorder" data-variant-value-order=""></div>
+						<div class="variant-value-reorder" data-variant-value-order="">
+							<input disabled="disabled" type="hidden" name="" value="" class="new-variant-order-field variant-order-input" />
+						</div>
 						<div class="variant-value-info">
-							<input disabled="disabled" type="radio" class="variant-radio-option" name=""/>
+							<input disabled="disabled" type="radio" class="new-variant-default-field variant-radio-option" name="it-exchange-product-variants[variants][' . esc_attr( $this->id ) . '][default]" value=""/>
 							<span class="variant-value-name variant-text-placeholder">' . __( 'New Value', 'LION' ) . '</span>
 							<input disabled="diabled" type="text" name="" value="' . __( 'New Value', 'LION' ) . '" class="new-variant-name-field variant-text-input hidden">
 							<input disabled="disabled" type="hidden" name="" value="' . esc_attr( $this->id ) . '" class="new-variant-parent-field variant-post-parent-hidden" />
@@ -111,7 +118,9 @@ class IT_Exchange_Variants_Addon_Form_Field {
 
 					$values .= '
 					<li class="clearfix" data-variant-value-id="' . esc_attr( $value_id ) . '" data-variant-value-parent="' . esc_attr( $this->id ) . '">
-						<div class="variant-value-reorder" data-variant-value-order="' . esc_attr( $int ) . '"></div>
+						<div class="variant-value-reorder" data-variant-value-order="' . esc_attr( $int ) . '">
+							<input type="hidden" name="it-exchange-product-variants[variants][' . esc_attr( $value_id ) . '][order]" value="' . esc_attr( $int ) . '" class="variant-order-input" />
+						</div>
 						<div class="variant-value-info">
 							<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][' . esc_attr( $this->id ) . '][default]" value="' . esc_attr( $value_id ) . '"/>
 							<span class="variant-value-name variant-text-placeholder">' . $value_title . '</span>
