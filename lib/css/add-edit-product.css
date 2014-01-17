@@ -2,7 +2,7 @@
 .it-exchange-existing-variants{background:#FFF;border:1px solid #E8E8E8;}
 .it-exchange-existing-variants .sorting-placeholder{opacity:.3;}
 #it-exchange-product-variants .variant-text-placeholder{cursor:text;}
-#it-exchange-product-variants .it-exchange-existing-variants .it-exchange-existing-variant .variant-text-input{font-size:13px;margin:0;padding:0;border:none;box-shadow:none;line-height:18;width:80%;max-width:300px;}
+#it-exchange-product-variants .it-exchange-existing-variants .it-exchange-existing-variant .variant-text-input{font-size:13px;margin:0;padding:0;border:none;box-shadow:none;line-height:18px;width:80%;max-width:300px;}
 /** -----------------------------------------------------:[ sorting ]:---------- */
 .it-exchange-existing-variants.sorting .it-exchange-existing-variant.ui-sortable-helper{border:1px solid #E8E8E8;background:#FFF;border-bottom:0;}
 .it-exchange-existing-variants.sorting .it-exchange-existing-variant.ui-sortable-helper .variant-title{cursor:move;}
