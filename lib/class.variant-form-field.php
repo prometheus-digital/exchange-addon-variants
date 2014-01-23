@@ -94,7 +94,7 @@ class IT_Exchange_Variants_Addon_Form_Field {
 				$preview_fields[] = $object_value->title;
 			}
 		}
-		$this->variant_values_preview = implode( $preview_fields, ',' );
+		$this->variant_values_preview = implode( $preview_fields, ', ' );
 		$title = '
 		<div class="variant-title">
 			<span class="variant-title-move">
