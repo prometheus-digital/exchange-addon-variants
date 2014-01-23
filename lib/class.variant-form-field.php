@@ -87,6 +87,14 @@ class IT_Exchange_Variants_Addon_Form_Field {
 		if ( ! is_object( $this->object ) )
 			return;
 
+		// Setup preview text
+		$preview_fields = array();
+		if ( 'existing' == $this->init_type && ! $this->object->is_variant_value && ! empty( $this->object_values ) ) {
+			foreach( $this->object_values as $object_value ) {
+				$preview_fields[] = $object_value->title;
+			}
+		}
+		$this->variant_values_preview = implode( $preview_fields, ',' );
 		$title = '
 		<div class="variant-title">
 			<span class="variant-title-move">
