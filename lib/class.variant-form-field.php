@@ -16,12 +16,18 @@ class IT_Exchange_Variants_Addon_Form_Field {
 	var $variant_values_preview = '';
 	var $div                    = '';
 
-	function IT_Exchange_Variants_Addon_Form_Field( $type, $id=false ) {
+	function IT_Exchange_Variants_Addon_Form_Field( $type, $variant=false ) {
 		if ( ! in_array( $type, array( 'template', 'saved', 'existing' ) ) )
 			return;
 
+		if ( is_object( $variant ) && 'IT_Exchange_Variants_Addon_Variant' == get_class( $variant ) ) {
+			$this->variant_id = $variant->ID;
+			$this->object     = $variant;
+		} else {
+			$this->variant_id = (int) $variant;
+		}
+
 		$this->init_type    = $type;
-		$this->variant_id   = $id;
 		$this->variant_slug = false;
 
 		$init_func = 'init_' . $type;
@@ -29,13 +35,30 @@ class IT_Exchange_Variants_Addon_Form_Field {
 		$this->start_div();
 		$this->add_variant_title();
 		$this->add_variant_values();
+		$this->close_div();
+	}
+
+	function init_existing() {
+		// Load the variant data
+		if ( empty( $this->object->ID ) || $this->variant_id != $this->object->ID )
+			$this->object = it_exchange_variants_addon_get_variant( $this->variant_id );
+
+
+		$this->variant_slug  = $this->object->post_name;
+		$this->object->slug  = $this->object->post_name;
+		$this->object->title = $this->object->post_title;
+
+		$this->object_values = $this->object->get_property( 'values' );
+		
+		$this->id            = $this->object->ID;
+		$this->variant_title = $this->object->post_title;
 	}
 
 	function init_template() {
 
 		// Load the template data
 		$this->object        = it_exchange_variants_addon_get_preset( $this->variant_id );
-		$this->variant_slug  = $this->object->get_property( 'slug' ); 
+		$this->variant_slug  = $this->object->get_property( 'slug' );
 		$this->object_values = $this->object->get_property( 'values' );
 		
 		// Set a temp ID for this new div
@@ -47,7 +70,7 @@ class IT_Exchange_Variants_Addon_Form_Field {
 
 		// Load the template data
 		$this->object        = it_exchange_variants_addon_get_preset( $this->variant_id );
-		$this->variant_slug  = $this->object->get_property( 'slug' ); 
+		$this->variant_slug  = $this->object->get_property( 'slug' );
 		$this->object_values = $this->object->get_property( 'values' );
 
 		// Set a temp ID for this new div
@@ -56,10 +79,14 @@ class IT_Exchange_Variants_Addon_Form_Field {
 	}
 
 	function start_div() {
-		$this->div .= '<div class="it-exchange-existing-variant" data-variant-id="' . esc_attr( $this->variant_id ) . '" data-variant-open="true">';
+		$data_open = ( 'existing' == $this->init_type ) ? 'false' : 'true';
+		$this->div .= '<div class="it-exchange-existing-variant" data-variant-id="' . esc_attr( $this->variant_id ) . '" data-variant-open="' . esc_attr( $data_open ) . '">';
 	}
 
 	function add_variant_title() {
+		if ( ! is_object( $this->object ) )
+			return;
+
 		$title = '
 		<div class="variant-title">
 			<span class="variant-title-move">
@@ -83,7 +110,7 @@ class IT_Exchange_Variants_Addon_Form_Field {
 	}
 
 	function add_variant_values() {
-		if ( ! empty( $this->object->post_parent ) )
+		if ( ! is_object( $this->object) || ! empty( $this->object->post_parent ) )
 			return;
 
 		$values = '
@@ -155,7 +182,9 @@ class IT_Exchange_Variants_Addon_Form_Field {
 				return it_exchange_variants_addon_get_saved_preset_value( $value );
 				break;
 			case 'existing' :
-				die( __FILE__ . ' | ' . __LINE__ );
+				//ITUtility::print_r($value);
+				//die( __FILE__ . ' | ' . __LINE__ );
+				return $value;
 		}
 	}
 
@@ -194,6 +223,42 @@ class IT_Exchange_Variants_Addon_Form_Field {
 					<a class="variant-value-image variant-value-has-image">
 						<span class="variant-value-image-placeholder"></span>
 					</a>
+					<input type="hidden" value="" name="it-exchange-product-variants[variants][' . esc_attr( $variant_id ) . '][image]" class="it-exchange-variants-image" />
+					';
+				} elseif ( 'color' == $ui_type ) {
+					$default    = empty( $this->current_value->color ) ? $this->object->get_property( 'default' ) : $this->current_value->get_property( 'color' );
+					$variant_id = empty( $this->current_value->ID ) ? $this->id : $this->current_value->ID;
+
+					if ( ! empty( $is_new_template ) ) {
+						$default    = '#ffffff';
+						$variant_id = '';
+					}
+					$html = '
+					<div class="variant-value-hex">
+						<input ' . $disabled . 'type="text" value="' . esc_attr( $default ) . '" name="it-exchange-product-variants[variants][' . esc_attr( $variant_id ) . '][color]" class="it-exchange-variants-colorpicker" />
+					</div>
+					';
+				}
+				break;
+			case 'existing' :
+				if ( ! empty( $this->object->post_parent ) ) {
+					$parent = it_exchange_variant_addon_get_preset( $this->object->post_parent );
+					$ui_type = $parent->get_property->ui_type;
+				} else {
+					$ui_type = $this->object->get_property( 'ui_type' );
+				}
+				$variant_id = empty( $this->current_value->ID ) ? $this->id : $this->current_value->ID;
+				$image_src  = empty( $this->current_value->image ) ? '' : $this->current_value->image;
+				$image_element = empty( $image_src ) ? '' : '<img src="' . esc_attr( $image_src ) . '" alt="">';
+
+				if ( 'image' == $ui_type ) {
+					$html = '
+					<a class="variant-value-image variant-value-has-image">
+						<span class="variant-value-image-placeholder">
+						' . $image_element . '		
+						</span>
+					</a>
+					<input type="hidden" value="' . esc_attr( $image_src ) . '" name="it-exchange-product-variants[variants][' . esc_attr( $variant_id ) . '][image]" class="it-exchange-variants-image" />
 					';
 				} elseif ( 'color' == $ui_type ) {
 					$default    = empty( $this->current_value->color ) ? $this->object->get_property( 'default' ) : $this->current_value->get_property( 'color' );
@@ -212,5 +277,9 @@ class IT_Exchange_Variants_Addon_Form_Field {
 				break;
 		}
 		return $html;
+	}
+
+	function close_div() {
+		$this->div .= '</div>';
 	}
 }

@@ -502,10 +502,11 @@ function it_exchange_variants_addon_get_variants( $args=array() ) {
 	if ( isset( $args['include_parents'] ) && false === $args['include_parents'] ) // isset is used rather than empty() because it could be set to 0
 		$args['post_parent'] = 0;
 
-	$args['post_type']  = 'it-exchange-variant';
+	$args['post_type']  = 'it_exchange_variant';
 	$args['meta_query'] = empty( $args['meta_query'] ) ? array() : $args['meta_query'];
 
 	$variant_presets = false;
+
 	if ( $variants = get_posts( $args ) ) {
 		foreach( $variants as $key => $variant ) {
 			$variant_object = it_exchange_variants_addon_get_variant( $variant );

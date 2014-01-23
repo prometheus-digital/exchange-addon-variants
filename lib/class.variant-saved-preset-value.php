@@ -149,7 +149,7 @@ class IT_Exchange_Variants_Addon_Saved_Preset_Value {
 	*/
 	function get_property( $property ) {
 		if ( empty( $this->$property ) )
-			return new WP_Error( 'property-not-found', __( 'Coding Error: You requested a property that does not exist from a IT_Exchange_Variants_Addon_Preset object.', 'LION' ) );
+			return new WP_Error( 'property-not-found', sprintf( __( 'Coding Error: You requested a property that does not exist from a IT_Exchange_Variants_Addon_Saved_Preset object: %s.', $property ), 'LION' ) );
 
 		return apply_filters( 'it_exchange_variants_addon_get_variant_preset_property', $this->$property, $property, $this );
 	}

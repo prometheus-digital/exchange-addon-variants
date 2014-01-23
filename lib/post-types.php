@@ -25,7 +25,7 @@ function it_exchange_variants_addon_register_post_types() {
 		'description'  => __( 'An iThemes Exchange Post Type for storing Product Variants in the system', 'LION' ),
 		'public'       => false,
 		'show_ui'      => false,
-		'hierarchical' => true,
+		'hierarchical' => false,
 		'supports'     => array( 'title', 'custom-fields', ),
 	);
 

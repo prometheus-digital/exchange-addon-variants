@@ -38,6 +38,7 @@ class IT_Exchange_Variants_Addon_Variant {
 	var $post_mime_type;
 	var $comment_count;
 
+	var $title;
 	/**
 	 * @var string $image The variant image used to select it on the frontend. Optional
 	 * @since 1.0.0
@@ -73,6 +74,12 @@ class IT_Exchange_Variants_Addon_Variant {
 	 * @since 1.0.0
 	*/
 	var $postmeta = false;
+
+	/**
+	 * Values
+	 * @since 1.0.0
+	*/
+	var $values = array();
 
 	/**
 	 * Constructor. Loads post data and variant preset data
@@ -120,8 +127,10 @@ class IT_Exchange_Variants_Addon_Variant {
 		$this->set_variant_postmeta();
 
 		// Set various properties
+		$this->title = $this->post_title;
 		$this->set_is_variant_value();
 		$this->set_image();
+		$this->set_color();
 		$this->set_default();
 		$this->set_ui_type();
 		$this->set_preset_slug();
@@ -160,6 +169,17 @@ class IT_Exchange_Variants_Addon_Variant {
 	*/
 	function set_image() {
 		$this->image = empty( $this->postmeta['image'] ) ? false : $this->postmeta['image'];
+	}
+
+	/**
+	 * Sets the color var
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	*/
+	function set_color() {
+		$this->color = empty( $this->postmeta['color'] ) ? '#ffffff' : $this->postmeta['color'];
 	}
 
 	/**
@@ -207,7 +227,7 @@ class IT_Exchange_Variants_Addon_Variant {
 	*/
 	function get_property( $property ) {
 		if ( ! property_exists( 'IT_Exchange_Variants_Addon_Variant', $property ) )
-			return new WP_Error( 'property-not-found', __( 'Coding Error: You requested a property that does not exist from a IT_Exchange_Variants_Addon_Variant object.', 'LION' ) );
+			return new WP_Error( 'property-not-found', __( sprintf( 'Coding Error: You requested a property that does not exist from a IT_Exchange_Variants_Addon_Variant object: %s.', $property ), 'LION' ) );
 
 		return apply_filters( 'it_exchange_variants_addon_get_variant_property', $this->$property, $property, $this );
 	}

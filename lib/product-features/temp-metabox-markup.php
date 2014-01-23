@@ -1,6 +1,12 @@
 <div class="it-exchange-existing-variants <?php echo (count($existing_variants) < 1 ) ? ' no-variants' : ''; ?>">
 	<?php
-	/**
+	if ( $existing_variants = it_exchange_get_variants_for_product( $post->ID ) ) {
+		foreach( $existing_variants as $variant ) {
+			if ( ! $variant->is_variant_value )
+				echo it_exchange_variants_addon_get_add_edit_variant_form_field( 'existing', $variant );
+		}
+	}
+	/*
 	<div class="it-exchange-existing-variant" data-variant-id="1" data-variant-open="false">
 		<div class="variant-title">
 			<span class="variant-title-move"></span>

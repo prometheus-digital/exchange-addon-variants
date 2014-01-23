@@ -25,3 +25,8 @@ include( 'lib/product-features/class.variants.php' );
  * WP Hooks
 */
 include( 'lib/hooks.php' );
+
+/**
+ * API functions
+*/
+include( 'api/load.php' );

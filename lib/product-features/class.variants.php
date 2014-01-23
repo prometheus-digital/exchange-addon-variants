@@ -115,7 +115,6 @@ class IT_Exchange_Product_Feature_Variants {
 	 * @return void
 	*/
 	function print_metabox( $post ) {
-		ITUtility::print_r( it_exchange_variants_addon_get_variants() );
 		// Grab the iThemes Exchange Product object from the WP $post object
 		$product = it_exchange_get_product( $post );
 
@@ -123,6 +122,9 @@ class IT_Exchange_Product_Feature_Variants {
 		$product_feature_value  = it_exchange_get_product_feature( $product->ID, 'variants' );
 		$variants_enabled       = empty( $product_feature_value['enabled'] ) ? 'no' : $product_feature_value['enabled'];
 		$existing_variants      = empty( $product_feature_value['variants'] ) ? array() : (array) $product_feature_value['variants'];
+		foreach( $existing_variants as $variant ) {
+			//ITUtility::print_r($existing_variants);
+		}
 		?>
 		<p>
 			<input type="checkbox" id="it-exchange-enable-product-variants" value="yes" class="it-exchange-checkbox-enable" name="it-exchange-product-variants[enabled]" <?php checked( 'yes', $variants_enabled ); ?> /> <label for="it-exchange-enable-product-variants"><?php _e( 'Enable variants for this product', 'LION' ); ?></label><br />
@@ -156,7 +158,7 @@ class IT_Exchange_Product_Feature_Variants {
 			return;
 
         // Save options
-		if ( 'glenn' == 'disabling' && isset( $_POST['it-exchange-product-variants'] ) ) {
+		if ( isset( $_POST['it-exchange-product-variants'] ) ) {
 
 			// Remove or hook to prevent endless loops.
 			remove_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ) );
@@ -173,26 +175,33 @@ class IT_Exchange_Product_Feature_Variants {
 				$existing_variant_data['enabled'] = 'no';
 				it_exchange_update_product_feature( $product_id, 'variants', $existing_variant_data );
 			} else {
+				// Enabled?
+				$existing_variant_data['enabled'] = 'yes';
+
 				// Save variant details for product
 				$existing_variants = empty( $existing_variant_data['variants'] ) ? array() : (array) $existing_variant_data['variants'];
 
 				// Loop through saved data and delete anything that is not in the new data (because it was deleted)
-				foreach( $existing_variants as $variant_id ) {
-					if ( ! isset( $new_variants[$variant_id] ) ) {
-						// Delete removed existing variants
+				foreach( $existing_variants as $array_key => $variant_id ) {
+					if ( ! isset( $new_variants[$variant_id] ) || ! it_exchange_variants_addon_get_variant( $variant_id ) ) {
+						// Delete post
 						wp_delete_post( $variant_id, true );
-						unset( $existing_variants[$variant_id] );
+
+						// Delete removed existing variants
+						unset( $existing_variants[$array_key] );
 					} else {
 						// Update existing variants
+						$new_variants[$variant_id]['post_title'] = empty( $new_variants[$variant_id]['title'] ) ? '' : $new_variants[$variant_id]['title'];
 						it_exchange_variants_addon_update_variant( $variant_id, $new_variants[$variant_id] );
 
 						// Remove from new variants list so we don't add again
-						unset( $new_variants[$variant_id] );
+						unset( $new_variants[$array_key] );
 					}
 				}
 
 				// Init var for default cache
 				$defaults_needing_updated = array();
+				$new_ids_to_wp_ids        = array();
 
 				// Loop through remaining new variants and add them
 				foreach( $new_variants as $variant_id => $data ) {
@@ -209,6 +218,8 @@ class IT_Exchange_Product_Feature_Variants {
 						$args['post_title'] = $data['title'];
 					if ( ! empty( $data['post_parent'] ) )
 						$args['post_parent'] = $data['post_parent'];
+					if ( ! empty( $data['post_parent'] ) && isset( $new_ids_to_wp_ids[$data['post_parent']] ) )
+						$args['post_parent'] = $new_ids_to_wp_ids[$data['post_parent']];
 					if ( ! empty( $data['default'] ) )
 						$args['default'] = $data['default'];
 					if ( ! empty( $data['order'] ) )
@@ -237,6 +248,7 @@ class IT_Exchange_Product_Feature_Variants {
 							unset( $defaults_needing_updated[$parent_id] );
 						}
 						$existing_variants[] = $new_id;
+						$new_ids_to_wp_ids[$variant_id] = $new_id;
 					}
 				}
 			}
