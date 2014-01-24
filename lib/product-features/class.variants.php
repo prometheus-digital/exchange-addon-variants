@@ -126,8 +126,13 @@ class IT_Exchange_Product_Feature_Variants {
 		<p>
 			<input type="checkbox" id="it-exchange-enable-product-variants" value="yes" class="it-exchange-checkbox-enable" name="it-exchange-product-variants[enabled]" <?php checked( 'yes', $variants_enabled ); ?> /> <label for="it-exchange-enable-product-variants"><?php _e( 'Enable variants for this product', 'LION' ); ?></label><br />
 		</p>
+
 		<div class="it-exchange-product-variants-inner<?php echo ( 'no' == $variants_enabled ) ? ' hide-if-js' : ''; ?>">
 			<?php include_once( 'temp-metabox-markup.php' ); ?>
+			
+			<div class="updated below-h2">
+				<p><?php _e( 'Changes made to product variants require you to save this product before other variant related options are updated.', 'LION' ); ?></p>
+			</div>
 		</div>
 
 		<?php
