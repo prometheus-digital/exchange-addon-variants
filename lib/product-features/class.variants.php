@@ -122,9 +122,6 @@ class IT_Exchange_Product_Feature_Variants {
 		$product_feature_value  = it_exchange_get_product_feature( $product->ID, 'variants' );
 		$variants_enabled       = empty( $product_feature_value['enabled'] ) ? 'no' : $product_feature_value['enabled'];
 		$existing_variants      = empty( $product_feature_value['variants'] ) ? array() : (array) $product_feature_value['variants'];
-		foreach( $existing_variants as $variant ) {
-			//ITUtility::print_r($existing_variants);
-		}
 		?>
 		<p>
 			<input type="checkbox" id="it-exchange-enable-product-variants" value="yes" class="it-exchange-checkbox-enable" name="it-exchange-product-variants[enabled]" <?php checked( 'yes', $variants_enabled ); ?> /> <label for="it-exchange-enable-product-variants"><?php _e( 'Enable variants for this product', 'LION' ); ?></label><br />
@@ -132,7 +129,9 @@ class IT_Exchange_Product_Feature_Variants {
 		<div class="it-exchange-product-variants-inner<?php echo ( 'no' == $variants_enabled ) ? ' hide-if-js' : ''; ?>">
 			<?php include_once( 'temp-metabox-markup.php' ); ?>
 		</div>
+
 		<?php
+		do_action( 'it_exchange_variants_metabox_bottom', $post, $existing_variants );
 	}
 
 	/**
