@@ -171,7 +171,7 @@ class IT_Exchange_Product_Feature_Variants {
 			$existing_variant_data = (array) it_exchange_get_product_feature( $product_id, 'variants' );
 
 			// Were variants just disabled? Save that if they were.
-			if ( 'no' == $new_variant_data['enabled'] ) {
+			if ( empty( $new_variant_data['enabled'] ) || 'no' == $new_variant_data['enabled'] ) {
 				$existing_variant_data['enabled'] = 'no';
 				it_exchange_update_product_feature( $product_id, 'variants', $existing_variant_data );
 			} else {
@@ -192,6 +192,7 @@ class IT_Exchange_Product_Feature_Variants {
 					} else {
 						// Update existing variants
 						$new_variants[$variant_id]['post_title'] = empty( $new_variants[$variant_id]['title'] ) ? '' : $new_variants[$variant_id]['title'];
+						$new_variants[$variant_id]['menu_order'] = empty( $new_variants[$variant_id]['order'] ) ? 0 : $new_variants[$variant_id]['order'];
 						it_exchange_variants_addon_update_variant( $variant_id, $new_variants[$variant_id] );
 
 						// Remove from new variants list so we don't add again
@@ -251,12 +252,12 @@ class IT_Exchange_Product_Feature_Variants {
 						$new_ids_to_wp_ids[$variant_id] = $new_id;
 					}
 				}
+
+				$existing_variant_data['variants'] = $existing_variants;
+
+				// Update
+				it_exchange_update_product_feature( $product_id, 'variants', $existing_variant_data );
 			}
-
-			$existing_variant_data['variants'] = $existing_variants;
-
-			// Update
-			it_exchange_update_product_feature( $product_id, 'variants', $existing_variant_data );
 
 			// Add our action back
 			add_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ) );

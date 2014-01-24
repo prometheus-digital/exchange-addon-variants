@@ -47,5 +47,25 @@ function it_exchange_get_variants_for_product( $product_id ) {
 			$product_variants[$parent]->values[] = $orphan;
 	}
 
+	// Order top level variants
+	usort( $product_variants, 'it_exchange_variants_addon_sort_product_variants' );
+
+	// Order values
+	foreach( $product_variants as $key => $variant ) {
+		$values = $variant->values;
+		usort( $values, 'it_exchange_variants_addon_sort_product_variants' );
+		$product_variants[$key]->values = $values;
+	}
+
 	return empty( $product_variants ) ? false : $product_variants;
+}
+
+function it_exchange_variants_addon_sort_product_variants( $a, $b ) {
+	$a_order = empty( $a->menu_order ) ? 0 : $a->menu_order;
+	$b_order = empty( $b->menu_order ) ? 0 : $b->menu_order;
+
+	if ( $a_order == $b_order )
+		return 0;
+
+	return ($a_order < $b_order ) ? -1 : 1;
 }
