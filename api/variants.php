@@ -60,6 +60,15 @@ function it_exchange_get_variants_for_product( $product_id ) {
 	return empty( $product_variants ) ? false : $product_variants;
 }
 
+/**
+ * usort callback used with it_exchange_get_variants_for_product() for sorting variants by page order
+ *
+ * @since 1.0.0
+ *
+ * @param object $a variant object. Should have a page_order property
+ * @param object $b variant object. Should have a page_order property
+ * @return int
+*/
 function it_exchange_variants_addon_sort_product_variants( $a, $b ) {
 	$a_order = empty( $a->menu_order ) ? 0 : $a->menu_order;
 	$b_order = empty( $b->menu_order ) ? 0 : $b->menu_order;
@@ -68,4 +77,59 @@ function it_exchange_variants_addon_sort_product_variants( $a, $b ) {
 		return 0;
 
 	return ($a_order < $b_order ) ? -1 : 1;
+}
+
+/**
+ * Gets a hash for a combination of variant/value pairs.
+ *
+ * @since 1.0.0
+*/
+function it_exchange_variants_addon_get_selected_variants_id_hash( $array=array() ) {
+	// Sort array by ID so that its always in the same order for a variant combination
+	ksort( $array );
+
+	return md5( serialize( $array ) );	
+}
+
+function it_exchange_variants_addon_get_all_variant_combos_for_product( $product_id ) {
+	$product_variants = it_exchange_get_variants_for_product( $product_id );	
+
+	// Build columns array
+	$combos = array();
+	$i=0;
+	foreach( $product_variants as $key => $variant ) {
+		$combos[$i] = array();
+		foreach( (array) $variant->values as $value ) {
+			$combos[$i][] = $value->ID;
+		}
+		$i++;
+	}
+
+	$GLOBALS['it_exchange']['temp_variants']['codes']  = array();
+	$GLOBALS['it_exchange']['temp_variants']['pos']    = 0; 
+	$GLOBALS['it_exchange']['temp_variants']['combos'] = array();
+	generateCodes($combos);
+	
+	$combos = empty( $GLOBALS['it_exchange']['temp_variants']['combos'] ) ? array() : $GLOBALS['it_exchange']['temp_variants']['combos'];
+
+	if ( isset( $GLOBALS['it_exchange']['temp_variants'] ) )
+		unset( $GLOBALS['it_exchange']['temp_variants'] );
+
+	return $combos;
+}
+
+function generateCodes($arr) {
+	if(count($arr)) {
+		for($i=0; $i<count($arr[0]); $i++) {
+			$tmp = $arr;
+			$GLOBALS['it_exchange']['temp_variants']['codes'][$GLOBALS['it_exchange']['temp_variants']['pos']] = $arr[0][$i];
+			$tarr = array_shift($tmp);
+			$GLOBALS['it_exchange']['temp_variants']['pos']++;
+			generateCodes($tmp);
+		}
+	} else {
+		//echo join(", ", $GLOBALS['it_exchange']['temp_variants']['codes'])."<br/>";
+		$GLOBALS['it_exchange']['temp_variants']['combos'][] = $GLOBALS['it_exchange']['temp_variants']['codes'];
+	}
+	$GLOBALS['it_exchange']['temp_variants']['pos']--;
 }
