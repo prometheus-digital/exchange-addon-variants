@@ -99,6 +99,7 @@ function it_exchange_variants_addon_get_all_variant_combos_for_product( $product
 	$i=0;
 	foreach( $product_variants as $key => $variant ) {
 		$combos[$i] = array();
+		$combos[$i][] = $variant->ID;
 		foreach( (array) $variant->values as $value ) {
 			$combos[$i][] = $value->ID;
 		}

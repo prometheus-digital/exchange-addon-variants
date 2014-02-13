@@ -60,7 +60,7 @@
 #it-exchange-variant-images .it-exchange-variant-image-item-title p{margin:0;padding:12px 10px;background-position:97% 50%;background-repeat:no-repeat;background-image:none;}
 #it-exchange-variant-images .editing .it-exchange-variant-image-item-title p,
 #it-exchange-variant-images .it-exchange-variant-image-item-title:hover p{background-image:url( '../images/edit.png' );}
-#it-exchange-variant-images .it-exchange-variant-image-item-content{margin:0 5px 5px 5px;padding:10px;border:1px solid #D7D7D7;}
+#it-exchange-variant-images .it-exchange-variant-image-item-content{margin:0 5px 5px 5px;padding:10px;border:0;}
 #it-exchange-variant-images .it-exchange-variant-image-item-content p{margin-top:0;}
 #it-exchange-variant-images .it-exchange-variant-image-item-content select{display:block;margin-bottom:5px;}
 #it-exchange-variant-images .it-exchange-variant-image-add-images{display:block;margin:15px 0;width:100%;padding:20px 0;text-align:center;border:1px solid #D7D7D7;box-shadow:inset #EEEEEE 0 0 10px;}
