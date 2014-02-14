@@ -54,7 +54,9 @@
 /** -----------------------------------------------------:[ variant images ]:---------- */
 #it-exchange-variant-images, .add-new-product-variant-combination{clear:both;background:#FFF;border:1px solid #D7D7D7;}
 .add-new-product-variant-combination{padding:10px;}
-.add-new-product-variant-combination .label {padding-bottom:5px;}
+.add-new-product-variant-combination .label{padding-bottom:5px;}
+.it-exchange-variant-image-item-title-img{float:left;margin-right:5px;}
+.it-exchange-variant-image-item-title-img img{width:20px;}
 #it-exchange-variant-images .it-exchange-variant-image-item{border-bottom:1px solid #D7D7D7;}
 #it-exchange-variant-images .it-exchange-variant-image-item:last-child{border-bottom:0;}
 #it-exchange-variant-images .it-exchange-variant-image-item-title{cursor:s-resize;}
