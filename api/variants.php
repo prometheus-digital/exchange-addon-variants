@@ -134,3 +134,21 @@ function generateCodes($arr) {
 	}
 	$GLOBALS['it_exchange']['temp_variants']['pos']--;
 }
+
+function it_exchange_get_variant_combo_attributes( $combo ) {
+	$combo_title   = array();
+	$array_to_hash = array();
+	foreach( (array) $combo as $combo_member ) {
+		$value                      = it_exchange_variants_addon_get_variant( $combo_member );
+		$combo_title[]              = empty( $value->post_parent ) ? __( 'All ', 'LION' ) . $value->post_title: $value->post_title;
+		$parent_key                 = empty( $value->post_parent ) ? $value->ID : $value->post_parent;
+		$array_to_hash[$parent_key] = $value->ID;
+	}
+
+	$atts = array(
+		'hash' => it_exchange_variants_addon_get_selected_variants_id_hash( $array_to_hash ),
+		'title' => implode( $combo_title, ' - ' ),
+	);
+
+	return $atts;
+}
