@@ -150,6 +150,7 @@ class IT_Exchange_Variants_Addon_Form_Field {
 					$this->current_value = $value;
 					$value_id            = $value->get_property( 'ID' );
 					$value_title         = $value->get_property( 'title' );
+					$checked             = checked( $this->object->default, $value_id, false );
 
 					$values .= '
 					<li class="clearfix" data-variant-value-id="' . esc_attr( $value_id ) . '" data-variant-value-parent="' . esc_attr( $this->id ) . '">
@@ -157,7 +158,7 @@ class IT_Exchange_Variants_Addon_Form_Field {
 							<input type="hidden" name="it-exchange-product-variants[variants][' . esc_attr( $value_id ) . '][order]" value="' . esc_attr( $int ) . '" class="variant-order-input" />
 						</div>
 						<div class="variant-value-info">
-							<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][' . esc_attr( $this->id ) . '][default]" value="' . esc_attr( $value_id ) . '"/>
+							<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][' . esc_attr( $this->id ) . '][default]" value="' . esc_attr( $value_id ) . '" ' . $checked . '/>
 							<span class="variant-value-name variant-text-placeholder">' . $value_title . '</span>
 							<input type="text" name="it-exchange-product-variants[variants][' . esc_attr( $value_id ) . '][title]" value="' . esc_attr( $value_title ) . '" class="variant-text-input hidden" />
 							<input type="hidden" name="it-exchange-product-variants[variants][' . esc_attr( $value_id ) . '][post_parent]" value="' . esc_attr( $this->id ) . '" class="variant-post-parent-hidden" />
