@@ -20,7 +20,7 @@ class IT_Exchange_Product_Feature_Variants {
 		if ( is_admin() ) {
 			add_action( 'load-post-new.php', array( $this, 'init_feature_metaboxes' ) );
 			add_action( 'load-post.php', array( $this, 'init_feature_metaboxes' ) );
-			add_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ) );
+			add_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ), 9 );
 		}
 		add_action( 'it_exchange_enabled_addons_loaded', array( $this, 'register_feature_support' ) );
 		add_action( 'it_exchange_enabled_addons_loaded', array( $this, 'add_feature_support_to_product_types' ) );
@@ -148,6 +148,7 @@ class IT_Exchange_Product_Feature_Variants {
 	 * @return void
 	*/
 	function save_feature_on_product_save() {
+
 		// Abort if we can't determine a product type
 		if ( ! $product_type = it_exchange_get_product_type() )
 			return;
@@ -165,7 +166,7 @@ class IT_Exchange_Product_Feature_Variants {
 		if ( isset( $_POST['it-exchange-product-variants'] ) ) {
 
 			// Remove or hook to prevent endless loops.
-			remove_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ) );
+			remove_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ), 9 );
 
 			// POST data
 			$new_variant_data = $_POST['it-exchange-product-variants'];
@@ -264,7 +265,7 @@ class IT_Exchange_Product_Feature_Variants {
 			}
 
 			// Add our action back
-			add_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ) );
+			add_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ), 9 );
 		} else {
 			$existing_variant_data            = (array) it_exchange_get_product_feature( $product_id, 'variants' );
 			$existing_variant_data['enabled'] = 'no';
