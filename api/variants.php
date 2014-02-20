@@ -97,7 +97,8 @@ function it_exchange_variants_addon_get_selected_variants_id_hash( $array=array(
 function it_exchange_variants_addon_get_all_variant_combos_for_product( $product_id ) {
 
 	// Grab all 
-	$product_variants = it_exchange_get_variants_for_product( $product_id );	
+	if ( ! $product_variants = it_exchange_get_variants_for_product( $product_id ) )
+		return array();
 
 	// Build columns array
 	$combos = array();
