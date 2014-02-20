@@ -85,6 +85,9 @@ function it_exchange_variants_addon_sort_product_variants( $a, $b ) {
  * @since 1.0.0
 */
 function it_exchange_variants_addon_get_selected_variants_id_hash( $array=array() ) {
+	// Make sure they're all ints
+	$array = array_map( 'intval', $array );
+
 	// Sort array by ID so that its always in the same order for a variant combination
 	ksort( $array );
 
@@ -92,6 +95,8 @@ function it_exchange_variants_addon_get_selected_variants_id_hash( $array=array(
 }
 
 function it_exchange_variants_addon_get_all_variant_combos_for_product( $product_id ) {
+
+	// Grab all 
 	$product_variants = it_exchange_get_variants_for_product( $product_id );	
 
 	// Build columns array
@@ -113,10 +118,17 @@ function it_exchange_variants_addon_get_all_variant_combos_for_product( $product
 	
 	$combos = empty( $GLOBALS['it_exchange']['temp_variants']['combos'] ) ? array() : $GLOBALS['it_exchange']['temp_variants']['combos'];
 
+	foreach( $combos as $key => $combo ) {
+		$variant = it_exchange_variants_addon_get_variant( $combo[0] );
+		$combo_to_hash[empty( $variant->post_parent ) ? $variant->ID : $variant->post_parent] = $variant->ID;
+		
+		$combos_to_return[it_exchange_variants_addon_get_selected_variants_id_hash($combo_to_hash)] = $combo;
+	}
+
 	if ( isset( $GLOBALS['it_exchange']['temp_variants'] ) )
 		unset( $GLOBALS['it_exchange']['temp_variants'] );
 
-	return $combos;
+	return $combos_to_return;
 }
 
 function generateCodes($arr) {

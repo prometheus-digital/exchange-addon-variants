@@ -80,3 +80,24 @@ function it_exchange_variants_addon_setup_preset_variants() {
 	it_exchange_variants_addon_create_inital_presets();
 }
 add_action( 'admin_init', 'it_exchange_variants_addon_setup_preset_variants' );
+
+/**
+ * Prints the hash id for a combo of variants via ajax
+ *
+ * @since 1.0.0
+ *
+ * @return void
+*/
+function it_exchange_variants_addon_ajax_get_selected_variants_id_hash() {
+	if ( empty( $_POST['it_exchange_selected_variants'] ) )
+		return false;
+
+	$variants_to_hash = array();
+	foreach( (array) $_POST['it_exchange_selected_variants'] as $id ) {
+		if ( $variant = it_exchange_variants_addon_get_variant( $id ) )
+			$variants_to_hash[empty( $variant->post_parent ) ? $id : $variant->post_parent] = $id;
+	}
+	die( empty( $variants_to_hash ) ? false : it_exchange_variants_addon_get_selected_variants_id_hash( $variants_to_hash ) );
+}
+add_action( 'wp_ajax_it_exchange_variants_get_selected_id_hash', 'it_exchange_variants_addon_ajax_get_selected_variants_id_hash' );
+add_action( 'wp_ajax_nopriv_it_exchange_variants_get_selected_id_hash', 'it_exchange_variants_addon_ajax_get_selected_variants_id_hash' );
