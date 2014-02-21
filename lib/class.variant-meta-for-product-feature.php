@@ -69,6 +69,14 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 	var $post_meta;
 
 	/**
+	 * @var array all possible variant combos for this product
+	 * @since 1.0.0
+	*/
+	var $all_variant_combos_for_product;
+
+	var $post_cache;
+
+	/**
 	 * Constructor. Loads post data and variant preset data
 	 *
 	 * @since 1.0.0
@@ -98,11 +106,21 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 		$this->post_meta = it_exchange_get_product_feature( $this->product_id, $this->product_feature, $this->product_feature_options );
 	}
 
+	function set_all_variant_combos_for_product() {
+		$this->all_variant_combos_for_product = it_exchange_variants_addon_get_all_variant_combos_for_product( $this->product_id );
+	}
+
+	function set_value( $value ) {
+		$this->value = $value;
+	}
+
 	function get_post_meta() {
 		return $this->post_meta;
 	}
 
 	function load_existing_from_hash( $hash ) {
+		$this->reset_current_combo();
+
 		$this->found_combo = isset( $this->post_meta[$hash] );
 
 		if ( $this->found_combo ) {
@@ -127,6 +145,8 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 	}
 
 	function load_existing_from_combos( $combos ) {
+		$this->reset_current_combo();
+
 		foreach( (array) $this->post_meta as $hash => $props ) {
 			if ( $combos === $props['raw_combos'] ) {
 				$this->load_existing_from_hash( $hash );
@@ -136,15 +156,11 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 	}
 
 	function load_new_from_raw_combos( $combos ) {
+		$this->reset_current_combo();
 
-		$combos_to_hash = array();
-		foreach( $combos as $combo_id ) {
-			$variant = it_exchange_variants_addon_get_variant( $combo_id );
-			$combos_to_hash[empty( $variant->post_parent ) ? $combo_id : $variant->post_parent] = $combo_id;
-		}
+		$combos_to_hash = $this->convert_raw_combos_to_combos_for_hash( $combos );
 
-
-		$this->combos_hash    = $this->hash_combos( $combos_to_hash );
+		$this->combo_hash     = $this->hash_combos( $combos_to_hash );
 		$this->raw_combos     = $combos;
 		$this->combos_to_hash = $combos_to_hash;
 		$this->combos_title   = $this->generate_title_from_combos( $combos_to_hash );
@@ -152,11 +168,22 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 	}
 
 	function load_new_from_combos_to_hash( $array ) {
+		$this->reset_current_combo();
 		$this->raw_combos     = array_values( $array );
 		$this->combos_to_hash = $array;
-		$this->combos_hash    = $this->hash_combos( $array );
+		$this->combo_hash     = $this->hash_combos( $array );
 		$this->combos_title   = $this->generate_title_from_combos( $array );
 		$this->is_parent      = $this->set_is_parent();
+	}
+
+	function load_new_from_hash( $hash ) {
+		$this->reset_current_combo();
+		foreach( (array) $this->all_variant_combos_for_product as $combo ) {
+			$combo_to_hash = $this->convert_raw_combos_to_combos_for_hash( $combo );
+			if ( $hash == $this->hash_combos( $combo_to_hash ) ) {
+				$this->load_new_from_combos_to_hash(  $combo_to_hash );
+			}
+		}
 	}
 
 	function set_is_parent() {
@@ -178,10 +205,38 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 		return md5( serialize( $combos_to_hash ) ); 
 	}
 
+	function reset_current_combo() {
+		$this->raw_combos     = array();
+		$this->combos_to_hash = array();
+		$this->combo_hash     = false;
+		$this->combos_title   = '';
+		$this->is_parent      = false;
+		$this->found_combo    = false;
+	}
+
+	function convert_raw_combos_to_combos_for_hash( $combos ) {
+		$combos_to_hash = array();
+		foreach( $combos as $combo_id ) {
+			if ( empty( $this->post_cache[$combo_id] ) ) {
+				$variant = it_exchange_variants_addon_get_variant( $combo_id );
+				$this->post_cache[$combo_id] = $variant;
+			} else {
+				$variant = $this->post_cache[$combo_id];
+			}
+			$combos_to_hash[empty( $variant->post_parent ) ? $combo_id : $variant->post_parent] = $combo_id;
+		}
+		return $combos_to_hash;
+	}
+
 	function generate_title_from_combos( $combo, $include_alls=false ) {
 		$combo_title   = array();
-		foreach( (array) $combo as $combo_member ) {
-			$variant                    = it_exchange_variants_addon_get_variant( $combo_member );
+		foreach( (array) $combo as $combo_id) {
+			if ( empty( $this->post_cache[$combo_id] ) ) {
+				$variant = it_exchange_variants_addon_get_variant( $combo_id );
+				$this->post_cache[$combo_id] = $variant;
+			} else {
+				$variant = $this->post_cache[$combo_id];
+			}
 			if ( empty( $variant->post_parent ) && $include_alls )
 				$combo_title[] = __( 'All ', 'LION' ) . $variant->post_title;
 			else
@@ -191,8 +246,8 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 		return implode( ' - ', $combo_title );
 	}
 
-	function update_value_for_combo() {
-		if ( empty( $this->combo_hash ) || empty( $this->product_id ) || empty( $this->product_feature ) )
+	function update_meta_value_for_current_combo() {
+		if ( empty( $this->combo_hash ) )
 			return false;
 
 		$props = array(
@@ -202,10 +257,12 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 			'value'          => $this->value,
 		);
 
-		$pm_values = $this->post_meta();
-		$pm_values[$this->combo_hash] = $props;
-
-		it_exchange_update_product_feature( $this->product_id, $this->product_feature, $pm_values );
+		$this->post_meta[$this->combo_hash] = $props;
 		return true;
+	}
+
+	function save_post_meta() {
+		//die( ITUtility::print_r($this->post_meta) );
+		it_exchange_update_product_feature( $this->product_id, $this->product_feature, $this->post_meta, array( 'setting' => 'variants' ) );
 	}
 }
