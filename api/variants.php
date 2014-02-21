@@ -119,17 +119,10 @@ function it_exchange_variants_addon_get_all_variant_combos_for_product( $product
 	
 	$combos = empty( $GLOBALS['it_exchange']['temp_variants']['combos'] ) ? array() : $GLOBALS['it_exchange']['temp_variants']['combos'];
 
-	foreach( $combos as $key => $combo ) {
-		$variant = it_exchange_variants_addon_get_variant( $combo[0] );
-		$combo_to_hash[empty( $variant->post_parent ) ? $variant->ID : $variant->post_parent] = $variant->ID;
-		
-		$combos_to_return[it_exchange_variants_addon_get_selected_variants_id_hash($combo_to_hash)] = $combo;
-	}
-
 	if ( isset( $GLOBALS['it_exchange']['temp_variants'] ) )
 		unset( $GLOBALS['it_exchange']['temp_variants'] );
 
-	return $combos_to_return;
+	return $combos;
 }
 
 function generateCodes($arr) {
