@@ -98,7 +98,7 @@ class IT_Exchange_Variants_Addon_Form_Field {
 		$title = '
 		<div class="variant-title">
 			<span class="variant-title-move">
-				<input type="hidden" name="it-exchange-product-variants[variants][' . esc_attr( $this->id ) . '][order]" value="" class="parent-variant-order-input" />
+				<input type="hidden" name="it-exchange-product-variants[variants][' . esc_attr( $this->id ) . '][order]" value="' . esc_attr( $this->object->menu_order ) . '" class="parent-variant-order-input" />
 			</span>
 			<span class="variant-title-text variant-text-placeholder">' . $this->variant_title . '</span>
 			<input type="hidden" name="it-exchange-product-variants[variants][' . esc_attr( $this->id ) . '][id]" value="' . esc_attr( $this->id ) . '">
