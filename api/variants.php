@@ -94,7 +94,7 @@ function it_exchange_variants_addon_get_selected_variants_id_hash( $array=array(
 	return md5( serialize( $array ) );	
 }
 
-function it_exchange_variants_addon_get_all_variant_combos_for_product( $product_id ) {
+function it_exchange_variants_addon_get_all_variant_combos_for_product( $product_id, $include_alls=true ) {
 
 	// Grab all 
 	if ( ! $product_variants = it_exchange_get_variants_for_product( $product_id ) )
@@ -105,7 +105,8 @@ function it_exchange_variants_addon_get_all_variant_combos_for_product( $product
 	$i=0;
 	foreach( $product_variants as $key => $variant ) {
 		$combos[$i] = array();
-		$combos[$i][] = $variant->ID;
+		if ( $include_alls )
+			$combos[$i][] = $variant->ID;
 		foreach( (array) $variant->values as $value ) {
 			$combos[$i][] = $value->ID;
 		}
@@ -162,4 +163,9 @@ function it_exchange_get_variant_combo_attributes( $combo ) {
 	);
 
 	return $atts;
+}
+
+function it_exchange_variants_addon_get_product_feature_controller( $product_id, $product_feature, $product_feature_options=array() ) {
+	include_once( dirname( dirname( __FILE__ ) ) . '/lib/class.variant-meta-for-product-feature.php' );
+	return new IT_Exchange_Variants_Addon_Product_Feature_Combos( $product_id, $product_feature, $product_feature_options );
 }
