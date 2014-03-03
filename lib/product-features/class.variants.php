@@ -115,28 +115,20 @@ class IT_Exchange_Product_Feature_Variants {
 	 * @return void
 	*/
 	function print_metabox( $post ) {
-		// Grab the iThemes Exchange Product object from the WP $post object
-		$product = it_exchange_get_product( $post );
-
-		// Set the value of the feature for this product
-		$product_feature_value  = it_exchange_get_product_feature( $product->ID, 'variants' );
-		$variants_enabled       = empty( $product_feature_value['enabled'] ) ? 'no' : $product_feature_value['enabled'];
-		$existing_variants      = empty( $product_feature_value['variants'] ) ? array() : (array) $product_feature_value['variants'];
+		$product_feature_value  = it_exchange_get_product_feature( $post->ID, 'variants' );
+		$variants_enabled       = ( ! empty( $product_feature_value['enabled'] ) && 'yes') ? 1 : 0;
+		$existing_variants      = empty( $product_feature_value['variants'] ) ? 0 : 1;
 		?>
-		<p>
-			<input type="checkbox" id="it-exchange-enable-product-variants" value="yes" class="it-exchange-checkbox-enable" name="it-exchange-product-variants[enabled]" <?php checked( 'yes', $variants_enabled ); ?> /> <label for="it-exchange-enable-product-variants"><?php _e( 'Enable variants for this product', 'LION' ); ?></label><br />
-		</p>
-
-		<div class="it-exchange-product-variants-inner<?php echo ( 'no' == $variants_enabled ) ? ' hide-if-js' : ''; ?>">
-			<?php include_once( 'temp-metabox-markup.php' ); ?>
-			
-			<div class="updated below-h2">
-				<p><?php _e( 'Changes made to product variants require you to save this product before other variant related options are updated.', 'LION' ); ?></p>
-			</div>
-		</div>
-
+		<script type="text/javascript">
+			var itExchangeVariantsAdmin = itExchangeVariantsAdmin || {};
+			itExchangeVariantsAdmin.productFeatureSettings = {
+				productId:       document.getElementById('post_ID').value,
+				variantsEnabled: <?php echo esc_js( $variants_enabled ); ?>,
+				hasVariants:     <?php echo esc_js( $existing_variants ); ?>
+			};
+		</script>
+		<p>Variants Container goes here</p>
 		<?php
-		do_action( 'it_exchange_variants_metabox_bottom', $post, $existing_variants );
 	}
 
 	/**

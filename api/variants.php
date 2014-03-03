@@ -61,6 +61,21 @@ function it_exchange_get_variants_for_product( $product_id ) {
 }
 
 /**
+ * Return the variant opitons for a specific variant
+ *
+ * @since 1.0.0
+ */
+function it_exchange_get_values_for_variant( $variant_id ) {
+
+	if ( $variants = it_exchange_variants_addon_get_variants( array( 'post_parent' => $variant_id ) ) )
+		return $variants;
+
+	return array();
+
+}
+
+
+/**
  * usort callback used with it_exchange_get_variants_for_product() for sorting variants by page order
  *
  * @since 1.0.0
