@@ -56,13 +56,22 @@ if ( ! is_admin() )
 			<span class="variant-title-values-preview">{{ data.valuesPreview }}</span>
 			<span class="variant-title-delete it-exchange-remove-item">&times;</span>
 		</div>
-		<div class="variant-values">Default</div>
+		<div class="variant-values">
+			<div class="edit-variant">
+				<span class="label">
+					Values
+					<span class="it-exchange-tip" data-tip-content="tooltip goes here">i</span>
+				</span>
+				<ul class="variant-values-list ui-sortable">
+				</ul>
+			</div>
+		</div>
 	</div>
 </script>
 
 <!-- Variant Value Template for Images -->
 <script type="text/template" id="tmpl-it-exchange-admin-variant-value-image">
-	<li class="clearfix" data-variant-value-id="{{ data.id }}" data-variant-value-parent="{{ data.parentId }}"> 
+	<!--<li class="clearfix" data-variant-value-id="{{ data.id }}" data-variant-value-parent="{{ data.parentId }}"> -->
 		<div class="variant-value-reorder" data-variant-value-order="{{ data.order }}"> 
 			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="variant-order-input" />
 		</div>
@@ -79,12 +88,12 @@ if ( ! is_admin() )
 		<div class="variant-value-delete">
 			<a href class="it-exchange-remove-item">&times;</a>
 		</div>
-	</li>
+	<!--</li>-->
 </script>
 
 <!-- Variant Value Template for Colors -->
-<script type="text/template" id="tmpl-it-exchange-admin-variant-value-image-image">
-	<li class="clearfix" data-variant-value-id="{{ data.id }}" data-variant-value-parent="{{ data.parentId }}"> 
+<script type="text/template" id="tmpl-it-exchange-admin-variant-value-color">
+	<!--<li class="clearfix" data-variant-value-id="{{ data.id }}" data-variant-value-parent="{{ data.parentId }}"> -->
 		<div class="variant-value-reorder" data-variant-value-order="{{ data.order }}"> 
 			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="variant-order-input" />
 		</div>
@@ -100,12 +109,12 @@ if ( ! is_admin() )
 		<div class="variant-value-delete">
 			<a href class="it-exchange-remove-item">&times;</a>
 		</div>
-	</li>
+	<!--</li>-->
 </script>
 
 <!-- Variant Value Template for Radios and Selects -->
-<script type="text/template" id="tmpl-it-exchange-admin-variant-value-image-color">
-	<li class="clearfix" data-variant-value-id="{{ data.id }}" data-variant-value-parent="{{ data.parentId }}"> 
+<script type="text/template" id="tmpl-it-exchange-admin-variant-value">
+	<!--<li class="clearfix" data-variant-value-id="{{ data.id }}" data-variant-value-parent="{{ data.parentId }}"> -->
 		<div class="variant-value-reorder" data-variant-value-order="{{ data.order }}"> 
 			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="variant-order-input" />
 		</div>
@@ -118,7 +127,7 @@ if ( ! is_admin() )
 		<div class="variant-value-delete">
 			<a href class="it-exchange-remove-item">&times;</a>
 		</div>
-	</li>
+	<!--</li>-->
 </script>
 
 <!-- Core Preset Variant Template for Add Variant -->

@@ -508,13 +508,14 @@ function it_exchange_variants_addon_get_variants( $args=array() ) {
 	$variant_presets = false;
 
 	if ( $variants = get_posts( $args ) ) {
+		$return_variants = array();
 		foreach( $variants as $key => $variant ) {
 			$variant_object = it_exchange_variants_addon_get_variant( $variant );
 
-			$variants[$variant_object->get_property( 'ID' )] = $variant_object;
+			$return_variants[$variant_object->get_property( 'ID' )] = $variant_object;
 		}
 	}
-	return apply_filters( 'it_exchange_variants_addon_get_variants', $variants, $args );
+	return apply_filters( 'it_exchange_variants_addon_get_variants', $return_variants, $args );
 }
 
 /**

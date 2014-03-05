@@ -36,8 +36,7 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 		$deps     = array( 'jquery', 'wp-backbone', 'underscore' );
 		wp_enqueue_script( 'it-exchange-variants-addon-variant-models',  $url_base . 'models/variant-models.js', $deps );
 		wp_enqueue_script( 'it-exchange-variants-addon-variant-collections',  $url_base . 'collections/variant-collections.js', $deps );
-		wp_enqueue_script( 'it-exchange-variants-addon-variant-core-admin-view',  $url_base . 'views/core-admin-view.js', $deps );
-		wp_enqueue_script( 'it-exchange-variants-addon-variant-add-edit-variant-view',  $url_base . 'views/add-edit-variant-view.js', $deps );
+		wp_enqueue_script( 'it-exchange-variants-addon-variant-admin-views',  $url_base . 'views/variant-admin-views.js', $deps );
 		wp_enqueue_script( 'it-exchange-variants-addon-variant-admin-core',  $url_base . 'admin-variants.js', $deps );
 		add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
 	}
@@ -144,16 +143,16 @@ function it_exchange_variants_json_api() {
 		}
 	} else if ( 'product-variant-values' == $endpoint ) {
 		if ( ! empty( $variant_id ) ) {
-			$variants  = (array) it_exchange_get_values_for_variant( $variant_id );
+			$parent   = it_exchange_variants_addon_get_variant( $variant_id );
+			$variants = (array) it_exchange_get_values_for_variant( $variant_id );
 			$response = array();
 			foreach( $variants as $variant ) {
 				$response_variant = new stdClass();
 				$response_variant->id            = $variant->ID;
 				$response_variant->title         = $variant->post_title;
 				$response_variant->order         = $variant->menu_order;
-				$response_variant->uiType        = $variant->ui_type;
-				$response_variant->presetSlug    = $variant->preset_slug;
-				$response_variant->valuesPreview = 'preview here';
+				$response_variant->uiType        = empty( $parent->ui_type ) ? false : $parent->ui_type;
+				$response_variant->presetSlug    = empty( $parent->preset_slug ) ? false : $parent->preset_slug;
 
 				$response[] = $response_variant;
 			}

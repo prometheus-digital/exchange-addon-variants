@@ -120,8 +120,8 @@ class IT_Exchange_Product_Feature_Variants {
 		$existing_variants      = empty( $product_feature_value['variants'] ) ? 0 : 1;
 		?>
 		<script type="text/javascript">
-			var itExchangeVariantsAdmin = itExchangeVariantsAdmin || {};
-			itExchangeVariantsAdmin.productFeatureSettings = {
+			var itExchangeVariants = itExchangeVariants || {};
+			itExchangeVariants.productFeatureSettings = {
 				productId:       document.getElementById('post_ID').value,
 				variantsEnabled: <?php echo esc_js( $variants_enabled ); ?>,
 				hasVariants:     <?php echo esc_js( $existing_variants ); ?>
