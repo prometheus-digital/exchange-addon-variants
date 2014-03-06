@@ -66,16 +66,12 @@ function it_exchange_get_variants_for_product( $product_id ) {
  * @since 1.0.0
  */
 function it_exchange_get_values_for_variant( $variant_id ) {
-
 	if ( $variants = it_exchange_variants_addon_get_variants( array( 'post_parent' => $variant_id ) ) ) {
 		// Order top level variants
-		$variants = usort( $variants, 'it_exchange_variants_addon_sort_product_variants' );
-
+		uasort( $variants, 'it_exchange_variants_addon_sort_product_variants' );
 		return $variants;
 	}
-
 	return array();
-
 }
 
 

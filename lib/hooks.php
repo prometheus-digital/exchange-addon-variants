@@ -141,7 +141,7 @@ function it_exchange_variants_json_api() {
 			}
 			die( json_encode( $response ) );
 		}
-	} else if ( 'product-variant-values' == $endpoint ) {
+	} else if ( 'variant-values' == $endpoint ) {
 		if ( ! empty( $variant_id ) ) {
 			$parent   = it_exchange_variants_addon_get_variant( $variant_id );
 			$variants = (array) it_exchange_get_values_for_variant( $variant_id );
