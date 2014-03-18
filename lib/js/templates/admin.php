@@ -78,12 +78,12 @@ if ( ! is_admin() )
 			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="variant-order-input" />
 		</div>
 		<div class="variant-value-info">
-			<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.id }}][default]" value="{{ data.id }}" checked="{{ data.isDefault }}" />
+			<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.parentId }}][default]" value="{{ data.id }}" {{ data.isDefault }} />
 			<span class="variant-value-name variant-text-placeholder">{{ data.title }}</span>
 			<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
 			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />
 			<a class="variant-value-image variant-value-has-image">
-				<span class="variant-value-image-placeholder">{{ data.imageThumbnail }}</span>
+				<span class="variant-value-image-placeholder"><img src="{{ data.imageUrl }}" /></span>
 			</a>
 			<input type="hidden" value="{{ data.imageUrl }}" name="it-exchange-product-variants[variants][{{ data.id }}][image]" class="it-exchange-variants-image" />
 		</div>
@@ -100,7 +100,7 @@ if ( ! is_admin() )
 			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="variant-order-input" />
 		</div>
 		<div class="variant-value-info">
-			<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.id }}][default]" value="{{ data.id }}" checked="{{ data.isDefault }}" />
+			<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.parentId }}][default]" value="{{ data.id }}" {{ data.isDefault }} />
 			<span class="variant-value-name variant-text-placeholder">{{ data.title }}</span>
 			<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
 			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />
@@ -121,7 +121,7 @@ if ( ! is_admin() )
 			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="variant-order-input" />
 		</div>
 		<div class="variant-value-info">
-			<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.id }}][default]" value="{{ data.id }}" checked="{{ data.isDefault }}" />
+			<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.parentId }}][default]" value="{{ data.id }}" {{ data.isDefault }} />
 			<span class="variant-value-name variant-text-placeholder">{{ data.title }}</span>
 			<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
 			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />

@@ -29,11 +29,11 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 	
 	if ( isset( $post_type ) && 'it_exchange_prod' === $post_type && ( 'post.php' == $hook_suffix || 'post-new.php' == $hook_suffix ) ) {
 		wp_enqueue_script( 'it-exchange-variants-addon-colorpicker', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/colorpicker/colorpicker.js' );
-//		wp_enqueue_script( 'it-exchange-variants-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/add-edit-product.js', array( 'jquery', 'jquery-ui-sortable', 'it-exchange-dialog', 'it-exchange-variants-addon-colorpicker' ) );
+		wp_enqueue_script( 'it-exchange-variants-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/add-edit-product.js', array( 'jquery', 'it-exchange-dialog', 'it-exchange-variants-addon-colorpicker' ) );
 
 		// Backbone scripts
 		$url_base = ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/';
-		$deps     = array( 'jquery', 'wp-backbone', 'underscore' );
+		$deps     = array( 'jquery', 'wp-backbone', 'underscore', 'jquery-ui-sortable', 'it-exchange-dialog' );
 		wp_enqueue_script( 'it-exchange-variants-addon-variant-models',  $url_base . 'models/variant-models.js', $deps );
 		wp_enqueue_script( 'it-exchange-variants-addon-variant-collections',  $url_base . 'collections/variant-collections.js', $deps );
 		wp_enqueue_script( 'it-exchange-variants-addon-variant-admin-views',  $url_base . 'views/variant-admin-views.js', $deps );
@@ -150,9 +150,13 @@ function it_exchange_variants_json_api() {
 			foreach( $variants as $variant ) {
 				$response_variant = new stdClass();
 				$response_variant->id            = $variant->ID;
+				$response_variant->parentId     = $variant->post_parent;
 				$response_variant->title         = $variant->post_title;
 				$response_variant->order         = $variant->menu_order;
 				$response_variant->uiType        = empty( $parent->ui_type ) ? false : $parent->ui_type;
+				$response_variant->color         = empty( $variant->color ) ? false : $variant->color;
+				$response_variant->imageUrl      = empty( $variant->image ) ? false : $variant->image;
+				$response_variant->isDefault     = empty( $variant->default ) ? '' : 'checked';
 				$response_variant->presetSlug    = empty( $parent->preset_slug ) ? false : $parent->preset_slug;
 
 				$response[] = $response_variant;
@@ -168,9 +172,13 @@ function it_exchange_variants_json_api() {
 			foreach( $values as $value ) {
 				$response_value = new stdClass();
 				$response_value->id            = uniqid(rand());
+				$response_value->parentId      = $preset->ID;
 				$response_value->title         = $value['title'];
 				$response_value->order         = empty( $value['order'] ) ? 0 : $value['order'];
+				$response_value->color         = empty( $value['color'] ) ? false : $value['color'];
+				$response_value->imageUrl      = empty( $value['image'] ) ? false : $value['image'];
 				$response_value->uiType        = empty( $preset->ui_type ) ? false : $preset->ui_type;
+				$response_value->isDefault     = empty( $preset->default ) ? '' : 'checked';
 				$response_value->presetSlug    = empty( $preset->slug ) ? false : $preset->slug;
 
 				$response[] = $response_value;
