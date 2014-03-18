@@ -59,18 +59,18 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'values'  => array(
 				0 => array(
 					'slug'    => 'new_default_1',
-					'title'   => __( 'New Value', 'LION' ),
+					'title'   => __( 'Select 1', 'LION' ),
 				),
 				1 => array(
 					'slug'    => 'new_default_2',
-					'title'   => __( 'New Value', 'LION' ),
+					'title'   => __( 'Select 2', 'LION' ),
 				),
 			),
 			'default'  => false,
 			'order'    => 0,
 			'core'     => true,
 			'ui-type'  => 'select',
-			'version'  => '0.0.21',
+			'version'  => '0.0.23',
 		),
 		'template-radio' => array(
 			'slug'     => 'template-radio',
@@ -78,18 +78,18 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'values'  => array(
 				0 => array(
 					'slug'    => 'new_default_1',
-					'title'   => __( 'New Value', 'LION' ),
+					'title'   => __( 'Radio 1', 'LION' ),
 				),
 				1 => array(
 					'slug'    => 'new_default_2',
-					'title'   => __( 'New Value', 'LION' ),
+					'title'   => __( 'Radio 2', 'LION' ),
 				),
 			),
 			'default'  => false,
 			'order'    => 3,
 			'core'     => true,
 			'ui-type'  => 'radio',
-			'version'  => '0.0.21',
+			'version'  => '0.0.23',
 		),
 		'tempalte-hex'   => array(
 			'slug'     => 'template-hex',
@@ -97,18 +97,20 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'values'  => array(
 				0 => array(
 					'slug'    => 'new_default_1',
-					'title'   => __( 'New Value', 'LION' ),
+					'title'   => __( 'Color 1', 'LION' ),
+					'color'   => '#0029BA',
 				),
 				1 => array(
 					'slug'    => 'new_default_2',
-					'title'   => __( 'New Value', 'LION' ),
+					'title'   => __( 'Color 2', 'LION' ),
+					'color'   => '#0082CA',
 				),
 			),
 			'default'  => false,
 			'order'    => 5,
 			'core'     => true,
 			'ui-type'  => 'color',
-			'version'  => '0.0.21',
+			'version'  => '0.0.23',
 		),
 		'tempalte-image' => array(
 			'slug'     => 'template-image',
@@ -116,18 +118,18 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'values'  => array(
 				0 => array(
 					'slug'    => 'new_default_1',
-					'title'   => __( 'New Value', 'LION' ),
+					'title'   => __( 'Image 1', 'LION' ),
 				),
 				1 => array(
 					'slug'    => 'new_default_2',
-					'title'   => __( 'New Value', 'LION' ),
+					'title'   => __( 'Image 2', 'LION' ),
 				),
 			),
 			'default'  => false,
 			'order'    => 8,
 			'core'     => true,
 			'ui-type'  => 'image',
-			'version'  => '0.0.21',
+			'version'  => '0.0.23',
 		),
 		'ithemes-colors'       => array(
 			'slug'    => 'ithemes-colors',
@@ -158,7 +160,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'   => 5,
 			'core'    => true,
 			'ui-type' => 'color',
-			'version' => '0.0.21',
+			'version' => '0.0.23',
 		),
 		'ithemes-sizes'  => array(
 			'slug'    => 'ithemes-sizes',
@@ -189,7 +191,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'   => 0,
 			'core'    => true,
 			'ui-type' => 'select',
-			'version' => '0.0.21',
+			'version' => '0.0.23',
 		),
 	);
 	return $args;

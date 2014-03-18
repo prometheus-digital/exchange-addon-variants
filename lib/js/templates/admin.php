@@ -9,9 +9,9 @@ if ( ! is_admin() )
 		<label for="it-exchange-enable-product-variants"><?php _e( 'Enable variants for this product', 'LION' ); ?></label><br />
 	</p>
 
-	<div class="it-exchange-product-variants-inner"> <!-- ADD hide-if-js CLASS IF Variants not enabled -->
+	<div class="it-exchange-product-variants-inner">
 
-		<div class="it-exchange-existing-variants"> <!-- ADD no-variants CLASS IF EMPTY -->
+		<div class="it-exchange-existing-variants ui-sortable">
 		</div>
 
 		<div class="it-exchange-new-variant">
@@ -30,7 +30,9 @@ if ( ! is_admin() )
 
 				<!-- Saved Presets -->
 				<div class="it-exchange-variant-presets-saved it-exchange-variant-presets-column">
-					<div class="it-exchange-variant-column-inner"></div>
+					<div class="it-exchange-variant-column-inner">
+						<div class="label"><?php _e( 'My Presets', 'LION' ); ?></div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -43,7 +45,7 @@ if ( ! is_admin() )
 
 <!-- Variant Template -->
 <script type="text/template" id="tmpl-it-exchange-admin-variant">
-	<div class="it-exchange-existing-variant" data-variant-id="{{ data.id }}" data-variant-open="false">
+	<!--<div class="it-exchange-existing-variant" data-variant-id="{{ data.id }}" data-variant-open="false">-->
 		<div class="variant-title">
 			<span class="variant-title-move">
 				<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="parent-variant-order-input" />
@@ -56,7 +58,7 @@ if ( ! is_admin() )
 			<span class="variant-title-values-preview">{{ data.valuesPreview }}</span>
 			<span class="variant-title-delete it-exchange-remove-item">&times;</span>
 		</div>
-		<div class="variant-values">
+		<div class="variant-values hidden">
 			<div class="edit-variant">
 				<span class="label">
 					Values
@@ -66,7 +68,7 @@ if ( ! is_admin() )
 				</ul>
 			</div>
 		</div>
-	</div>
+	<!--</div>-->
 </script>
 
 <!-- Variant Value Template for Images -->
@@ -142,7 +144,6 @@ if ( ! is_admin() )
 
 <!-- Saved Preset Variant Template for Add Variant -->
 <script type="text/template" id="tmpl-it-exchange-admin-add-variant-saved-preset">
-	<div class="label"><?php _e( 'My Presets', 'LION' ); ?></div>
 	<div class="it-exchange-variants-preset it-exchange-variants-preset-saved it-exchange-variants-preset-saved-{{ data.slug }}" data-variant-presets-saved-id="{{ data.id }}">
 		<img src="{{ data.imageThumb }}" alt="{{ data.imageAlt }}" />
 

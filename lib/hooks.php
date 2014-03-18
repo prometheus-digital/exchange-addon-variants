@@ -27,7 +27,7 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 			$post_type = $post->post_type;
 	}   
 	
-	if ( isset( $post_type ) && 'it_exchange_prod' === $post_type ) {
+	if ( isset( $post_type ) && 'it_exchange_prod' === $post_type && ( 'post.php' == $hook_suffix || 'post-new.php' == $hook_suffix ) ) {
 		wp_enqueue_script( 'it-exchange-variants-addon-colorpicker', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/colorpicker/colorpicker.js' );
 //		wp_enqueue_script( 'it-exchange-variants-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/add-edit-product.js', array( 'jquery', 'jquery-ui-sortable', 'it-exchange-dialog', 'it-exchange-variants-addon-colorpicker' ) );
 
@@ -120,6 +120,7 @@ function it_exchange_variants_json_api() {
 	$endpoint   = empty( $_REQUEST['endpoint'] ) ? false : $_REQUEST['endpoint'];
 	$product_id = empty( $_REQUEST['product-id'] ) ? false : $_REQUEST['product-id'];
 	$variant_id = empty( $_REQUEST['product-variant'] ) ? false : $_REQUEST['product-variant'];
+	$preset_id  = empty( $_REQUEST['preset-id'] ) ? false : $_REQUEST['preset-id'];
 
 	if ( empty( $endpoint ) )
 		return false;
@@ -135,7 +136,7 @@ function it_exchange_variants_json_api() {
 				$response_variant->order         = $variant->menu_order;
 				$response_variant->uiType        = $variant->ui_type;
 				$response_variant->presetSlug    = $variant->preset_slug;
-				$response_variant->valuesPreview = 'preview here';
+				$response_variant->valuesPreview = '';
 
 				$response[] = $response_variant;
 			}
@@ -155,6 +156,68 @@ function it_exchange_variants_json_api() {
 				$response_variant->presetSlug    = empty( $parent->preset_slug ) ? false : $parent->preset_slug;
 
 				$response[] = $response_variant;
+			}
+			die( json_encode( $response ) );
+		}
+	} else if ( 'variant-values-from-preset' == $endpoint ) {
+		if ( ! empty( $preset_id ) ) {
+			$preset = it_exchange_variants_addon_get_preset( $preset_id );
+			$values = empty( $preset->values ) ? array() : $preset->values;
+
+			$response = array();
+			foreach( $values as $value ) {
+				$response_value = new stdClass();
+				$response_value->id            = uniqid(rand());
+				$response_value->title         = $value['title'];
+				$response_value->order         = empty( $value['order'] ) ? 0 : $value['order'];
+				$response_value->uiType        = empty( $preset->ui_type ) ? false : $preset->ui_type;
+				$response_value->presetSlug    = empty( $preset->slug ) ? false : $preset->slug;
+
+				$response[] = $response_value;
+			}
+			die( json_encode( $response ) );
+		}
+	} else if ( 'core-presets' == $endpoint ) {
+		if ( $presets = it_exchange_variants_addon_get_presets( array( 'core_only' => true ) ) ) {
+			$reponse = array();
+			foreach( $presets as $preset ) {
+				if ( ! $preset->is_template )
+					continue;
+				$core_preset             = new stdClass();
+				$core_preset->id         = $preset->ID;
+				$core_preset->slug       = $preset->slug;
+				$core_preset->title      = $preset->title;
+				$core_preset->values     = $preset->values;
+				$core_preset->order      = empty( $preset->menu_order ) ? 0 : $preset->menu_order;
+				$core_preset->uiType     = empty( $preset->ui_type ) ? '' : $preset->ui_type;
+				$core_preset->imageAlt   = $preset->title;
+				$core_preset->imageThumb = ( ! empty( $preset->ui_type ) && is_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) ) 
+					? ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) 
+					: ''; 
+
+				$response[] = $core_preset;
+			}
+			die( json_encode( $response ) );
+		}
+	} else if ( 'saved-presets' == $endpoint ) {
+		if ( $presets = it_exchange_variants_addon_get_presets() ) {
+			$reponse = array();
+			foreach( $presets as $preset ) {
+				if ( $preset->is_template )
+					continue;
+				$core_preset             = new stdClass();
+				$core_preset->id         = $preset->ID;
+				$core_preset->slug       = $preset->slug;
+				$core_preset->title      = $preset->title;
+				$core_preset->order      = empty( $preset->menu_order ) ? 0 : $preset->menu_order;
+				$core_preset->uiType     = empty( $preset->ui_type ) ? '' : $preset->ui_type;
+				$core_preset->values     = $preset->values;
+				$core_preset->imageAlt   = $preset->title;
+				$core_preset->imageThumb = ( ! empty( $preset->ui_type ) && is_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) ) 
+					? ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) 
+					: ''; 
+
+				$response[] = $core_preset;
 			}
 			die( json_encode( $response ) );
 		}
