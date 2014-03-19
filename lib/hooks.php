@@ -121,6 +121,7 @@ function it_exchange_variants_json_api() {
 	$product_id = empty( $_REQUEST['product-id'] ) ? false : $_REQUEST['product-id'];
 	$variant_id = empty( $_REQUEST['product-variant'] ) ? false : $_REQUEST['product-variant'];
 	$preset_id  = empty( $_REQUEST['preset-id'] ) ? false : $_REQUEST['preset-id'];
+	$parent_id  = empty( $_REQUEST['parent-id'] ) ? false : $_REQUEST['parent-id'];
 
 	if ( empty( $endpoint ) )
 		return false;
@@ -172,7 +173,7 @@ function it_exchange_variants_json_api() {
 			foreach( $values as $value ) {
 				$response_value = new stdClass();
 				$response_value->id            = uniqid(rand());
-				$response_value->parentId      = $preset->ID;
+				$response_value->parentId      = $parent_id;
 				$response_value->title         = $value['title'];
 				$response_value->order         = empty( $value['order'] ) ? 0 : $value['order'];
 				$response_value->color         = empty( $value['color'] ) ? false : $value['color'];
