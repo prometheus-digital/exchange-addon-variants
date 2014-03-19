@@ -528,9 +528,20 @@ function it_exchange_variants_addon_get_variants( $args=array() ) {
  * @rturn object IT_Exchange_Variant_Addon_Variant object for passed post
 */
 function it_exchange_variants_addon_get_variant( $post ) {
-	include_once( 'class.variant.php' );
-    $variant = new IT_Exchange_Variants_Addon_Variant( $post );
-    if ( $variant->ID )
-        return apply_filters( 'it_exchange_variants_addon_get_variant', $variant, $post );
-    return apply_filters( 'it_exchange_variants_addon_get_variant', false, $post );
+
+	$post_id = empty( $post->ID ) ? (int) $post : $post->ID;
+
+	if ( ! isset( $GLOBALS['it_exchange']['variants_cache'][$post_id] ) ) {
+		echo "loaded $post_id from DB<br />";
+		include_once( 'class.variant.php' );
+		$variant = new IT_Exchange_Variants_Addon_Variant( $post );
+		if ( $variant->ID )
+			$result = apply_filters( 'it_exchange_variants_addon_get_variant', $variant, $post );
+		else
+			$result = apply_filters( 'it_exchange_variants_addon_get_variant', false, $post );
+
+		$GLOBALS['it_exchange']['variants_cache'][$post_id] = $result;
+	}
+
+	return $GLOBALS['it_exchange']['variants_cache'][$post_id];
 }
