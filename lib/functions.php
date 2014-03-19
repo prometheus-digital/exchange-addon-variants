@@ -509,6 +509,7 @@ function it_exchange_variants_addon_get_variants( $args=array() ) {
 
 	$variant_presets = false;
 
+	$return_variants = array();
 	if ( $variants = get_posts( $args ) ) {
 		$return_variants = array();
 		foreach( $variants as $key => $variant ) {
