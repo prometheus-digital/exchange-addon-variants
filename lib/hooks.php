@@ -131,6 +131,8 @@ function it_exchange_variants_json_api() {
 			$variants  = (array) it_exchange_get_variants_for_product( $product_id );
 			$response = array();
 			foreach( $variants as $variant ) {
+				if ( empty( $variant->ID ) )
+					continue;
 				$response_variant = new stdClass();
 				$response_variant->id            = $variant->ID;
 				$response_variant->title         = $variant->post_title;
@@ -149,6 +151,8 @@ function it_exchange_variants_json_api() {
 			$variants = (array) it_exchange_get_values_for_variant( $variant_id );
 			$response = array();
 			foreach( $variants as $variant ) {
+				if ( empty( $variant->ID ) )
+					continue;
 				$response_variant = new stdClass();
 				$response_variant->id            = $variant->ID;
 				$response_variant->parentId     = $variant->post_parent;
