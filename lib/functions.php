@@ -532,7 +532,6 @@ function it_exchange_variants_addon_get_variant( $post ) {
 	$post_id = empty( $post->ID ) ? (int) $post : $post->ID;
 
 	if ( ! isset( $GLOBALS['it_exchange']['variants_cache'][$post_id] ) ) {
-		echo "loaded $post_id from DB<br />";
 		include_once( 'class.variant.php' );
 		$variant = new IT_Exchange_Variants_Addon_Variant( $post );
 		if ( $variant->ID )
