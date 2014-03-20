@@ -4,7 +4,7 @@ if ( ! is_admin() )
 ?>
 <!-- Variant Container -->
 <script type="text/template" id="tmpl-it-exchange-admin-variants-container">
-	<p> 
+	<p>
 		<input type="checkbox" id="it-exchange-enable-product-variants" value="yes" class="it-exchange-checkbox-enable" name="it-exchange-product-variants[enabled]" />
 		<label for="it-exchange-enable-product-variants"><?php _e( 'Enable variants for this product', 'LION' ); ?></label><br />
 	</p>
@@ -45,94 +45,86 @@ if ( ! is_admin() )
 
 <!-- Variant Template -->
 <script type="text/template" id="tmpl-it-exchange-admin-variant">
-	<!--<div class="it-exchange-existing-variant" data-variant-id="{{ data.id }}" data-variant-open="<# if ( data.openDiv ) { #>true<# } else {#>false<#}#>">-->
-		<div class="variant-title">
-			<span class="variant-title-move">
-				<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="parent-variant-order-input" />
+	<div class="variant-title">
+		<span class="variant-title-move">
+			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="parent-variant-order-input" />
+		</span>
+		<span class="variant-title-text variant-text-placeholder">{{ data.title }}</span>
+		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][id]" value="{{ data.id }}">
+		<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden">
+		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][ui_type]" value="{{ data.uiType }}">
+		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][preset_slug]" value="{{ data.presetSlug }}">
+		<span class="variant-title-values-preview">{{ data.valuesPreview }}</span>
+		<span class="variant-title-delete it-exchange-remove-item it-exchange-remove-variant">&times;</span>
+	</div>
+	<div class="variant-values hidden">
+		<div class="edit-variant">
+			<span class="label">
+				Values
+				<span class="it-exchange-tip" data-tip-content="tooltip goes here">i</span>
 			</span>
-			<span class="variant-title-text variant-text-placeholder">{{ data.title }}</span>
-			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][id]" value="{{ data.id }}"> 
-			<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden">
-			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][ui_type]" value="{{ data.uiType }}"> 
-			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][preset_slug]" value="{{ data.presetSlug }}"> 
-			<span class="variant-title-values-preview">{{ data.valuesPreview }}</span>
-			<span class="variant-title-delete it-exchange-remove-item it-exchange-remove-variant">&times;</span>
-		</div>
-		<div class="variant-values hidden">
-			<div class="edit-variant">
-				<span class="label">
-					Values
-					<span class="it-exchange-tip" data-tip-content="tooltip goes here">i</span>
-				</span>
-				<ul class="variant-values-list ui-sortable">
-				</ul>
-				<div class="add-variant-value">
-					<input type="button" class="button add-variant-value-button" value="Add Value">
-				</div>
+			<ul class="variant-values-list ui-sortable">
+			</ul>
+			<div class="add-variant-value">
+				<input type="button" class="button add-variant-value-button" value="Add Value">
 			</div>
 		</div>
-	<!--</div>-->
+	</div>
 </script>
 
 <!-- Variant Value Template for Images -->
 <script type="text/template" id="tmpl-it-exchange-admin-variant-value-image">
-	<!--<li class="clearfix" data-variant-value-id="{{ data.id }}" data-variant-value-parent="{{ data.parentId }}"> -->
-		<div class="variant-value-reorder" data-variant-value-order="{{ data.order }}"> 
-			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="variant-order-input" />
+	<div class="variant-value-reorder" data-variant-value-order="{{ data.order }}">
+		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="variant-order-input" />
+	</div>
+	<div class="variant-value-info">
+		<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.parentId }}][default]" value="{{ data.id }}" {{ data.isDefault }} />
+		<span class="variant-value-name variant-text-placeholder">{{ data.title }}</span>
+		<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
+		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />
+		<a class="variant-value-image variant-value-has-image">
+			<span class="variant-value-image-placeholder"><img src="{{ data.imageUrl }}" /></span>
+		</a>
+		<input type="hidden" value="{{ data.imageUrl }}" name="it-exchange-product-variants[variants][{{ data.id }}][image]" class="it-exchange-variants-image" />
+	</div>
+	<div class="variant-value-delete">
+		<a href class="it-exchange-remove-item it-exchange-remove-variant-value">&times;</a>
 		</div>
-		<div class="variant-value-info">
-			<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.parentId }}][default]" value="{{ data.id }}" {{ data.isDefault }} />
-			<span class="variant-value-name variant-text-placeholder">{{ data.title }}</span>
-			<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
-			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />
-			<a class="variant-value-image variant-value-has-image">
-				<span class="variant-value-image-placeholder"><img src="{{ data.imageUrl }}" /></span>
-			</a>
-			<input type="hidden" value="{{ data.imageUrl }}" name="it-exchange-product-variants[variants][{{ data.id }}][image]" class="it-exchange-variants-image" />
-		</div>
-		<div class="variant-value-delete">
-			<a href class="it-exchange-remove-item it-exchange-remove-variant-value">&times;</a>
-		</div>
-	<!--</li>-->
 </script>
 
 <!-- Variant Value Template for Colors -->
 <script type="text/template" id="tmpl-it-exchange-admin-variant-value-color">
-	<!--<li class="clearfix" data-variant-value-id="{{ data.id }}" data-variant-value-parent="{{ data.parentId }}"> -->
-		<div class="variant-value-reorder" data-variant-value-order="{{ data.order }}"> 
-			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="variant-order-input" />
+	<div class="variant-value-reorder" data-variant-value-order="{{ data.order }}">
+		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="variant-order-input" />
+	</div>
+	<div class="variant-value-info">
+		<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.parentId }}][default]" value="{{ data.id }}" {{ data.isDefault }} />
+		<span class="variant-value-name variant-text-placeholder">{{ data.title }}</span>
+		<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
+		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />
+		<div class="variant-value-hex">
+			<input type="text" value="{{ data.color }}" name="it-exchange-product-variants[variants][{{ data.id }}][color]" class="it-exchange-variants-colorpicker" />
 		</div>
-		<div class="variant-value-info">
-			<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.parentId }}][default]" value="{{ data.id }}" {{ data.isDefault }} />
-			<span class="variant-value-name variant-text-placeholder">{{ data.title }}</span>
-			<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
-			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />
-			<div class="variant-value-hex">
-				<input type="text" value="{{ data.color }}" name="it-exchange-product-variants[variants][{{ data.id }}][color]" class="it-exchange-variants-colorpicker" />
-			</div>
-		</div>
-		<div class="variant-value-delete">
-			<a href class="it-exchange-remove-item it-exchange-remove-variant-value">&times;</a>
-		</div>
-	<!--</li>-->
+	</div>
+	<div class="variant-value-delete">
+		<a href class="it-exchange-remove-item it-exchange-remove-variant-value">&times;</a>
+	</div>
 </script>
 
 <!-- Variant Value Template for Radios and Selects -->
 <script type="text/template" id="tmpl-it-exchange-admin-variant-value">
-	<!--<li class="clearfix" data-variant-value-id="{{ data.id }}" data-variant-value-parent="{{ data.parentId }}"> -->
-		<div class="variant-value-reorder" data-variant-value-order="{{ data.order }}"> 
-			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="variant-order-input" />
-		</div>
-		<div class="variant-value-info">
-			<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.parentId }}][default]" value="{{ data.id }}" {{ data.isDefault }} />
-			<span class="variant-value-name variant-text-placeholder">{{ data.title }}</span>
-			<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
-			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />
-		</div>
-		<div class="variant-value-delete">
-			<a href class="it-exchange-remove-item it-exchange-remove-variant-value">&times;</a>
-		</div>
-	<!--</li>-->
+	<div class="variant-value-reorder" data-variant-value-order="{{ data.order }}">
+		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="variant-order-input" />
+	</div>
+	<div class="variant-value-info">
+		<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.parentId }}][default]" value="{{ data.id }}" {{ data.isDefault }} />
+		<span class="variant-value-name variant-text-placeholder">{{ data.title }}</span>
+		<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
+		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />
+	</div>
+	<div class="variant-value-delete">
+		<a href class="it-exchange-remove-item it-exchange-remove-variant-value">&times;</a>
+	</div>
 </script>
 
 <!-- Core Preset Variant Template for Add Variant -->
