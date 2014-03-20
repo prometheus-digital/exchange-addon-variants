@@ -193,7 +193,7 @@ class IT_Exchange_Product_Feature_Variants {
 						it_exchange_variants_addon_update_variant( $variant_id, $new_variants[$variant_id] );
 
 						// Remove from new variants list so we don't add again
-						unset( $new_variants[$array_key] );
+						unset( $new_variants[$variant_id] );
 					}
 				}
 
