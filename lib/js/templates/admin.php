@@ -45,7 +45,7 @@ if ( ! is_admin() )
 
 <!-- Variant Template -->
 <script type="text/template" id="tmpl-it-exchange-admin-variant">
-	<!--<div class="it-exchange-existing-variant" data-variant-id="{{ data.id }}" data-variant-open="false">-->
+	<!--<div class="it-exchange-existing-variant" data-variant-id="{{ data.id }}" data-variant-open="<# if ( data.openDiv ) { #>true<# } else {#>false<#}#>">-->
 		<div class="variant-title">
 			<span class="variant-title-move">
 				<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="parent-variant-order-input" />
