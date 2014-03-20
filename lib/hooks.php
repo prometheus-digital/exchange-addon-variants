@@ -161,7 +161,7 @@ function it_exchange_variants_json_api() {
 				$response_variant->order         = $variant->menu_order;
 				$response_variant->uiType        = empty( $parent->ui_type ) ? false : $parent->ui_type;
 				$response_variant->color         = empty( $variant->color ) ? false : $variant->color;
-				$response_variant->imageUrl      = empty( $variant->image ) ? false : $variant->image;
+				$response_variant->imageUrl      = empty( $variant->image ) ? '' : $variant->image;
 				$response_variant->isDefault     = empty( $variant->default ) ? '' : 'checked';
 				$response_variant->presetSlug    = empty( $parent->preset_slug ) ? false : $parent->preset_slug;
 
@@ -182,7 +182,7 @@ function it_exchange_variants_json_api() {
 				$response_value->title         = $value['title'];
 				$response_value->order         = empty( $value['order'] ) ? 0 : $value['order'];
 				$response_value->color         = empty( $value['color'] ) ? false : $value['color'];
-				$response_value->imageUrl      = empty( $value['image'] ) ? false : $value['image'];
+				$response_value->imageUrl      = empty( $value['image'] ) ? '' : $value['image'];
 				$response_value->uiType        = empty( $preset->ui_type ) ? false : $preset->ui_type;
 				$response_value->isDefault     = empty( $preset->default ) ? '' : 'checked';
 				$response_value->presetSlug    = empty( $preset->slug ) ? false : $preset->slug;
@@ -207,7 +207,7 @@ function it_exchange_variants_json_api() {
 					$response->title         = $preset->title;
 					$response->order         = empty( $value['order'] ) ? 0 : $value['order'];
 					$response->color         = empty( $value['color'] ) ? false : $value['color'];
-					$response->imageUrl      = empty( $value['image'] ) ? false : $value['image'];
+					$response->imageUrl      = empty( $value['image'] ) ? '' : $value['image'];
 					$response->uiType        = empty( $preset->ui_type ) ? false : $preset->ui_type;
 					$response->isDefault     = '';
 					$response->presetSlug    = empty( $preset->slug ) ? false : $preset->slug;
