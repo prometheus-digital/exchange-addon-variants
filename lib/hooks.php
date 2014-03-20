@@ -122,6 +122,7 @@ function it_exchange_variants_json_api() {
 	$variant_id = empty( $_REQUEST['product-variant'] ) ? false : $_REQUEST['product-variant'];
 	$preset_id  = empty( $_REQUEST['preset-id'] ) ? false : $_REQUEST['preset-id'];
 	$parent_id  = empty( $_REQUEST['parent-id'] ) ? false : $_REQUEST['parent-id'];
+	$ui_type    = empty( $_REQUEST['ui-type'] ) ? false : $_REQUEST['ui-type'];
 
 	if ( empty( $endpoint ) )
 		return false;
@@ -189,6 +190,32 @@ function it_exchange_variants_json_api() {
 				$response[] = $response_value;
 			}
 			die( json_encode( $response ) );
+		}
+	} else if ( 'variant-value-from-ui-type' == $endpoint ) {
+		if ( ! empty( $parent_id ) && ! empty( $ui_type ) ) {
+			if ( $presets = it_exchange_variants_addon_get_presets( array( 'core_only' => true ) ) ) {
+
+				foreach( $presets as $preset ) {
+					if ( ! $preset->is_template || empty( $preset->ui_type ) || $ui_type != $preset->ui_type || empty( $preset->values[0] ) )
+						continue;
+
+					$value = $preset->values[0];
+
+					$response = new stdClass();
+					$response->id            = uniqid(rand());
+					$response->parentId      = (int) $parent_id;
+					$response->title         = $preset->title;
+					$response->order         = empty( $value['order'] ) ? 0 : $value['order'];
+					$response->color         = empty( $value['color'] ) ? false : $value['color'];
+					$response->imageUrl      = empty( $value['image'] ) ? false : $value['image'];
+					$response->uiType        = empty( $preset->ui_type ) ? false : $preset->ui_type;
+					$response->isDefault     = '';
+					$response->presetSlug    = empty( $preset->slug ) ? false : $preset->slug;
+
+					// We only want one so die here
+					die( json_encode( $response ) );
+				}
+			}
 		}
 	} else if ( 'core-presets' == $endpoint ) {
 		if ( $presets = it_exchange_variants_addon_get_presets( array( 'core_only' => true ) ) ) {
