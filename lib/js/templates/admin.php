@@ -56,7 +56,7 @@ if ( ! is_admin() )
 			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][ui_type]" value="{{ data.uiType }}"> 
 			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][preset_slug]" value="{{ data.presetSlug }}"> 
 			<span class="variant-title-values-preview">{{ data.valuesPreview }}</span>
-			<span class="variant-title-delete it-exchange-remove-item">&times;</span>
+			<span class="variant-title-delete it-exchange-remove-item it-exchange-remove-variant">&times;</span>
 		</div>
 		<div class="variant-values hidden">
 			<div class="edit-variant">
@@ -88,7 +88,7 @@ if ( ! is_admin() )
 			<input type="hidden" value="{{ data.imageUrl }}" name="it-exchange-product-variants[variants][{{ data.id }}][image]" class="it-exchange-variants-image" />
 		</div>
 		<div class="variant-value-delete">
-			<a href class="it-exchange-remove-item">&times;</a>
+			<a href class="it-exchange-remove-item it-exchange-remove-variant-value">&times;</a>
 		</div>
 	<!--</li>-->
 </script>
@@ -109,7 +109,7 @@ if ( ! is_admin() )
 			</div>
 		</div>
 		<div class="variant-value-delete">
-			<a href class="it-exchange-remove-item">&times;</a>
+			<a href class="it-exchange-remove-item it-exchange-remove-variant-value">&times;</a>
 		</div>
 	<!--</li>-->
 </script>
@@ -127,7 +127,7 @@ if ( ! is_admin() )
 			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />
 		</div>
 		<div class="variant-value-delete">
-			<a href class="it-exchange-remove-item">&times;</a>
+			<a href class="it-exchange-remove-item it-exchange-remove-variant-value">&times;</a>
 		</div>
 	<!--</li>-->
 </script>
