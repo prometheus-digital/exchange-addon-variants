@@ -36,10 +36,10 @@ if ( ! is_admin() )
 				</div>
 			</div>
 		</div>
-
-		<div class="variants-updated-notification">
-			<p><?php _e( 'Changes made to product variants require you to save this product before other variant related options are updated.', 'LION' ); ?></p>
-		</div>
+	</div>
+	<div class="variants-updated-notification hidden">
+		<input type="hidden" name="it-exchange-variants-updated" value="" />
+		<p><?php _e( 'Changes made to product variants require you to save this product before other variant related options are updated.', 'LION' ); ?></p>
 	</div>
 </script>
 

@@ -154,6 +154,10 @@ class IT_Exchange_Product_Feature_Variants {
 		if ( ! it_exchange_product_type_supports_feature( $product_type, 'variants' ) )
 			return;
 
+		// Abort if nothing changed
+		if ( empty( $_POST['it-exchange-variants-updated'] ) )
+			return;
+
         // Save options
 		if ( isset( $_POST['it-exchange-product-variants'] ) ) {
 
