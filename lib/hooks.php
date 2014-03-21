@@ -140,6 +140,7 @@ function it_exchange_variants_json_api() {
 				$response_variant->order         = $variant->menu_order;
 				$response_variant->uiType        = $variant->ui_type;
 				$response_variant->presetSlug    = $variant->preset_slug;
+				$response_variant->default       = $variant->default;
 				$response_variant->valuesPreview = '';
 
 				$response[] = $response_variant;
@@ -162,7 +163,7 @@ function it_exchange_variants_json_api() {
 				$response_variant->uiType        = empty( $parent->ui_type ) ? false : $parent->ui_type;
 				$response_variant->color         = empty( $variant->color ) ? false : $variant->color;
 				$response_variant->imageUrl      = empty( $variant->image ) ? '' : $variant->image;
-				$response_variant->isDefault     = empty( $variant->default ) ? '' : 'checked';
+				$response_variant->isDefault     = ( ! empty( $parent->default ) && $parent->default == $variant->ID ) ? 'checked' : '';
 				$response_variant->presetSlug    = empty( $parent->preset_slug ) ? false : $parent->preset_slug;
 
 				$response[] = $response_variant;

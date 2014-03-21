@@ -244,9 +244,16 @@ class IT_Exchange_Product_Feature_Variants {
 
 					// Create Variant
 					if ( $new_id = it_exchange_variants_addon_create_variant( $args ) ) {
+
+						// Update the temp variant_id with the new_id in the defaults_needing_updated array if it is present
+						if ( isset( $defaults_needing_updated[$variant_id] ) ) {
+							$defaults_needing_updated[$new_id] = $defaults_needing_updated[$variant_id];
+							unset( $defaults_needing_updated[$variant_id] );
+						}
+
 						// Check previously chached defaults. If this variant is a value, update the parent (key) with its new ID and unset from array
 						if ( $parent_id = array_search( $variant_id, $defaults_needing_updated ) ) {
-							it_exchange_variants_addon_update_variant( $parent_id, array( 'default', $new_id ) );
+							it_exchange_variants_addon_update_variant( $parent_id, array( 'default' => $new_id ) );
 							unset( $defaults_needing_updated[$parent_id] );
 						}
 						$existing_variants[] = $new_id;
