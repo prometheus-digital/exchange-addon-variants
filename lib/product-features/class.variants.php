@@ -127,7 +127,7 @@ class IT_Exchange_Product_Feature_Variants {
 				hasVariants:     <?php echo esc_js( $existing_variants ); ?>
 			};
 		</script>
-		<p>Variants Container goes here</p>
+		<p><?php _e( 'Error loading variants. Please try again', 'LION' ); // This div should be replaced by backbone JS ?></p>
 		<?php
 	}
 

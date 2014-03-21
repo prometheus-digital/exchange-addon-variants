@@ -17,13 +17,6 @@ function it_exchange_variants_addon_create_inital_presets() {
 	$core_presets_args   = it_exchange_variants_addon_get_core_presets_args();
 	$existing_presets    = it_exchange_variants_addon_get_presets( array( 'core_only' => true ) );
 
-	//die( ITUtility::print_r($existing_presets) );
-	/*
-	foreach( $existing_presets as $preset ) {
-		wp_delete_post( $preset->ID, true );
-	}
-	*/
-
 	// Loop through preset args and add, update or skip each preset
 	foreach( $core_presets_args as $preset ) {
 		// Don't create it if it was already deleted by the store owner
@@ -344,65 +337,6 @@ function it_exchange_variants_addon_get_preset( $post ) {
 function it_exchange_variants_addon_update_core_preset( $old_id, $new_preset_args ) {
 	wp_delete_post( $old_id, true );
 	it_exchange_variants_addon_create_variant_preset( $new_preset_args );
-}
-
-/**
- * Inits the AJAX response for add/edit page.
- *
- * @since 1.0.0
- *
- * @return void
-*/
-function it_exchange_variants_addon_process_add_edit_variant_ajax() {
-	$action = empty( $_POST['itevAction'] ) ? false : $_POST['itevAction'];
-	$return = new stdClass();
-	$return->status = 0;
-
-	if ( ! $action || ! check_ajax_referer( 'it-exchange-variants-addon-add-preset-template', '_itEVAddTemplateNonce' ) )
-		die( json_encode( $return ) );
-
-	switch( $action ) {
-		case 'addVariantFromTemplate' :
-			$return->status  = 1;
-			$return->message = false;
-			$return->html    = it_exchange_variants_addon_get_add_edit_variant_form_field( 'template', $_POST['itevTemplateID'] );
-			break;
-		case 'addVariantFromSaved' :
-			$return->status  = 1;
-			$return->message = false;
-			$return->html    = it_exchange_variants_addon_get_add_edit_variant_form_field( 'saved', $_POST['itevSavedID'] );
-			break;
-
-	}
-	die( json_encode( $return ) );
-
-}
-add_action( 'wp_ajax_ite_add_edit_variants', 'it_exchange_variants_addon_process_add_edit_variant_ajax' );
-
-/**
- * Builds a new variant form field from a template
- *
- * @since 1.0.0
- *
- * @param int template_id
-*/
-function it_exchange_variants_addon_get_add_edit_variant_form_field( $type, $id ) {
-	include_once( 'class.variant-form-field.php' );
-	$field = new IT_Exchange_Variants_Addon_Form_Field( $type, $id );
-	return $field->div;
-}
-
-/**
- * Returns an object that mimicks the variant preset object for saved variant preset values.
- *
- * @since 1.0.0
-*/
-function it_exchange_variants_addon_get_saved_preset_value( $args ) {
-	include_once( 'class.variant-saved-preset-value.php' );
-    $preset = new IT_Exchange_Variants_Addon_Saved_Preset_Value( $args );
-    if ( $preset->title && $preset->slug )
-        return apply_filters( 'it_exchange_variants_addon_get_saved_preset_value', $preset, $args );
-    return apply_filters( 'it_exchange_variants_addon_get_saved_preset_value', false, $args );
 }
 
 /**
