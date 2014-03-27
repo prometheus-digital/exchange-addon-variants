@@ -33,6 +33,12 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 	var $product_id;
 
 	/**
+	 * @var array $product_variants the variants product feature
+	 * @since 1.0.0
+	*/
+	var $product_variants = null;
+
+	/**
 	 * @var string $combo_hash  a unique MD5 hash of the combination of variants this value is for
 	 * @since 1.0.0
 	*/
@@ -63,6 +69,12 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 	var $value;
 
 	/**
+	 * @var string $product_feature_variants_version
+	 * @since 1.0.0
+	*/
+	var $product_feature_variants_version;
+
+	/**
 	 * @var mixed $post_meta  the entire post meta entry for this product_feature
 	 * @since 1.0.0
 	*/
@@ -80,7 +92,9 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 	 * Constructor. Loads post data and variant preset data
 	 *
 	 * @since 1.0.0
-	 * @param mixed $post  wp post id or post object. optional.
+	 * @param mixed  $post  wp post id or post object. optional.
+	 * @param string $product_feature this is the slug of a product feature. eg: inventory
+	 * @param array  $product_feature_options options
 	 * @return void
 	*/
 	function IT_Exchange_Variants_Addon_Product_Feature_Combos( $product_id, $product_feature, $product_feature_options=array() ) {
@@ -88,34 +102,116 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 		$this->set_product_feature( $product_feature );
 		$this->set_product_feature_options( $product_feature_options );
 		$this->set_post_meta();
+		$this->set_product_feature_variants_version();
 	}
 
+	/**
+	 * Sets the product_id property
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $product_id the product ID from the posts table
+	 * @return void
+	*/
 	function set_product_id( $product_id ) {
 		$this->product_id = $product_id;
 	}
 
+	/**
+	 * Sets the product_feature property
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $product_feature the product ID from the posts table. eg: inventory
+	 * @return void
+	*/
 	function set_product_feature( $product_feature ) {
 		$this->product_feature = $product_feature;
 	}
 
+	/**
+	 * Sets the product_variants property
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	*/
+	function set_product_variants() {
+		$this->product_variants = it_exchange_get_product_feature( $this->product_id, 'variants' );
+	}
+
+	/**
+	 * Sets the product_feature property
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $product_feature_options options
+	 * @return void
+	*/
 	function set_product_feature_options( $product_feature_options ) {
 		$this->product_feature_options = $product_feature_options;
 	}
 
+	/**
+	 * Grabs the post meta asked for by the controller and loads in the post_meta property
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	*/
 	function set_post_meta() {
 		$this->post_meta = it_exchange_get_product_feature( $this->product_id, $this->product_feature, $this->product_feature_options );
 	}
 
-	function set_all_variant_combos_for_product() {
-		$this->all_variant_combos_for_product = it_exchange_variants_addon_get_all_variant_combos_for_product( $this->product_id );
+	function set_product_feature_variants_version() {
+		$this->product_feature_variants_version = it_exchange_get_product_feature( $this->product_id, $this->product_feature, array( 'setting' => 'variants-version' ) );
 	}
 
+	/**
+	 * Grabs all possible variant combos for a product's variants and saves to the all_variant_combos_for_product property
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	*/
+	function set_all_variant_combos_for_product( $include_alls=true ) {
+		$this->all_variant_combos_for_product = it_exchange_variants_addon_get_all_variant_combos_for_product( $this->product_id, $include_alls );
+	}
+
+	/**
+	 * Sets the value of attribute
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param mixed $value the value to be used
+	 * @return void
+	*/
 	function set_value( $value ) {
 		$this->value = $value;
 	}
 
+	/**
+	 * Grab the post_meta property
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	*/
 	function get_post_meta() {
 		return $this->post_meta;
+	}
+
+	function variants_were_updated() {
+		if ( is_null( $this->product_variants ) )
+			$this->set_product_variants();
+
+		if ( empty( $this->product_variants['variants_version'] ) )
+			return false;
+
+		if ( empty( $this->product_feature_variants_version ) )
+			$this->product_feature_variants_version = $this->product_variants['variants_version'];
+
+		return $this->product_feature_variants_version != $this->product_variants['variants_version'];
 	}
 
 	function load_existing_from_hash( $hash ) {
@@ -264,5 +360,44 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 	function save_post_meta() {
 		//die( ITUtility::print_r($this->post_meta) );
 		it_exchange_update_product_feature( $this->product_id, $this->product_feature, $this->post_meta, array( 'setting' => 'variants' ) );
+	}
+
+	/**
+	 * Identifies new combos
+	 *
+	*/
+	function get_missing_combos() {
+
+		$missing_combos = array();
+
+		ITUtility::print_r($this->all_variant_combos_for_product);
+		ITUtility::print_r($this->post_meta);
+		//die();
+		// Grab hashes for new combos
+		$new_combos = array();
+		foreach( $this->all_variant_combos_for_product as $combo ) {
+			ITUtility::print_r($combo);
+			$combos_to_hash = $this->convert_raw_combos_to_combos_for_hash( $combo );
+			$hash           = $this->hash_combos( $combos_to_hash ); 
+			$title          = $this->generate_title_from_combos($combo);
+			$new_combos[$hash] = array(
+				'raw_combos' => $combo,
+				'combos_to_hash' => $combos_to_hash,
+				'combos_title'   => $title,
+			);
+		}
+
+		// Loop through post_meta combos (old and new combined) and filter out new ones
+		$old_and_new_combos = $this->post_meta;
+		foreach ( $old_and_new_combos as $hash => $attributes ) {
+			echo "$hash " . $attributes['combos_title'] . "<br />";
+			//die( ITUtility::print_r($new_combos) );
+			if ( ! isset( $new_combos[$hash] ) )
+				$missing_combos[$hash] = $attributes;
+		}
+		ITUtility::print_r($new_combos);
+		//die();
+
+		return empty( $missing_combos ) ? false : $missing_combos;
 	}
 }

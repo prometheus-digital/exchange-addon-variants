@@ -474,11 +474,11 @@ function it_exchange_variants_addon_get_variants( $args=array() ) {
  * @param mixed $post  post object or post id
  * @rturn object IT_Exchange_Variant_Addon_Variant object for passed post
 */
-function it_exchange_variants_addon_get_variant( $post ) {
+function it_exchange_variants_addon_get_variant( $post, $break_cache=false ) {
 
 	$post_id = empty( $post->ID ) ? (int) $post : $post->ID;
 
-	if ( ! isset( $GLOBALS['it_exchange']['variants_cache'][$post_id] ) ) {
+	if ( ! isset( $GLOBALS['it_exchange']['variants_cache'][$post_id] ) || ! empty( $break_cache ) ) {
 		include_once( 'class.variant.php' );
 		$variant = new IT_Exchange_Variants_Addon_Variant( $post );
 		if ( $variant->ID )
