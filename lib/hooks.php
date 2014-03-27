@@ -276,7 +276,7 @@ function it_exchange_variants_json_api() {
 			}
 			die( json_encode( $response ) );
 		}
-	} else if ( 'inventory-combos' == $endpoint ) {
+	} else if ( 'available-inventory-combos' == $endpoint ) {
 		if ( $raw_combos = it_exchange_variants_addon_get_all_variant_combos_for_product( $product_id, false ) ) {
 			$response = array();
 			$product_variants = it_exchange_get_product_feature( $product_id, 'variants' );
@@ -298,12 +298,31 @@ function it_exchange_variants_json_api() {
 				$combo->ID       = $combo_attributes['hash'];
 				$combo->hash     = $combo_attributes['hash'];
 				$combo->variants = (array) $combo_attributes['combo'];
+				$combo->title    = empty( $combo_attributes['title'] ) ? '' : $combo_attributes['title'];
 				$combo->value    = empty( $inventory_post_meta[$combo->hash] ) ? 0 : $inventory_post_meta[$combo->hash]['value'];
 				$combo->version  = $variants_version;
 
 				$response[] = $combo;
 			}
 			die( json_encode( $response ) );
+		}
+	} else if ( 'missing-inventory-combos' ) {
+		$controller = it_exchange_variants_addon_get_product_feature_controller( $product_id, 'inventory', array( 'setting' => 'variants' ) );
+		if ( $controller->variants_were_updated() && ! empty( $controller->post_meta ) ) {
+			$response = array();
+			foreach( $controller->post_meta as $hash => $missing ) {
+
+				$combo = new stdClass();
+				$combo->ID       = $hash;
+				$combo->hash     = $hash;
+				$combo->variants = empty( $missing['variants_title_array'] ) ? array() : $missing['variants_title_array'];
+				$combo->title    = empty( $missing['combos_title'] ) ? '' : $missing['combos_title'];
+				$combo->value    = empty( $missing['value'] ) ? 0 : $missing['value'];
+				$combo->version  = $controller->product_feature_variants_version;
+
+				$response[] = $combo;
+			}
+				die( json_encode( $response) );
 		}
 	}
 	return false;

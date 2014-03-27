@@ -201,6 +201,10 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 		return $this->post_meta;
 	}
 
+	function clear_post_meta() {
+		$this->post_meta = array();
+	}
+
 	function variants_were_updated() {
 		if ( is_null( $this->product_variants ) )
 			$this->set_product_variants();
@@ -256,20 +260,22 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 
 		$combos_to_hash = $this->convert_raw_combos_to_combos_for_hash( $combos );
 
-		$this->combo_hash     = $this->hash_combos( $combos_to_hash );
-		$this->raw_combos     = $combos;
-		$this->combos_to_hash = $combos_to_hash;
-		$this->combos_title   = $this->generate_title_from_combos( $combos_to_hash );
-		$this->is_parent      = $this->set_is_parent();
+		$this->combo_hash           = $this->hash_combos( $combos_to_hash );
+		$this->raw_combos           = $combos;
+		$this->combos_to_hash       = $combos_to_hash;
+		$this->combos_title         = $this->generate_title_from_combos( $combos_to_hash );
+		$this->is_parent            = $this->set_is_parent();
+		$this->variants_title_array = $this->generate_variants_title_array( $combos_to_hash );
 	}
 
 	function load_new_from_combos_to_hash( $array ) {
 		$this->reset_current_combo();
-		$this->raw_combos     = array_values( $array );
-		$this->combos_to_hash = $array;
-		$this->combo_hash     = $this->hash_combos( $array );
-		$this->combos_title   = $this->generate_title_from_combos( $array );
-		$this->is_parent      = $this->set_is_parent();
+		$this->raw_combos           = array_values( $array );
+		$this->combos_to_hash       = $array;
+		$this->combo_hash           = $this->hash_combos( $array );
+		$this->combos_title         = $this->generate_title_from_combos( $array );
+		$this->is_parent            = $this->set_is_parent();
+		$this->variants_title_array = $this->generate_variants_title_array( $array );
 	}
 
 	function load_new_from_hash( $hash ) {
@@ -324,6 +330,16 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 		return $combos_to_hash;
 	}
 
+	function generate_variants_title_array( $combos_to_hash ) {
+		$variants_title_array = array();
+		foreach( $combos_to_hash as $key => $variant_id ) { 
+			$parent_title                        = get_the_title( $key );
+			$child_title                         = get_the_title( $variant_id );
+			$variants_title_array[$parent_title] = $child_title;
+		} 
+		return $variants_title_array;
+	}
+
 	function generate_title_from_combos( $combo, $include_alls=false ) {
 		$combo_title   = array();
 		foreach( (array) $combo as $combo_id) {
@@ -347,10 +363,11 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 			return false;
 
 		$props = array(
-			'raw_combos'     => $this->raw_combos,
-			'combos_to_hash' => $this->combos_to_hash,
-			'combos_title'   => $this->combos_title,
-			'value'          => $this->value,
+			'raw_combos'           => $this->raw_combos,
+			'combos_to_hash'       => $this->combos_to_hash,
+			'combos_title'         => $this->combos_title,
+			'variants_title_array' => $this->variants_title_array,
+			'value'                => $this->value,
 		);
 
 		$this->post_meta[$this->combo_hash] = $props;
