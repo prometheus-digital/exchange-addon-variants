@@ -287,12 +287,15 @@ class IT_Exchange_Product_Feature_Variants {
 	 * @return bolean
 	*/
 	function save_feature( $product_id, $new_value, $options=array() ) {
+
 		// Save version number of variants
-		$version_array = $new_value['variants'];
-		sort( $version_array );
-		$version_hash = md5( serialize( $version_array ) );
-		if ( empty( $new_value['variants_version'] ) || $new_value['variants_version'] != $version_hash )
-			$new_value['variants_version'] = $version_hash;
+		$version_array = empty( $new_value['variants'] ) ? false : (array) $new_value['variants'];
+		if ( $version_array ) {
+			sort( $version_array );
+			$version_hash = md5( serialize( $version_array ) );
+			if ( empty( $new_value['variants_version'] ) || $new_value['variants_version'] != $version_hash )
+				$new_value['variants_version'] = $version_hash;
+		}
 
 		// Only accept settings for max_number (default) or 'enabled' (checkbox)
 		update_post_meta( $product_id, '_it-exchange-product-variants', $new_value );
