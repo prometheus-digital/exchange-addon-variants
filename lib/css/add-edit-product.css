@@ -85,5 +85,8 @@
 .it-exchange-product-inventory-variants-table .inventory-variant-header-cell {font-weight: 700;}
 .it-exchange-product-inventory-variants-table .inventory-variant-cell.inventory-variant-input-cell, .it-exchange-product-inventory-variants-table .inventory-variant-header-cell.inventory-variant-input-cell {float:right;max-width: 70px;min-width: 70px;margin-right: .25em;overflow:hidden;}
 #it-exchange-advanced-tabs .it-exchange-product-inventory-variants-table .inventory-variant-input-cell input[type="number"] { background: #fff;border: 1px solid #d6d6d6;border-radius: 3px;font-size: 13px;padding: 5px 10px;color: #3d4142;width: 100%;}
-.it-exchange-product-inventory-variants-missing-table .inventory-variant-missing-row{ background:#F1F89A; padding:5px;margin:5px 0;}
-input.inventory-variant-missing-value { font-size:1em;padding:0;max-width:45px; }
+
+.it-exchange-product-inventory-variants-missing-table .inventory-variant-missing-row { background:#fffad8;border: 1px solid #c6ce69; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; padding:.8125em;margin: .625em 0;}
+.it-exchange-product-inventory-variants-missing-table .inventory-variant-missing-row .missing-inventory-notification-dialog {overflow:hidden;}
+.it-exchange-product-inventory-variants-missing-table .inventory-variant-missing-row p {margin-top: 0;}
+#it-exchange-advanced-tabs .it-exchange-product-inventory-variants-missing-table .inventory-variant-missing-row input[type="text"] { background: #fffceb; border-color: #cccabc; text-align: center; font-size:1em; padding: .5em; margin: -5px 0 0 0;max-width:45px; float:right; }
