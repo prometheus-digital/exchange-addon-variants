@@ -24,7 +24,7 @@ $variants_ui_enabled = ( 'yes' == it_exchange_get_product_feature( $product_id, 
 	<# var width = ( 100 / ( _.size(data.variants) + 2)  ) #>
 	<style type="text/css">
 		.it-exchange-product-inventory-variants-table .inventory-variant-header-cell,
-		.it-exchange-product-inventory-variants-table .inventory-variant-cell { max-width: {{ width }}% !important; }
+		.it-exchange-product-inventory-variants-table .inventory-variant-cell { max-width: {{ width }}% ; }
 	</style>
 	<input id="it-exchange-inventory-variants-version" type="hidden" name="it-exchange-inventory-variants-version" disabled value="{{ data.version }}" />
 	<div class="inventory-variant-header-row">
