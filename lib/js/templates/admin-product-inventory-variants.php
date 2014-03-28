@@ -69,3 +69,7 @@ $variants_ui_enabled = ( 'yes' == it_exchange_get_product_feature( $product_id, 
 		<a href="#" class="transfer-cancel button"><?php _e( 'Cancel', 'LION' ); ?></a>
 	</div>
 </script>
+
+<script type="text/template" id="tmpl-it-exchange-product-inventory-variants-disgard-all-missing-combos">
+	<a id="it-exchange-product-inventory-variants-disgard-all-missing-combos" href="#"><?php _e( 'Discard all invalid inventories', 'LION' ); ?></a>
+</script>
