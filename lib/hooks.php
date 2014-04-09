@@ -47,6 +47,14 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-inventory-admin-views',  $url_base . 'views/variant-admin-inventory-views.js', $deps );
 			add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
 		}
+
+		// Product Images integration
+		if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post_id ), 'product-images' ) ) {
+			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-models',  $url_base . 'models/variant-images-models.js', $deps );
+			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-collections',  $url_base . 'collections/variant-images-collections.js', $deps );
+			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-admin-views',  $url_base . 'views/variant-admin-images-views.js', $deps );
+			add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
+		}
 	}
 }
 add_action( 'admin_enqueue_scripts', 'it_exchange_variants_addon_admin_wp_enqueue_scripts' );
@@ -127,16 +135,21 @@ function it_exchange_variants_addon_load_backbone_admin_templates() {
 	// Inventory
 	if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post_id ), 'inventory' ) )
 		include( dirname( __FILE__ ) . '/js/templates/admin-product-inventory-variants.php' );
+
+	// Product Images
+	if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post_id ), 'product-images' ) )
+		include( dirname( __FILE__ ) . '/js/templates/admin-product-images-variants.php' );
 }
 
 function it_exchange_variants_json_api() {
 
-	$endpoint   = empty( $_REQUEST['endpoint'] ) ? false : $_REQUEST['endpoint'];
-	$product_id = empty( $_REQUEST['product-id'] ) ? false : $_REQUEST['product-id'];
-	$variant_id = empty( $_REQUEST['product-variant'] ) ? false : $_REQUEST['product-variant'];
-	$preset_id  = empty( $_REQUEST['preset-id'] ) ? false : $_REQUEST['preset-id'];
-	$parent_id  = empty( $_REQUEST['parent-id'] ) ? false : $_REQUEST['parent-id'];
-	$ui_type    = empty( $_REQUEST['ui-type'] ) ? false : $_REQUEST['ui-type'];
+	$endpoint       = empty( $_REQUEST['endpoint'] ) ? false : $_REQUEST['endpoint'];
+	$product_id     = empty( $_REQUEST['product-id'] ) ? false : $_REQUEST['product-id'];
+	$variant_id     = empty( $_REQUEST['product-variant'] ) ? false : $_REQUEST['product-variant'];
+	$preset_id      = empty( $_REQUEST['preset-id'] ) ? false : $_REQUEST['preset-id'];
+	$parent_id      = empty( $_REQUEST['parent-id'] ) ? false : $_REQUEST['parent-id'];
+	$ui_type        = empty( $_REQUEST['ui-type'] ) ? false : $_REQUEST['ui-type'];
+	$variants_array = empty( $_REQUEST['variants-array'] ) ? false : (array) $_REQUEST['variants-array'];
 
 	if ( empty( $endpoint ) )
 		return false;
@@ -306,7 +319,7 @@ function it_exchange_variants_json_api() {
 			}
 			die( json_encode( $response ) );
 		}
-	} else if ( 'missing-inventory-combos' ) {
+	} else if ( 'missing-inventory-combos' == $endpoint ) {
 		$controller = it_exchange_variants_addon_get_product_feature_controller( $product_id, 'inventory', array( 'setting' => 'variants' ) );
 		if ( $controller->variants_were_updated() && ! empty( $controller->post_meta ) ) {
 			$response = array();
@@ -323,6 +336,61 @@ function it_exchange_variants_json_api() {
 				$response[] = $combo;
 			}
 				die( json_encode( $response) );
+		}
+	} else if ( 'product-variant-hierarchy' == $endpoint ) {
+		if ( ! empty( $product_id ) ) {
+			$variants  = (array) it_exchange_get_variants_for_product( $product_id );
+			$response = array();
+			foreach( $variants as $variant ) {
+				if ( empty( $variant->ID ) )
+					continue;
+				$response_variant = new stdClass();
+				$response_variant->id            = $variant->ID;
+				$response_variant->title         = $variant->post_title;
+				$response_variant->values        = array();
+
+				if ( ! empty( $variant->values ) ) {
+					foreach( $variant->values as $value ) {
+						$value_object        = new stdClass();
+						$value_object->id    = $value->ID;
+						$value_object->title = $value->post_title;
+						$response_variant->values[] = $value_object;
+					}
+				}
+
+				$response[] = $response_variant;
+			}
+			die( json_encode( $response ) );
+		}
+	} else if ( 'get-atts-from-raw-combo' == $endpoint ) {
+		if ( ! empty( $variants_array ) ) {
+			$result = new stdClass();
+			$result->hash  = '';
+			$result->title = '';
+			$result->combo = array();
+			if ( $response = it_exchange_get_variant_combo_attributes( $variants_array ) ) {
+				$result->hash  = empty( $response['hash'] ) ? $result->hash : $response['hash'];
+				$result->title = empty( $response['title'] ) ? $result->title : $response['title'];
+				$result->combo = empty( $response['combo'] ) ? $result->combo : $response['combo'];
+			}
+			die( json_encode($response) );
+		}
+	} else if ( 'get-hash-from-raw-combo' == $endpoint ) {
+		if ( ! empty( $variants_array ) ) {
+			$variants_to_hash = array();
+			foreach( $variants_array as $key => $variant_id ) {
+				if ( 'it_exchange_variant' != get_post_type( $variant_id ) )
+					continue;
+				$parent = wp_get_post_parent_id( $variant_id );
+				$parent = empty( $parent ) ? $variant_id : $parent;
+				$variants_to_hash[$parent] = $variant_id;
+			}
+			if ( ! empty( $variants_to_hash ) )
+				die( it_exchange_variants_addon_get_selected_variants_id_hash( $variants_to_hash ) );
+		}
+	} else if ( 'existing-image-combos' == $endpoint ) {
+		if ( $existing_images = $inventory_post_meta = it_exchange_get_product_feature( $product_id, 'product-images', array( 'setting' => 'variants' ) ) ) {
+			die( ITUtility::print_r($existing_images) );
 		}
 	}
 	return false;

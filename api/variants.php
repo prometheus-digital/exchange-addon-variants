@@ -168,8 +168,8 @@ function it_exchange_get_variant_combo_attributes( $combo ) {
 	foreach( (array) $combo as $combo_member ) {
 		$value                      = it_exchange_variants_addon_get_variant( $combo_member );
 		$combo_title[]              = empty( $value->post_parent ) ? __( 'All ', 'LION' ) . $value->post_title: $value->post_title;
-		$parent_key                 = empty( $value->post_parent ) ? $value->ID : $value->post_parent;
-		$array_to_hash[$parent_key] = $value->ID;
+		$parent_key                 = empty( $value->post_parent ) ? (int) $value->ID : (int) $value->post_parent;
+		$array_to_hash[$parent_key] = (int) $value->ID;
 
 		// If we find a member that's not a variant any longer (it was deleted), return false
 		if ( ! $value )
