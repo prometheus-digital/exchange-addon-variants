@@ -10,9 +10,8 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 
 	<div class="add-new-product-variant-combination">
 		<div class="label"><?php _e( 'Add Product Images for Variant Combination:', 'LION' ); ?></div>
-		<input type="button" id="it-exchange-variant-images-add-combo-button" value="<?php esc_attr_e( __( 'Add New', 'LION' ) ); ?>" class="button button-primary">
 
-		<div class="it-exchange-select-new-variant-images-combo-div hidden">
+		<div class="it-exchange-select-new-variant-images-combo-div">
 			<div class="it-exchange-variant-image-combo-selects">
 				<# _.each(data.productVariants, function( variant ) { #>
 					<select class="it-exchange-variant-images-add-combo-select">';
@@ -24,8 +23,7 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 				<# }); #>
 			</div>
 
-			<input type="button" id="it-exchange-variant-images-create-combo-button" value="<?php esc_attr_e( __( 'Create Combo', 'LION' ) ); ?>" class="button button-primary">
-			<a href="#" id="it-exchange-cancel-variant-images-create-combo"><?php _e( 'Cancel', 'LION' ); ?></a>
+			<input type="button" id="it-exchange-variant-images-create-combo-button" value="<?php esc_attr_e( __( 'Add New Combo', 'LION' ) ); ?>" class="button button-primary">
 		</div>
 
 	</div>
