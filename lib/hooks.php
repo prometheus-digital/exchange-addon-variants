@@ -396,10 +396,46 @@ function it_exchange_variants_json_api() {
 			if ( ! empty( $variants_to_hash ) )
 				die( it_exchange_variants_addon_get_selected_variants_id_hash( $variants_to_hash ) );
 		}
-	} else if ( 'existing-image-combos' == $endpoint ) {
-		if ( $existing_images = $inventory_post_meta = it_exchange_get_product_feature( $product_id, 'product-images', array( 'setting' => 'variants' ) ) ) {
-			die( ITUtility::print_r($existing_images) );
+	} else if ( 'existing-images-combos' == $endpoint ) {
+		$response = array();
+		$product_variants = it_exchange_get_product_feature( $product_id, 'variants' );
+		$variants_version = empty( $product_variants['variants_version'] ) ? false : $product_variants['variants_version'];
+
+		// Grab the value from the product images postmeta if it exists
+		$images_post_meta = it_exchange_get_product_feature( $product_id, 'product-images', array( 'setting' => 'variants' ) );
+
+		foreach( $images_post_meta as $hash => $images ) {
+			$combo = new stdClass();
+			$combo->ID       = $hash;
+			$combo->hash     = $hash;
+			$combo->variants = (array) $images['combos_to_hash'];
+			$combo->title    = empty( $images['combos_title'] ) ? '' : $images['combos_title'];
+			$combo->value    = empty( $images['value'] ) ? array() : $images['value'];
+			$combo->version  = $variants_version;
+			$combo->thumbURL = '';
+			$combo->featuredImage = false;
+			$combo->productImages = array();
+
+			foreach( $combo->value as $key => $image_id ) {
+				$image = new stdClass();
+				$image->imageID  = $image_id;
+				$image->int      = $key;
+				$image->cssID    = uniqid();
+				$image->featured = (1 === $image->int);
+				$image->thumbURL = wp_get_attachment_thumb_url( $image_id ); 
+				$image->largeURL = wp_get_attachment_url( $image_id ); 
+
+				if ( $image->featured ) {
+					$combo->featuredImage = $image;
+					$combo->thumbURL = $image->thumbURL;
+				} else {
+					$combo->productImages[$key] = $image;
+				}
+			}
+
+			$response[] = $combo;
 		}
+		die( json_encode( $response ) );
 	}
 	return false;
 }

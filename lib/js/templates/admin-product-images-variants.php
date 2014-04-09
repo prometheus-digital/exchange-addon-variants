@@ -12,8 +12,8 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 		<div class="label"><?php _e( 'Add Product Images for Variant Combination:', 'LION' ); ?></div>
 
 		<div class="it-exchange-select-new-variant-images-combo-div">
-			<div class="it-exchange-variant-image-item-not-valid-combo hidden"><?php _e( 'All combo selects cannot be "Any"', 'LION' ); ?></div>
-			<div class="it-exchange-variant-image-item-already-exists hidden"><?php _e( 'Combo already exists', 'LION' ); ?></div>
+			<div class="it-exchange-variant-image-item-not-valid-combo it-exchange-variant-image-item-combo-error hidden"><?php _e( 'All combo selects cannot be "Any"', 'LION' ); ?></div>
+			<div class="it-exchange-variant-image-item-already-exists it-exchange-variant-image-item-combo-error hidden"><?php _e( 'Combo already exists', 'LION' ); ?></div>
 			<div class="it-exchange-variant-image-combo-selects">
 				<# _.each(data.productVariants, function( variant ) { #>
 					<select class="it-exchange-variant-images-add-combo-select">';
@@ -30,6 +30,7 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 
 	</div>
 	<div class="it-exchange-product-images-variants-missing-div"></div>
+	<input id="it-exchange-product-images-variants-version" type="hidden" name="it-exchange-product-images-variants-version" disabled value="{{ data.version }}" />
 	<div id="it-exchange-variant-images"></div>
 </script>
 
@@ -37,7 +38,7 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 	<div class="it-exchange-variant-image-item it-exchange-variant-image-item-{{ data.comboHash }} <# if ( ! data.featuredImage ) { #> editing<# } #>">
 		<div class="it-exchange-variant-image-item-title">
 			<p>
-				<span class="it-exchange-variant-image-item-title-img"><img src="{{ data.imageThumbURL }}" alt="" /></span>
+				<span class="it-exchange-variant-image-item-title-img"><img src="<# if ( data.featuredImage.thumbURL ) { #>{{ data.featuredImage.thumbURL }}<# } #>" alt="" /></span>
 				<span class="it-exchange-variant-image-item-title-text">{{ data.title }}</span>
 				<span class="it-exchange-variant-image-edit"></span>
 			</p>
@@ -48,13 +49,13 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 			<div class="it-exchange-variant-feature-image-{{ data.comboHash }} ui-droppable it-exchange-feature-images-div" data-combo-hash="{{ data.comboHash }}">
 				<ul class="feature-image">
 					<# if ( data.featuredImage ) { #>
-					<li id="{{ data.id }}" data-image-id="{{ data.imageID }}">
-						<a class="image-edit is-featured" href="" data-image-id="{{ data.imageID }}">
-							<img alt="Featured Image" data-thumb="{{ data.imageThumbURL }}" data-large="{{ data.imageLargeURL }}" src="{{ data.imageURL }}">
+					<li id="{{ data.featuredImage.cssID }}" data-image-id="{{ data.featuredImage.imageID }}">
+						<a class="image-edit is-featured" href="" data-image-id="{{ data.featuredImage.imageID }}">
+							<img alt="Featured Image" data-thumb="{{ data.featuredImage.thumbURL }}" data-large="{{ data.featuredImage.largeURL }}" src="{{ data.featuredImage.largeURL }}">
 								<span class="overlay"></span>
 						</a>
 						<span class="remove-item">&times;</span>
-						<input type="hidden" value="{{ data.imageID }}" name="it-exchange-product-variant-images[{{ data.comboHash }}][0]">
+						<input type="hidden" value="{{ data.featuredImage.imageID }}" name="it-exchange-product-variant-images[{{ data.comboHash }}][{{ data.featuredImage.int }}]">
 					</li>
 					<# } #>
 				</ul>
@@ -62,23 +63,18 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 			</div>
 			<ul id="it-exchange-variant-gallery-images" class="it-exchange-gallery-images it-exchange-gallery-images-{{ data.comboHash }}">
 				<# if ( data.variantImages ) { #>
-				$image_int = 0;
-				foreach( $images as $image_key => $image_id ) {
-					$image_int++; // Should start with 1. Featured is 0.
-					$thumb = wp_get_attachment_thumb_url( $image_id );
-					$large = wp_get_attachment_url( $image_id );
-					$src   = $thumb;
-					?>
-					<li id="{{ image.uniqueID }}" data-image-id="{{ image.id }}">
-						<a href class="image-edit" data-image-id="{{ image.id }}">
-							<img src="{{ image.URL }}" data-large="{{ image.largeURL }}" data-thumb="{{ image.thumbURL }}" alt="" />
-							<span class="overlay"></span>
-						</a>
-						<span class="remove-item">&times;</span>
-						<input type="hidden" name="it-exchange-product-variant-images[{{ data.comboHash }}][{{ image.int }}]" value="{{ image.id }}" />
-					</li>
+					<# _.each(data.variantImages, function( image ) { #>
+						<li id="{{ image.cssID}}" data-image-id="{{ image.id }}">
+							<a href class="image-edit" data-image-id="{{ image.id }}">
+								<img src="{{ image.thumbURL }}" data-large="{{ image.largeURL }}" data-thumb="{{ image.thumbURL }}" alt="" />
+								<span class="overlay"></span>
+							</a>
+							<span class="remove-item">&times;</span>
+							<input type="hidden" name="it-exchange-product-variant-images[{{ data.comboHash }}][{{ image.int }}]" value="{{ image.imageID }}" />
+						</li>
+					<# }) #>
 				<# } #>
-				<li class="it-exchange-add-new-image it-exchange-add-new-variant-image disable-sorting<# if ( ! data.featureImage ) { #> empty<# } #>">
+				<li class="it-exchange-add-new-image it-exchange-add-new-variant-image disable-sorting<# if ( ! data.featuredImage ) { #> empty<# } #>">
 					<a href data-variant-id="{{ data.comboHash }}">
 						<span><?php _e( 'Add Images', 'LION' ); ?></span>
 					</a>
