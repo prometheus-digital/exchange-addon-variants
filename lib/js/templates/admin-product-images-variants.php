@@ -16,7 +16,7 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 			<div class="it-exchange-variant-image-combo-selects">
 				<# _.each(data.productVariants, function( variant ) { #>
 					<select class="it-exchange-variant-images-add-combo-select">';
-						<option value="{{ variant.get('id') }}"><?php _e( 'All', 'LION' ); ?> {{ variant.get('title') }}</option>
+						<option value="{{ variant.get('id') }}"><?php _e( 'Any', 'LION' ); ?> {{ variant.get('title') }}</option>
 						<# _.each(variant.get('values'), function( value ) { #>
 							<option value="{{ value.id }}">{{ value.title }}</option>
 						<# }); #>
