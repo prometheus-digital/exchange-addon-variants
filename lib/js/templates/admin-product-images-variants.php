@@ -12,6 +12,7 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 		<div class="label"><?php _e( 'Add Product Images for Variant Combination:', 'LION' ); ?></div>
 
 		<div class="it-exchange-select-new-variant-images-combo-div">
+			<div class="it-exchange-variant-image-item-not-valid-combo hidden"><?php _e( 'All combo selects cannot be "Any"', 'LION' ); ?></div>
 			<div class="it-exchange-variant-image-item-already-exists hidden"><?php _e( 'Combo already exists', 'LION' ); ?></div>
 			<div class="it-exchange-variant-image-combo-selects">
 				<# _.each(data.productVariants, function( variant ) { #>

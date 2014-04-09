@@ -369,11 +369,19 @@ function it_exchange_variants_json_api() {
 			$result->title = '';
 			$result->combo = array();
 			if ( $response = it_exchange_get_variant_combo_attributes( $variants_array ) ) {
-				$result->hash  = empty( $response['hash'] ) ? $result->hash : $response['hash'];
-				$result->title = empty( $response['title'] ) ? $result->title : $response['title'];
-				$result->combo = empty( $response['combo'] ) ? $result->combo : $response['combo'];
+				$result->hash       = empty( $response['hash'] ) ? $result->hash : $response['hash'];
+				$result->title      = empty( $response['title'] ) ? $result->title : $response['title'];
+				$result->combo      = empty( $response['combo'] ) ? $result->combo : $response['combo'];
+				$result->allParents = true;
+
+				foreach( $result->combo as $parent => $child ) {
+					if ( $parent != $child ) {
+						$result->allParents = false;
+						break;
+					}
+				}
 			}
-			die( json_encode($response) );
+			die( json_encode($result) );
 		}
 	} else if ( 'get-hash-from-raw-combo' == $endpoint ) {
 		if ( ! empty( $variants_array ) ) {
