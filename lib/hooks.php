@@ -410,7 +410,7 @@ function it_exchange_variants_json_api() {
 			$combo->hash     = $hash;
 			$combo->variants = (array) $images['combos_to_hash'];
 			$combo->title    = empty( $images['combos_title'] ) ? '' : $images['combos_title'];
-			$combo->value    = empty( $images['value'] ) ? array() : $images['value'];
+			$combo->value    = empty( $images['value'] ) ? array() : array_values( $images['value'] );
 			$combo->version  = $variants_version;
 			$combo->thumbURL = '';
 			$combo->featuredImage = false;
@@ -421,7 +421,7 @@ function it_exchange_variants_json_api() {
 				$image->imageID  = $image_id;
 				$image->int      = $key;
 				$image->cssID    = uniqid();
-				$image->featured = (1 === $image->int);
+				$image->featured = (0 === $image->int);
 				$image->thumbURL = wp_get_attachment_thumb_url( $image_id ); 
 				$image->largeURL = wp_get_attachment_url( $image_id ); 
 

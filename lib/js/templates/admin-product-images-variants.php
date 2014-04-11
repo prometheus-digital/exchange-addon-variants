@@ -55,7 +55,7 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 								<span class="overlay"></span>
 						</a>
 						<span class="remove-item">&times;</span>
-						<input type="hidden" value="{{ data.featuredImage.imageID }}" name="it-exchange-product-variant-images[{{ data.comboHash }}][{{ data.featuredImage.int }}]">
+						<input type="hidden" value="{{ data.featuredImage.imageID }}" name="it-exchange-product-variant-images[{{ data.comboHash }}][]">
 					</li>
 					<# } #>
 				</ul>
@@ -70,7 +70,7 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 								<span class="overlay"></span>
 							</a>
 							<span class="remove-item">&times;</span>
-							<input type="hidden" name="it-exchange-product-variant-images[{{ data.comboHash }}][{{ image.int }}]" value="{{ image.imageID }}" />
+							<input type="hidden" name="it-exchange-product-variant-images[{{ data.comboHash }}][]" value="{{ image.imageID }}" />
 						</li>
 					<# }) #>
 				<# } #>
