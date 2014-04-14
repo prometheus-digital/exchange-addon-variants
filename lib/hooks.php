@@ -309,6 +309,7 @@ function it_exchange_variants_json_api() {
 
 				$combo = new stdClass();
 				$combo->ID       = $combo_attributes['hash'];
+				$combo->id       = $combo_attributes['hash'];
 				$combo->hash     = $combo_attributes['hash'];
 				$combo->variants = (array) $combo_attributes['combo'];
 				$combo->title    = empty( $combo_attributes['title'] ) ? '' : $combo_attributes['title'];
@@ -327,6 +328,7 @@ function it_exchange_variants_json_api() {
 
 				$combo = new stdClass();
 				$combo->ID       = $hash;
+				$combo->id       = $hash;
 				$combo->hash     = $hash;
 				$combo->variants = empty( $missing['variants_title_array'] ) ? array() : $missing['variants_title_array'];
 				$combo->title    = empty( $missing['combos_title'] ) ? '' : $missing['combos_title'];
