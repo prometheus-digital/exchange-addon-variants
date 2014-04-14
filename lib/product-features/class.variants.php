@@ -106,6 +106,20 @@ class IT_Exchange_Product_Feature_Variants {
 	*/
 	function register_metabox() {
 		add_meta_box( 'it-exchange-product-variants', __( 'Product Variants', 'LION' ), array( $this, 'print_metabox' ), 'it_exchange_prod', 'normal' );
+
+		// Add Base Price Variants metabox if variants already exist
+		if ( ! empty( $GLOBALS['post']->ID ) ) {
+			$post_id = $GLOBALS['post']->ID;
+		} else if ( isset( $_REQUEST['post'] ) ) {
+			$post_id = (int) $_REQUEST['post'];
+		} else if ( isset( $_REQUEST['post_ID'] ) )  {
+			$post_id = (int) $_REQUEST['post_ID'];
+		} else {
+			$post_id = 0;
+		}
+		$variants = it_exchange_get_product_feature( $post_id, 'variants' );
+		if ( ! empty( $variants['variants'] ) )
+			add_meta_box( 'it-exchange-product-variant-base-prices', __( 'Variant Pricing', 'LION' ), array( $this, 'print_variant_pricing_metabox' ), 'it_exchange_prod', 'normal' );
 	}
 
 	/**
@@ -129,6 +143,15 @@ class IT_Exchange_Product_Feature_Variants {
 		</script>
 		<p><?php _e( 'Error loading variants. Please try again', 'LION' ); // This div should be replaced by backbone JS ?></p>
 		<?php
+	}
+
+	/**
+	 * The variant pricing metabox
+	 *
+	 * @since 1.0.0
+	*/
+	function print_variant_pricing_metabox( $post ) {
+		echo "<p>PRICING HERE</p>";
 	}
 
 	/**

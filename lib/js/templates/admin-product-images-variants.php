@@ -1,7 +1,7 @@
 <?php
 if ( ! is_admin() )
 	return;
-$product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
+$product_id = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
 ?>
 
 <!-- Images Variant Combos Container -->
@@ -9,7 +9,7 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 	<label for="product-variant-images-field"><?php _e( 'Variant Images', 'LION' ); ?></label>
 
 	<div class="add-new-product-variant-combination">
-		<# if ( data.productVariants.length > 1 ) { #>
+		<# if ( data.productVariants.length ) { #>
 			<div class="label"><?php _e( 'Add Product Images for Variant Combination:', 'LION' ); ?></div>
 
 			<div class="it-exchange-select-new-variant-images-combo-div">
@@ -31,12 +31,14 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 				<input type="button" id="it-exchange-variant-images-create-combo-button" value="<?php esc_attr_e( __( 'Add New Combo', 'LION' ) ); ?>" class="button button-primary">
 			</div>
 		<# } else { #>
-			<p><?php _e( 'You must create 2 product variants before you can create an image gallery for product variants', 'LION' ); ?></p>
+			<p><?php _e( 'You must have one or more product variants before you can create an image gallery for product variant combinations', 'LION' ); ?></p>
 		<# } #>
 
 	</div>
 	<input id="it-exchange-product-images-variants-version" type="hidden" name="it-exchange-product-images-variants-version" value="{{ variantVersion }}" />
-	<div id="it-exchange-variant-images"></div>
+	<# if ( data.productVariants.length ) { #>
+		<div id="it-exchange-variant-images"></div>
+	<# } #>
 </script>
 
 <script type="text/template" id="tmpl-it-exchange-product-images-variant">
