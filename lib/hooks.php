@@ -49,7 +49,7 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 		}
 
 		// Product Images integration
-		if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post_id ), 'product-images' ) ) {
+		if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post->ID ), 'product-images' ) ) {
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-models',  $url_base . 'models/variant-images-models.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-collections',  $url_base . 'collections/variant-images-collections.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-admin-views',  $url_base . 'views/variant-admin-images-views.js', $deps );

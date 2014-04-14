@@ -9,26 +9,30 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 	<label for="product-variant-images-field"><?php _e( 'Variant Images', 'LION' ); ?></label>
 
 	<div class="add-new-product-variant-combination">
-		<div class="label"><?php _e( 'Add Product Images for Variant Combination:', 'LION' ); ?></div>
+		<# if ( data.productVariants.length > 1 ) { #>
+			<div class="label"><?php _e( 'Add Product Images for Variant Combination:', 'LION' ); ?></div>
 
-		<div class="it-exchange-select-new-variant-images-combo-div">
-			<div class="it-exchange-variant-image-item-not-valid-combo it-exchange-variant-image-item-combo-error hidden"><?php _e( 'All combo selects cannot be "Any"', 'LION' ); ?></div>
-			<div class="it-exchange-variant-image-item-already-exists it-exchange-variant-image-item-combo-error hidden"><?php _e( 'Combo already exists', 'LION' ); ?></div>
-			<div class="it-exchange-variant-image-combo-selects">
-				<# var variantVersion = false; #>
-				<# _.each(data.productVariants, function( variant ) { #>
-					<select class="it-exchange-variant-images-add-combo-select">';
-						<option value="{{ variant.get('id') }}"><?php _e( 'Any', 'LION' ); ?> {{ variant.get('title') }}</option>
-						<# _.each(variant.get('values'), function( value ) { #>
-							<option value="{{ value.id }}">{{ value.title }}</option>
-						<# }); #>
-				</select>
-				<# if ( !variantVersion && variant.get('version') ) { variantVersion = variant.get('version') } #>
-				<# }); #>
+			<div class="it-exchange-select-new-variant-images-combo-div">
+				<div class="it-exchange-variant-image-item-not-valid-combo it-exchange-variant-image-item-combo-error hidden"><?php _e( 'All combo selects cannot be "Any"', 'LION' ); ?></div>
+				<div class="it-exchange-variant-image-item-already-exists it-exchange-variant-image-item-combo-error hidden"><?php _e( 'Combo already exists', 'LION' ); ?></div>
+				<div class="it-exchange-variant-image-combo-selects">
+					<# var variantVersion = false; #>
+					<# _.each(data.productVariants, function( variant ) { #>
+						<select class="it-exchange-variant-images-add-combo-select">';
+							<option value="{{ variant.get('id') }}"><?php _e( 'Any', 'LION' ); ?> {{ variant.get('title') }}</option>
+							<# _.each(variant.get('values'), function( value ) { #>
+								<option value="{{ value.id }}">{{ value.title }}</option>
+							<# }); #>
+					</select>
+					<# if ( !variantVersion && variant.get('version') ) { variantVersion = variant.get('version') } #>
+					<# }); #>
+				</div>
+
+				<input type="button" id="it-exchange-variant-images-create-combo-button" value="<?php esc_attr_e( __( 'Add New Combo', 'LION' ) ); ?>" class="button button-primary">
 			</div>
-
-			<input type="button" id="it-exchange-variant-images-create-combo-button" value="<?php esc_attr_e( __( 'Add New Combo', 'LION' ) ); ?>" class="button button-primary">
-		</div>
+		<# } else { #>
+			<p><?php _e( 'You must create 2 product variants before you can create an image gallery for product variants', 'LION' ); ?></p>
+		<# } #>
 
 	</div>
 	<input id="it-exchange-product-images-variants-version" type="hidden" name="it-exchange-product-images-variants-version" value="{{ variantVersion }}" />
