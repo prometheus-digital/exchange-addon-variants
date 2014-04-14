@@ -15,6 +15,7 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 			<div class="it-exchange-variant-image-item-not-valid-combo it-exchange-variant-image-item-combo-error hidden"><?php _e( 'All combo selects cannot be "Any"', 'LION' ); ?></div>
 			<div class="it-exchange-variant-image-item-already-exists it-exchange-variant-image-item-combo-error hidden"><?php _e( 'Combo already exists', 'LION' ); ?></div>
 			<div class="it-exchange-variant-image-combo-selects">
+				<# var variantVersion = false; #>
 				<# _.each(data.productVariants, function( variant ) { #>
 					<select class="it-exchange-variant-images-add-combo-select">';
 						<option value="{{ variant.get('id') }}"><?php _e( 'Any', 'LION' ); ?> {{ variant.get('title') }}</option>
@@ -22,6 +23,7 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 							<option value="{{ value.id }}">{{ value.title }}</option>
 						<# }); #>
 				</select>
+				<# if ( !variantVersion && variant.get('version') ) { variantVersion = variant.get('version') } #>
 				<# }); #>
 			</div>
 
@@ -29,13 +31,12 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 		</div>
 
 	</div>
-	<div class="it-exchange-product-images-variants-missing-div"></div>
-	<input id="it-exchange-product-images-variants-version" type="hidden" name="it-exchange-product-images-variants-version" disabled value="{{ data.version }}" />
+	<input id="it-exchange-product-images-variants-version" type="hidden" name="it-exchange-product-images-variants-version" value="{{ variantVersion }}" />
 	<div id="it-exchange-variant-images"></div>
 </script>
 
 <script type="text/template" id="tmpl-it-exchange-product-images-variant">
-	<div class="it-exchange-variant-image-item it-exchange-variant-image-item-{{ data.comboHash }} <# if ( ! data.featuredImage ) { #> editing<# } #>">
+	<div class="it-exchange-variant-image-item it-exchange-variant-image-item-{{ data.comboHash }} <# if ( ! data.featuredImage ) { #> editing<# } #><# if ( data.invalidCombo ) { #> it-exchange-variant-image-item-invalid<# } #>" data-it-exchange-combo-hash="{{ data.comboHash }}">
 		<div class="it-exchange-variant-image-item-title">
 			<p>
 				<span class="it-exchange-variant-image-item-title-img"><img src="<# if ( data.featuredImage.thumbURL ) { #>{{ data.featuredImage.thumbURL }}<# } #>" alt="" /></span>
@@ -45,41 +46,62 @@ $product_id             = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->
 		</div>
 		<div class="it-exchange-variant-image-item-content <# if ( data.featuredImage ) { #> hidden<# } #>">
 
+			<# if ( data.invalidCombo ) { #>
+				<input type="hidden" class="it-exchange-variant-images-lock" name="it-exchange-lock-product-images-variants" value="1" />
+				<div class="it-exchange-select-update-variant-images-combo">
+					<p><?php _e( 'This variant combination may no longer be valid due to a new or deleted variant. Please apply these images to the correct variant combination or delete it.', 'LION' ); ?></p>
+					<div class="it-exchange-update-variant-image-item-not-valid-combo it-exchange-variant-image-item-combo-error hidden"><?php _e( 'All combo selects cannot be "Any"', 'LION' ); ?></div>
+					<div class="it-exchange-update-variant-image-combo-selects">
+						<# _.each(data.productVariants, function( variant ) { #>
+							<select class="it-exchange-variant-images-add-combo-select">';
+								<option value="{{ variant.get('id') }}"><?php _e( 'Any', 'LION' ); ?> {{ variant.get('title') }}</option>
+								<# _.each(variant.get('values'), function( value ) { #>
+									<option value="{{ value.id }}">{{ value.title }}</option>
+								<# }); #>
+						</select>
+						<# }); #>
+					</div>
 
-			<div class="it-exchange-variant-feature-image-{{ data.comboHash }} ui-droppable it-exchange-feature-images-div" data-combo-hash="{{ data.comboHash }}">
-				<ul class="feature-image">
-					<# if ( data.featuredImage ) { #>
-					<li id="{{ data.featuredImage.cssID }}" data-image-id="{{ data.featuredImage.imageID }}">
-						<a class="image-edit is-featured" href="" data-image-id="{{ data.featuredImage.imageID }}">
-							<img alt="Featured Image" data-thumb="{{ data.featuredImage.thumbURL }}" data-large="{{ data.featuredImage.largeURL }}" src="{{ data.featuredImage.largeURL }}">
-								<span class="overlay"></span>
-						</a>
-						<span class="remove-item">&times;</span>
-						<input type="hidden" value="{{ data.featuredImage.imageID }}" name="it-exchange-product-variant-images[{{ data.comboHash }}][]">
-					</li>
-					<# } #>
-				</ul>
-				<div class="replace-feature-image"><span><?php _e( 'Replace featured image', 'LION' ); ?></span></div>
-			</div>
-			<ul id="it-exchange-variant-gallery-images" class="it-exchange-gallery-images it-exchange-gallery-images-{{ data.comboHash }}">
-				<# if ( data.variantImages ) { #>
-					<# _.each(data.variantImages, function( image ) { #>
-						<li id="{{ image.cssID}}" data-image-id="{{ image.id }}">
-							<a href class="image-edit" data-image-id="{{ image.id }}">
-								<img src="{{ image.thumbURL }}" data-large="{{ image.largeURL }}" data-thumb="{{ image.thumbURL }}" alt="" />
-								<span class="overlay"></span>
+					<input type="button" value="<?php esc_attr_e( __( 'Update Combo', 'LION' ) ); ?>" class="button button-primary it-exchange-update-variant-images-create-combo-button">
+				</div>
+			<# } #>
+
+			<div class="images-ui<# if ( data.invalidCombo ) { #> hidden<# } #>">
+				<div class="it-exchange-variant-feature-image-{{ data.comboHash }} ui-droppable it-exchange-feature-images-div" data-combo-hash="{{ data.comboHash }}">
+					<ul class="feature-image">
+						<# if ( data.featuredImage ) { #>
+						<li id="{{ data.featuredImage.cssID }}" data-image-id="{{ data.featuredImage.imageID }}">
+							<a class="image-edit is-featured" href="" data-image-id="{{ data.featuredImage.imageID }}">
+								<img alt="Featured Image" data-thumb="{{ data.featuredImage.thumbURL }}" data-large="{{ data.featuredImage.largeURL }}" src="{{ data.featuredImage.largeURL }}">
+									<span class="overlay"></span>
 							</a>
 							<span class="remove-item">&times;</span>
-							<input type="hidden" name="it-exchange-product-variant-images[{{ data.comboHash }}][]" value="{{ image.imageID }}" />
+							<input type="hidden" value="{{ data.featuredImage.imageID }}" name="it-exchange-product-variant-images[{{ data.comboHash }}][]">
 						</li>
-					<# }) #>
-				<# } #>
-				<li class="it-exchange-add-new-image it-exchange-add-new-variant-image disable-sorting<# if ( ! data.featuredImage ) { #> empty<# } #>">
-					<a href data-variant-id="{{ data.comboHash }}">
-						<span><?php _e( 'Add Images', 'LION' ); ?></span>
-					</a>
-				</li>
-			</ul>
+						<# } #>
+					</ul>
+					<div class="replace-feature-image"><span><?php _e( 'Replace featured image', 'LION' ); ?></span></div>
+				</div>
+				<ul id="it-exchange-variant-gallery-images" class="it-exchange-gallery-images it-exchange-gallery-images-{{ data.comboHash }}">
+					<# if ( data.variantImages ) { #>
+						<# _.each(data.variantImages, function( image ) { #>
+							<li id="{{ image.cssID}}" data-image-id="{{ image.imageID }}">
+								<a href class="image-edit" data-image-id="{{ image.imageID }}">
+									<img src="{{ image.thumbURL }}" data-large="{{ image.largeURL }}" data-thumb="{{ image.thumbURL }}" alt="" />
+									<span class="overlay"></span>
+								</a>
+								<span class="remove-item">&times;</span>
+								<input type="hidden" name="it-exchange-product-variant-images[{{ data.comboHash }}][]" value="{{ image.imageID }}" />
+							</li>
+						<# }) #>
+					<# } #>
+					<li class="it-exchange-add-new-image it-exchange-add-new-variant-image disable-sorting<# if ( ! data.featuredImage ) { #> empty<# } #>">
+						<a href data-variant-id="{{ data.comboHash }}">
+							<span><?php _e( 'Add Images', 'LION' ); ?></span>
+						</a>
+					</li>
+				</ul>
+			</div>
 			<div class="clear"><a class="delete-variant-gallery" href=""><?php _e( 'Delete variant gallery', 'LION' ); ?></a></div>
 		</div>
 	</div>

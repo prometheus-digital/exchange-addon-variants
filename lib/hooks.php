@@ -340,6 +340,8 @@ function it_exchange_variants_json_api() {
 	} else if ( 'product-variant-hierarchy' == $endpoint ) {
 		if ( ! empty( $product_id ) ) {
 			$variants  = (array) it_exchange_get_variants_for_product( $product_id );
+			$variants_version = it_exchange_get_product_feature( $product_id, 'variants' );
+			$variants_version = empty( $variants_version['variants_version'] ) ? false : $variants_version['variants_version'];
 			$response = array();
 			foreach( $variants as $variant ) {
 				if ( empty( $variant->ID ) )
@@ -347,6 +349,7 @@ function it_exchange_variants_json_api() {
 				$response_variant = new stdClass();
 				$response_variant->id            = $variant->ID;
 				$response_variant->title         = $variant->post_title;
+				$response_variant->version       = $variants_version;
 				$response_variant->values        = array();
 
 				if ( ! empty( $variant->values ) ) {
@@ -397,25 +400,29 @@ function it_exchange_variants_json_api() {
 				die( it_exchange_variants_addon_get_selected_variants_id_hash( $variants_to_hash ) );
 		}
 	} else if ( 'existing-images-combos' == $endpoint ) {
-		$response = array();
-		$product_variants = it_exchange_get_product_feature( $product_id, 'variants' );
-		$variants_version = empty( $product_variants['variants_version'] ) ? false : $product_variants['variants_version'];
+		$response                = array();
+		$product_variants        = it_exchange_get_product_feature( $product_id, 'variants' );
+		$variants_version        = empty( $product_variants['variants_version'] ) ? false : $product_variants['variants_version'];
+		$images_variants_version = it_exchange_get_product_feature( $product_id, 'product-images', array( 'setting' => 'variants-version' ) );
 
 		// Grab the value from the product images postmeta if it exists
 		$images_post_meta = it_exchange_get_product_feature( $product_id, 'product-images', array( 'setting' => 'variants' ) );
 
-		foreach( $images_post_meta as $hash => $images ) {
+		// Loop through post meta data to build the correct format for the JSON request
+		foreach( $images_post_meta as $hash => $data ) {
 			$combo = new stdClass();
 			$combo->ID       = $hash;
 			$combo->hash     = $hash;
-			$combo->variants = (array) $images['combos_to_hash'];
-			$combo->title    = empty( $images['combos_title'] ) ? '' : $images['combos_title'];
-			$combo->value    = empty( $images['value'] ) ? array() : array_values( $images['value'] );
+			$combo->variants = (array) $data['combos_to_hash'];
+			$combo->title    = empty( $data['combos_title'] ) ? '' : $data['combos_title'];
+			$combo->value    = empty( $data['value'] ) ? array() : array_values( $data['value'] );
 			$combo->version  = $variants_version;
 			$combo->thumbURL = '';
 			$combo->featuredImage = false;
 			$combo->productImages = array();
+			$combo->invalidCombo = false;
 
+			// Populate Featured Image and standard images
 			foreach( $combo->value as $key => $image_id ) {
 				$image = new stdClass();
 				$image->imageID  = $image_id;
@@ -432,6 +439,10 @@ function it_exchange_variants_json_api() {
 					$combo->productImages[$key] = $image;
 				}
 			}
+
+			// Check to make sure this variant combo is still legitimate
+			if ( $variants_version != $images_variants_version )
+				$combo->invalidCombo = true;
 
 			$response[] = $combo;
 		}

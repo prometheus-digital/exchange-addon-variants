@@ -74,6 +74,8 @@
 #it-exchange-variant-images .it-exchange-variant-image-add-images{display:block;margin:15px 0;width:100%;padding:20px 0;text-align:center;border:1px solid #D7D7D7;box-shadow:inset #EEEEEE 0 0 10px;}
 #it-exchange-variant-images .it-exchange-variant-images-remove-item{float:right;margin-top:7px;color:#F00;}
 #it-exchange-variant-images .it-exchange-variant-images-remove-item:hover{background:#F00;color:#FFF;}
+#it-exchange-variant-images .it-exchange-variant-image-item-invalid{background:#fffad8;border-bottom:1px solid #c6ce69;}
+#it-exchange-variant-images .it-exchange-variant-image-item-invalid .it-exchange-variant-image-item-title:hover{background:#c6ce69;}
 
 /** ----------------------------------------------------:[ variant inventory ]: ------------- */
 .it-exchange-product-inventory-variants-inner {width: 100%;max-width: 700px;margin: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
