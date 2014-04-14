@@ -412,6 +412,7 @@ function it_exchange_variants_json_api() {
 			foreach( $images_post_meta as $hash => $data ) {
 				$combo = new stdClass();
 				$combo->ID       = $hash;
+				$combo->id       = $hash;
 				$combo->hash     = $hash;
 				$combo->variants = (array) $data['combos_to_hash'];
 				$combo->title    = empty( $data['combos_title'] ) ? '' : $data['combos_title'];
