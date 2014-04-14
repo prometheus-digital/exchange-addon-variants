@@ -7,15 +7,15 @@
  * @param string $hook_suffix WordPress passed variable
  * @return void
 */
-function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) { 
+function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 	global $post;
-	
-	if ( isset( $_REQUEST['post_type'] ) ) { 
+
+	if ( isset( $_REQUEST['post_type'] ) ) {
 		$post_type = $_REQUEST['post_type'];
 	} else {
-		if ( isset( $_REQUEST['post'] ) ) 
+		if ( isset( $_REQUEST['post'] ) )
 			$post_id = (int) $_REQUEST['post'];
-		elseif ( isset( $_REQUEST['post_ID'] ) ) 
+		elseif ( isset( $_REQUEST['post_ID'] ) )
 			$post_id = (int) $_REQUEST['post_ID'];
 		else
 			$post_id = 0;
@@ -23,10 +23,10 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 		if ( $post_id )
 			$post = get_post( $post_id );
 
-		if ( isset( $post ) && !empty( $post ) ) 
+		if ( isset( $post ) && !empty( $post ) )
 			$post_type = $post->post_type;
-	}   
-	
+	}
+
 	if ( isset( $post_type ) && 'it_exchange_prod' === $post_type && ( 'post.php' == $hook_suffix || 'post-new.php' == $hook_suffix ) ) {
 		wp_enqueue_script( 'it-exchange-variants-addon-colorpicker', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/colorpicker/colorpicker.js' );
 		wp_enqueue_script( 'it-exchange-variants-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/add-edit-product.js', array( 'jquery', 'it-exchange-dialog', 'it-exchange-variants-addon-colorpicker' ) );
@@ -67,15 +67,15 @@ add_action( 'admin_enqueue_scripts', 'it_exchange_variants_addon_admin_wp_enqueu
  * @param string $hook_suffix WordPress passed variable
  * @return void
 */
-function it_exchange_variants_addon_admin_wp_enqueue_styles( $hook_suffix ) { 
+function it_exchange_variants_addon_admin_wp_enqueue_styles( $hook_suffix ) {
 	global $post;
 
-	if ( isset( $_REQUEST['post_type'] ) ) { 
+	if ( isset( $_REQUEST['post_type'] ) ) {
 		$post_type = $_REQUEST['post_type'];
 	} else {
-		if ( isset( $_REQUEST['post'] ) ) 
+		if ( isset( $_REQUEST['post'] ) )
 			$post_id = (int) $_REQUEST['post'];
-		elseif ( isset( $_REQUEST['post_ID'] ) ) 
+		elseif ( isset( $_REQUEST['post_ID'] ) )
 			$post_id = (int) $_REQUEST['post_ID'];
 		else
 			$post_id = 0;
@@ -83,10 +83,10 @@ function it_exchange_variants_addon_admin_wp_enqueue_styles( $hook_suffix ) {
 		if ( $post_id )
 			$post = get_post( $post_id );
 
-		if ( isset( $post ) && !empty( $post ) ) 
+		if ( isset( $post ) && !empty( $post ) )
 			$post_type = $post->post_type;
-	}   
-	
+	}
+
 	if ( isset( $post_type ) && 'it_exchange_prod' === $post_type ) {
 		wp_enqueue_style( 'it-exchange-variants-addon-colorpicker', ITUtility::get_url_from_file( dirname( __FILE__) ) . '/js/colorpicker/colorpicker.css' );
 		wp_enqueue_style( 'it-exchange-variants-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/css/add-edit-product.css' );
@@ -259,9 +259,9 @@ function it_exchange_variants_json_api() {
 				$core_preset->order      = empty( $preset->menu_order ) ? 0 : $preset->menu_order;
 				$core_preset->uiType     = empty( $preset->ui_type ) ? '' : $preset->ui_type;
 				$core_preset->imageAlt   = $preset->title;
-				$core_preset->imageThumb = ( ! empty( $preset->ui_type ) && is_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) ) 
-					? ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) 
-					: ''; 
+				$core_preset->imageThumb = ( ! empty( $preset->ui_type ) && is_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) )
+					? ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' )
+					: '';
 
 				$response[] = $core_preset;
 			}
@@ -281,9 +281,9 @@ function it_exchange_variants_json_api() {
 				$core_preset->uiType     = empty( $preset->ui_type ) ? '' : $preset->ui_type;
 				$core_preset->values     = $preset->values;
 				$core_preset->imageAlt   = $preset->title;
-				$core_preset->imageThumb = ( ! empty( $preset->ui_type ) && is_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) ) 
-					? ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) 
-					: ''; 
+				$core_preset->imageThumb = ( ! empty( $preset->ui_type ) && is_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) )
+					? ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' )
+					: '';
 
 				$response[] = $core_preset;
 			}
@@ -406,47 +406,48 @@ function it_exchange_variants_json_api() {
 		$images_variants_version = it_exchange_get_product_feature( $product_id, 'product-images', array( 'setting' => 'variants-version' ) );
 
 		// Grab the value from the product images postmeta if it exists
-		$images_post_meta = it_exchange_get_product_feature( $product_id, 'product-images', array( 'setting' => 'variants' ) );
+		if ( $images_post_meta = it_exchange_get_product_feature( $product_id, 'product-images', array( 'setting' => 'variants' ) ) ) {
 
-		// Loop through post meta data to build the correct format for the JSON request
-		foreach( $images_post_meta as $hash => $data ) {
-			$combo = new stdClass();
-			$combo->ID       = $hash;
-			$combo->hash     = $hash;
-			$combo->variants = (array) $data['combos_to_hash'];
-			$combo->title    = empty( $data['combos_title'] ) ? '' : $data['combos_title'];
-			$combo->value    = empty( $data['value'] ) ? array() : array_values( $data['value'] );
-			$combo->version  = $variants_version;
-			$combo->thumbURL = '';
-			$combo->featuredImage = false;
-			$combo->productImages = array();
-			$combo->invalidCombo = false;
+			// Loop through post meta data to build the correct format for the JSON request
+			foreach( $images_post_meta as $hash => $data ) {
+				$combo = new stdClass();
+				$combo->ID       = $hash;
+				$combo->hash     = $hash;
+				$combo->variants = (array) $data['combos_to_hash'];
+				$combo->title    = empty( $data['combos_title'] ) ? '' : $data['combos_title'];
+				$combo->value    = empty( $data['value'] ) ? array() : array_values( $data['value'] );
+				$combo->version  = $variants_version;
+				$combo->thumbURL = '';
+				$combo->featuredImage = false;
+				$combo->productImages = array();
+				$combo->invalidCombo = false;
 
-			// Populate Featured Image and standard images
-			foreach( $combo->value as $key => $image_id ) {
-				$image = new stdClass();
-				$image->imageID  = $image_id;
-				$image->int      = $key;
-				$image->cssID    = uniqid();
-				$image->featured = (0 === $image->int);
-				$image->thumbURL = wp_get_attachment_thumb_url( $image_id ); 
-				$image->largeURL = wp_get_attachment_url( $image_id ); 
+				// Populate Featured Image and standard images
+				foreach( $combo->value as $key => $image_id ) {
+					$image = new stdClass();
+					$image->imageID  = $image_id;
+					$image->int      = $key;
+					$image->cssID    = uniqid();
+					$image->featured = (0 === $image->int);
+					$image->thumbURL = wp_get_attachment_thumb_url( $image_id );
+					$image->largeURL = wp_get_attachment_url( $image_id );
 
-				if ( $image->featured ) {
-					$combo->featuredImage = $image;
-					$combo->thumbURL = $image->thumbURL;
-				} else {
-					$combo->productImages[$key] = $image;
+					if ( $image->featured ) {
+						$combo->featuredImage = $image;
+						$combo->thumbURL = $image->thumbURL;
+					} else {
+						$combo->productImages[$key] = $image;
+					}
 				}
+
+				// Check to make sure this variant combo is still legitimate
+				if ( $variants_version != $images_variants_version )
+					$combo->invalidCombo = true;
+
+				$response[] = $combo;
 			}
-
-			// Check to make sure this variant combo is still legitimate
-			if ( $variants_version != $images_variants_version )
-				$combo->invalidCombo = true;
-
-			$response[] = $combo;
+			die( json_encode( $response ) );
 		}
-		die( json_encode( $response ) );
 	}
 	return false;
 }
