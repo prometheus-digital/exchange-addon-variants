@@ -151,7 +151,7 @@ class IT_Exchange_Product_Feature_Variants {
 	 * @since 1.0.0
 	*/
 	function print_variant_pricing_metabox( $post ) {
-		echo "<p>PRICING HERE</p>";
+		?><div class="it-exchnage-product-variant-base-prices-inner"></div><?php
 	}
 
 	/**

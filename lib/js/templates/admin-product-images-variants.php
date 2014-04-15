@@ -8,7 +8,7 @@ $product_id = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
 <script type="text/template" id="tmpl-it-exchange-product-images-variants-container">
 	<label for="product-variant-images-field"><?php _e( 'Variant Images', 'LION' ); ?></label>
 
-	<div class="add-new-product-variant-combination">
+	<div class="add-new-product-images-variant-combination">
 		<# if ( data.productVariants.length ) { #>
 			<div class="label"><?php _e( 'Add Product Images for Variant Combination:', 'LION' ); ?></div>
 
@@ -28,7 +28,7 @@ $product_id = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
 					<# }); #>
 				</div>
 
-				<input type="button" id="it-exchange-variant-images-create-combo-button" value="<?php esc_attr_e( __( 'Add New Combo', 'LION' ) ); ?>" class="button button-primary">
+				<input type="button" id="it-exchange-variant-images-create-combo-button" value="<?php esc_attr_e( __( 'Create New Image Set', 'LION' ) ); ?>" class="button button-primary">
 			</div>
 		<# } else { #>
 			<p><?php _e( 'You must have one or more product variants before you can create an image gallery for product variant combinations', 'LION' ); ?></p>
