@@ -59,7 +59,7 @@ $product_id = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
 					<div class="it-exchange-update-variant-image-item-not-valid-combo it-exchange-variant-image-item-combo-error hidden"><?php _e( 'All combo selects cannot be "Any"', 'LION' ); ?></div>
 					<div class="it-exchange-update-variant-image-combo-selects">
 						<# _.each(data.productVariants, function( variant ) { #>
-							<select class="it-exchange-variant-images-add-combo-select">';
+							<select class="it-exchange-variant-images-update-combo-select">';
 								<option value="{{ variant.get('id') }}"><?php _e( 'Any', 'LION' ); ?> {{ variant.get('title') }}</option>
 								<# _.each(variant.get('values'), function( value ) { #>
 									<option value="{{ value.id }}">{{ value.title }}</option>
