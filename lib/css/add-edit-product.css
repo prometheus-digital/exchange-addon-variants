@@ -103,6 +103,7 @@
 #it-exchange-product-pricing-variants .add-new-product-pricing-variant-combination {margin-bottom: 3em;}
 #it-exchange-product-pricing-variants .it-exchange-variant-pricing-combo-selects select {display:block;margin-bottom:5px;}
 #it-exchange-variant-pricing-create-combo-button {margin-top:1em;}
+#it-exchange-product-pricing-variants .it-exchange-variant-pricing-item-combo-error {background:#fff0f0;border:1px solid #dca3a6;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;padding:.8125em;margin:.625em 0;color:#dd4343;}
 
 #it-exchange-variant-pricing .it-exchange-variant-pricing-item {border: 1px solid #ebebeb;position:relative;}
 #it-exchange-variant-pricing .it-exchange-variant-pricing-item:hover {background:#FAFAFA;}
