@@ -97,3 +97,18 @@
 .it-exchange-product-inventory-variants-missing-table .inventory-variant-missing-row .missing-inventory-notification-dialog {overflow:hidden;}
 .it-exchange-product-inventory-variants-missing-table .inventory-variant-missing-row p {margin-top: 0;}
 #it-exchange-advanced-tabs .it-exchange-product-inventory-variants-missing-table .inventory-variant-missing-row input[type="text"] { background: #fffceb; border-color: #cccabc; text-align: center; font-size:1em; padding: .5em; margin: -5px 0 0 0;max-width:45px; float:right; }
+
+/** ----------------------------------------------------:[ variant pricing ]: ------------- */
+#it-exchange-product-pricing-variants .label, #it-exchange-product-pricing-variants > label {font-weight: bold;margin-bottom: 5px;}
+#it-exchange-product-pricing-variants .add-new-product-pricing-variant-combination {margin-bottom: 3em;}
+#it-exchange-product-pricing-variants .it-exchange-variant-pricing-combo-selects select {display:block;margin-bottom:5px;}
+#it-exchange-variant-pricing-create-combo-button {margin-top:1em;}
+
+#it-exchange-variant-pricing .it-exchange-variant-pricing-item {border: 1px solid #ebebeb;position:relative;}
+#it-exchange-variant-pricing .it-exchange-variant-pricing-item:hover {background:#FAFAFA;}
+#it-exchange-variant-pricing .it-exchange-variant-pricing-item.editing .it-exchange-variant-pricing-item-title {cursor:n-resize;}
+#it-exchange-variant-pricing .it-exchange-variant-pricing-item-title {padding: 12px;cursor:s-resize;}
+#it-exchange-variant-pricing .it-exchange-variant-pricing-item-content {padding: 12px;}
+#it-exchange-variant-pricing .it-exchange-variant-pricing-item-content .pricing-ui label {margin-bottom:5px;}
+#it-exchange-variant-pricing .it-exchange-variant-pricing-item-content .pricing-ui input {max-width: 100px;}
+#it-exchange-variant-pricing .it-exchange-variant-pricing-item-content .delete-variant-price {position: absolute;right: 0;top: 0;}

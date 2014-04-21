@@ -6,11 +6,10 @@ $product_id = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
 
 <!-- Pricing Variant Combos Container -->
 <script type="text/template" id="tmpl-it-exchange-product-pricing-variants-container">
-	<label for="product-variant-pricing-field"><?php _e( 'Variant Pricing', 'LION' ); ?></label>
+	<label for="product-variant-pricing-field"><?php _e( 'New Price Variant', 'LION' ); ?></label>
 
 	<div class="add-new-product-pricing-variant-combination">
 		<# if ( data.productVariants.length ) { #>
-			<div class="label"><?php _e( 'Add Variant Pricing for a new combination:', 'LION' ); ?></div>
 
 			<div class="it-exchange-select-new-variant-pricing-combo-div">
 				<div class="it-exchange-variant-pricing-item-not-valid-combo it-exchange-variant-pricing-item-combo-error hidden"><?php _e( 'All combo selects cannot be "Any"', 'LION' ); ?></div>
@@ -44,10 +43,8 @@ $product_id = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
 <script type="text/template" id="tmpl-it-exchange-product-pricing-variant">
 	<div class="it-exchange-variant-pricing-item it-exchange-variant-pricing-item-{{ data.comboHash }} <# if ( ! data.newCombo ) { #> editing<# } #><# if ( data.invalidCombo ) { #> it-exchange-variant-pricing-item-invalid<# } #>" data-it-exchange-combo-hash="{{ data.comboHash }}">
 		<div class="it-exchange-variant-pricing-item-title">
-			<p>
-				<span class="it-exchange-variant-pricing-item-title-text">{{ data.title }}</span>
-				<span class="it-exchange-variant-pricing-edit"></span>
-			</p>
+			<span class="it-exchange-variant-pricing-item-title-text">{{ data.title }}</span>
+			<span class="it-exchange-variant-pricing-edit"></span>
 		</div>
 		<div class="it-exchange-variant-pricing-item-content <# if ( ! data.newCombo ) { #> hidden<# } #>">
 
@@ -72,9 +69,10 @@ $product_id = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
 			<# } #>
 
 			<div class="pricing-ui<# if ( data.invalidCombo ) { #> hidden<# } #>">
+				<label for="it-exchange-product-variant-pricing[{{ data.comboHash }}]">Variant Price</label>
 				<input type="text" name="it-exchange-product-variant-pricing[{{ data.comboHash }}]" value="{{ data.value }}" />
 			</div>
-			<div class="clear"><a class="delete-variant-price" href=""><?php _e( 'Delete variant price', 'LION' ); ?></a></div>
+			<div class="clear"><a class="delete-variant-price it-exchange-remove-item" href="">&times;</a></div>
 		</div>
 	</div>
 </script>
