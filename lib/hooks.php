@@ -38,14 +38,16 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 		wp_enqueue_script( 'it-exchange-variants-addon-variant-collections',  $url_base . 'collections/variant-collections.js', $deps );
 		wp_enqueue_script( 'it-exchange-variants-addon-variant-admin-views',  $url_base . 'views/variant-admin-views.js', $deps );
 		wp_enqueue_script( 'it-exchange-variants-addon-variant-admin-core',  $url_base . 'admin-variants.js', $deps );
-		add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
+		if( ! has_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' ) )
+			add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
 
 		// Inventory integration
 		if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post->ID ), 'inventory' ) ) {
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-inventory-models',  $url_base . 'models/variant-inventory-models.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-inventory-collections',  $url_base . 'collections/variant-inventory-collections.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-inventory-admin-views',  $url_base . 'views/variant-admin-inventory-views.js', $deps );
-			add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
+			if( ! has_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' ) )
+				add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
 		}
 
 		// Product Images integration
@@ -53,7 +55,17 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-models',  $url_base . 'models/variant-images-models.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-collections',  $url_base . 'collections/variant-images-collections.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-admin-views',  $url_base . 'views/variant-admin-images-views.js', $deps );
-			add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
+			if( ! has_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' ) )
+				add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
+		}
+
+		// Pricing integration
+		if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post->ID ), 'base-price' ) ) {
+			wp_enqueue_script( 'it-exchange-variants-addon-variant-pricing-models',  $url_base . 'models/variant-pricing-models.js', $deps );
+			wp_enqueue_script( 'it-exchange-variants-addon-variant-pricing-collections',  $url_base . 'collections/variant-pricing-collections.js', $deps );
+			wp_enqueue_script( 'it-exchange-variants-addon-variant-pricing-admin-views',  $url_base . 'views/variant-admin-pricing-views.js', $deps );
+			if( ! has_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' ) )
+				add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
 		}
 	}
 }
@@ -139,6 +151,10 @@ function it_exchange_variants_addon_load_backbone_admin_templates() {
 	// Product Images
 	if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post_id ), 'product-images' ) )
 		include( dirname( __FILE__ ) . '/js/templates/admin-product-images-variants.php' );
+
+	// Pricing Variants
+	if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post_id ), 'base-price' ) )
+		include( dirname( __FILE__ ) . '/js/templates/admin-product-pricing-variants.php' );
 }
 
 function it_exchange_variants_json_api() {
@@ -445,6 +461,35 @@ function it_exchange_variants_json_api() {
 
 				// Check to make sure this variant combo is still legitimate
 				if ( $variants_version != $images_variants_version )
+					$combo->invalidCombo = true;
+
+				$response[] = $combo;
+			}
+			die( json_encode( $response ) );
+		}
+	} else if ( 'existing-pricing-combos' == $endpoint ) {
+		$response                 = array();
+		$product_variants         = it_exchange_get_product_feature( $product_id, 'variants' );
+		$variants_version         = empty( $product_variants['variants_version'] ) ? false : $product_variants['variants_version'];
+		$pricing_variants_version = it_exchange_get_product_feature( $product_id, 'base-price', array( 'setting' => 'variants-version' ) );
+
+		// Grab the value from the product pricing postmeta if it exists
+		if ( $pricing_post_meta = it_exchange_get_product_feature( $product_id, 'base-price', array( 'setting' => 'variants' ) ) ) {
+
+			// Loop through post meta data to build the correct format for the JSON request
+			foreach( $pricing_post_meta as $hash => $data ) {
+				$combo = new stdClass();
+				$combo->ID       = $hash;
+				$combo->id       = $hash;
+				$combo->hash     = $hash;
+				$combo->variants = (array) $data['combos_to_hash'];
+				$combo->title    = empty( $data['combos_title'] ) ? '' : $data['combos_title'];
+				$combo->value    = empty( $data['value'] ) ? false : $data['value'];
+				$combo->version  = $variants_version;
+				$combo->invalidCombo = false;
+
+				// Check to make sure this variant combo is still legitimate
+				if ( $variants_version != $pricing_variants_version )
 					$combo->invalidCombo = true;
 
 				$response[] = $combo;

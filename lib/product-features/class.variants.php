@@ -119,7 +119,7 @@ class IT_Exchange_Product_Feature_Variants {
 		}
 		$variants = it_exchange_get_product_feature( $post_id, 'variants' );
 		if ( ! empty( $variants['variants'] ) )
-			add_meta_box( 'it-exchange-product-variant-base-prices', __( 'Variant Pricing', 'LION' ), array( $this, 'print_variant_pricing_metabox' ), 'it_exchange_prod', 'normal' );
+			add_meta_box( 'it-exchange-product-pricing-variants', __( 'Variant Pricing', 'LION' ), array( $this, 'print_variant_pricing_metabox' ), 'it_exchange_prod', 'normal' );
 	}
 
 	/**
@@ -151,7 +151,7 @@ class IT_Exchange_Product_Feature_Variants {
 	 * @since 1.0.0
 	*/
 	function print_variant_pricing_metabox( $post ) {
-		?><div class="it-exchnage-product-variant-base-prices-inner"></div><?php
+		?><div class="it-exchange-product-pricing-variants-inner"><p><?php _e( 'Loading Pricing Variants', 'LION' ); ?> <!-- This div will be destroyed by backbone --></div><?php
 	}
 
 	/**
