@@ -167,7 +167,7 @@ function it_exchange_get_variant_combo_attributes( $combo ) {
 	$array_to_hash = array();
 	foreach( (array) $combo as $combo_member ) {
 		$value                      = it_exchange_variants_addon_get_variant( $combo_member );
-		$combo_title[]              = empty( $value->post_parent ) ? __( 'All ', 'LION' ) . $value->post_title: $value->post_title;
+		$combo_title[]              = empty( $value->post_parent ) ? __( 'Any ', 'LION' ) . $value->post_title: $value->post_title;
 		$parent_key                 = empty( $value->post_parent ) ? (int) $value->ID : (int) $value->post_parent;
 		$array_to_hash[$parent_key] = (int) $value->ID;
 
