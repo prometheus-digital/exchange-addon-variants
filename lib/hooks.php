@@ -508,7 +508,7 @@ function it_exchange_variants_json_api() {
 		if ( $pricing_post_meta = it_exchange_get_product_feature( $product_id, 'base-price', array( 'setting' => 'variants' ) ) ) {
 
 			// Loop through post meta data to build the correct format for the JSON request
-			foreach( $pricing_post_meta as $hash => $data ) {
+			foreach( (array) $pricing_post_meta as $hash => $data ) {
 				$combo = new stdClass();
 				$combo->ID             = $hash;
 				$combo->id             = $hash;
