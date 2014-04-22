@@ -109,6 +109,8 @@
 #it-exchange-variant-pricing .it-exchange-variant-pricing-item:hover {background:#FAFAFA;}
 #it-exchange-variant-pricing .it-exchange-variant-pricing-item.editing .it-exchange-variant-pricing-item-title {cursor:n-resize;}
 #it-exchange-variant-pricing .it-exchange-variant-pricing-item-title {padding: 12px;cursor:s-resize;}
+#it-exchange-variant-pricing .it-exchange-variant-pricing-item-price-preview{float:right}
+#it-exchange-variant-pricing .editing .it-exchange-variant-pricing-item-price-preview{display:none;}
 #it-exchange-variant-pricing .it-exchange-variant-pricing-item-content {padding: 12px;}
 #it-exchange-variant-pricing .it-exchange-variant-pricing-item-content .pricing-ui label {margin-bottom:5px;}
 #it-exchange-variant-pricing .it-exchange-variant-pricing-item-content .pricing-ui input {max-width: 100px;}

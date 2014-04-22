@@ -45,6 +45,7 @@ $product_id = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
 	<div class="it-exchange-variant-pricing-item it-exchange-variant-pricing-item-{{ data.comboHash }} <# if ( data.newCombo ) { #> editing<# } #><# if ( data.invalidCombo ) { #> it-exchange-variant-pricing-item-invalid<# } #>" data-it-exchange-combo-hash="{{ data.comboHash }}">
 		<div class="it-exchange-variant-pricing-item-title">
 			<span class="it-exchange-variant-pricing-item-title-text">{{ data.title }}</span>
+			<span class="it-exchange-variant-pricing-item-price-preview">{{ data.value }}</span>
 			<span class="it-exchange-variant-pricing-edit"></span>
 		</div>
 		<div class="it-exchange-variant-pricing-item-content <# if ( ! data.newCombo ) { #> hidden<# } #>">
