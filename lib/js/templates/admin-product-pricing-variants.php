@@ -36,6 +36,7 @@ $product_id = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
 	</div>
 	<input id="it-exchange-product-pricing-variants-version" type="hidden" name="it-exchange-product-pricing-variants-version" value="{{ variantVersion }}" />
 	<# if ( data.productVariants.length ) { #>
+		<label for="it-exchange-variant-pricing"><?php _e( 'Existing Price Variants', 'LION' ); ?></label>
 		<div id="it-exchange-variant-pricing"></div>
 	<# } #>
 </script>
