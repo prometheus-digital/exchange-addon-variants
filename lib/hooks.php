@@ -515,7 +515,7 @@ function it_exchange_variants_json_api() {
 				$combo->hash           = $hash;
 				$combo->variants       = (array) $data['combos_to_hash'];
 				$combo->title          = empty( $data['combos_title'] ) ? '' : $data['combos_title'];
-				$combo->value          = empty( $data['value'] ) ? false : $data['value'];
+				$combo->value          = empty( $data['value'] ) ? false : it_exchange_format_price( $data['value'] );
 				$combo->version        = $variants_version;
 				$combo->invalidCombo   = false;
 				$combo->symbol         = $currency;
