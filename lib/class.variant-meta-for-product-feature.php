@@ -349,8 +349,8 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 			} else {
 				$variant = $this->post_cache[$combo_id];
 			}
-			if ( empty( $variant->post_parent ) && $include_alls )
-				$combo_title[] = __( 'All ', 'LION' ) . $variant->post_title;
+			if ( empty( $variant->post_parent ) )
+				$combo_title[] = __( 'Any ', 'LION' ) . $variant->post_title;
 			else
 				$combo_title[] = $variant->post_title;
 		}
@@ -375,46 +375,7 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 	}
 
 	function save_post_meta() {
-		//die( ITUtility::print_r($this->post_meta) );
 		it_exchange_update_product_feature( $this->product_id, $this->product_feature, $this->post_meta, array( 'setting' => 'variants' ) );
 	}
 
-	/**
-	 * Identifies new combos
-	 *
-	*/
-	function get_missing_combos() {
-
-		$missing_combos = array();
-
-		ITUtility::print_r($this->all_variant_combos_for_product);
-		ITUtility::print_r($this->post_meta);
-		//die();
-		// Grab hashes for new combos
-		$new_combos = array();
-		foreach( $this->all_variant_combos_for_product as $combo ) {
-			ITUtility::print_r($combo);
-			$combos_to_hash = $this->convert_raw_combos_to_combos_for_hash( $combo );
-			$hash           = $this->hash_combos( $combos_to_hash ); 
-			$title          = $this->generate_title_from_combos($combo);
-			$new_combos[$hash] = array(
-				'raw_combos' => $combo,
-				'combos_to_hash' => $combos_to_hash,
-				'combos_title'   => $title,
-			);
-		}
-
-		// Loop through post_meta combos (old and new combined) and filter out new ones
-		$old_and_new_combos = $this->post_meta;
-		foreach ( $old_and_new_combos as $hash => $attributes ) {
-			echo "$hash " . $attributes['combos_title'] . "<br />";
-			//die( ITUtility::print_r($new_combos) );
-			if ( ! isset( $new_combos[$hash] ) )
-				$missing_combos[$hash] = $attributes;
-		}
-		ITUtility::print_r($new_combos);
-		//die();
-
-		return empty( $missing_combos ) ? false : $missing_combos;
-	}
 }
