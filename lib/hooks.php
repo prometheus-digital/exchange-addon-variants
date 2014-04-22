@@ -1,5 +1,25 @@
 <?php
 /**
+ * Enqueues Variant scripts to the frontend products page
+ *
+ * @since 1.0.0
+ *
+ * @return void
+*/
+function it_exchange_variants_addon_enqueue_scripts() {
+	if ( ! it_exchange_is_page( 'product' ) )
+		return;
+
+	it_exchange_set_the_product_id();
+	$product_id = it_exchange_get_the_product_id();
+	if ( it_exchange_product_has_feature( $product_id, 'variants' ) ) {
+		wp_enqueue_script( 'it-exchange-variants-addon-frontend-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/frontend-product.js' );
+		wp_enqueue_style( 'it-exchange-variants-addon-frontend-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/css/frontend-product.css' );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'it_exchange_variants_addon_enqueue_scripts' );
+
+/**
  * Enqueues Variant scripts to WordPress Dashboard
  *
  * @since 1.0.0
