@@ -30,3 +30,8 @@ include( 'lib/hooks.php' );
  * API functions
 */
 include( 'api/load.php' );
+
+/**
+ * Template functions
+*/
+include( 'lib/template-functions.php' );
