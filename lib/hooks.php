@@ -186,6 +186,7 @@ function it_exchange_variants_json_api() {
 	$parent_id      = empty( $_REQUEST['parent-id'] ) ? false : $_REQUEST['parent-id'];
 	$ui_type        = empty( $_REQUEST['ui-type'] ) ? false : $_REQUEST['ui-type'];
 	$variants_array = empty( $_REQUEST['variants-array'] ) ? false : (array) $_REQUEST['variants-array'];
+	$include_currency_data = empty( $_REQUEST['include-currency-data'] ) ? false : true;
 
 	if ( empty( $endpoint ) )
 		return false;
@@ -409,6 +410,8 @@ function it_exchange_variants_json_api() {
 			$result->hash  = '';
 			$result->title = '';
 			$result->combo = array();
+			$settings                 = it_exchange_get_option( 'settings_general' );
+			$currency                 = it_exchange_get_currency_symbol( $settings['default-currency'] );
 			if ( $response = it_exchange_get_variant_combo_attributes( $variants_array ) ) {
 				$result->hash       = empty( $response['hash'] ) ? $result->hash : $response['hash'];
 				$result->title      = empty( $response['title'] ) ? $result->title : $response['title'];
@@ -420,6 +423,12 @@ function it_exchange_variants_json_api() {
 						$result->allParents = false;
 						break;
 					}
+				}
+				if ( ! empty( $include_currency_data ) ) {
+					$result->symbol         = $currency;
+					$result->symbolPosition = $settings['currency-symbol-position'];
+					$result->thousandsSep   = $settings['currency-thousands-separator'];
+					$result->decimalsSep    = $settings['currency-decimals-separator'];
 				}
 			}
 			die( json_encode($result) );
@@ -492,6 +501,8 @@ function it_exchange_variants_json_api() {
 		$product_variants         = it_exchange_get_product_feature( $product_id, 'variants' );
 		$variants_version         = empty( $product_variants['variants_version'] ) ? false : $product_variants['variants_version'];
 		$pricing_variants_version = it_exchange_get_product_feature( $product_id, 'base-price', array( 'setting' => 'variants-version' ) );
+		$settings                 = it_exchange_get_option( 'settings_general' );
+		$currency                 = it_exchange_get_currency_symbol( $settings['default-currency'] );
 
 		// Grab the value from the product pricing postmeta if it exists
 		if ( $pricing_post_meta = it_exchange_get_product_feature( $product_id, 'base-price', array( 'setting' => 'variants' ) ) ) {
@@ -499,14 +510,18 @@ function it_exchange_variants_json_api() {
 			// Loop through post meta data to build the correct format for the JSON request
 			foreach( $pricing_post_meta as $hash => $data ) {
 				$combo = new stdClass();
-				$combo->ID       = $hash;
-				$combo->id       = $hash;
-				$combo->hash     = $hash;
-				$combo->variants = (array) $data['combos_to_hash'];
-				$combo->title    = empty( $data['combos_title'] ) ? '' : $data['combos_title'];
-				$combo->value    = empty( $data['value'] ) ? false : $data['value'];
-				$combo->version  = $variants_version;
-				$combo->invalidCombo = false;
+				$combo->ID             = $hash;
+				$combo->id             = $hash;
+				$combo->hash           = $hash;
+				$combo->variants       = (array) $data['combos_to_hash'];
+				$combo->title          = empty( $data['combos_title'] ) ? '' : $data['combos_title'];
+				$combo->value          = empty( $data['value'] ) ? false : $data['value'];
+				$combo->version        = $variants_version;
+				$combo->invalidCombo   = false;
+				$combo->symbol         = $currency;
+				$combo->symbolPosition = $settings['currency-symbol-position'];
+				$combo->thousandsSep   = $settings['currency-thousands-separator'];
+				$combo->decimalsSep    = $settings['currency-decimals-separator'];
 
 				// Check to make sure this variant combo is still legitimate
 				if ( $variants_version != $pricing_variants_version )

@@ -70,7 +70,7 @@ $product_id = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
 
 			<div class="pricing-ui<# if ( data.invalidCombo ) { #> hidden<# } #>">
 				<label for="it-exchange-product-variant-pricing[{{ data.comboHash }}]">Variant Price</label>
-				<input type="text" name="it-exchange-product-variant-pricing[{{ data.comboHash }}]" value="{{ data.value }}" />
+				<input type="text" class="it-exchange-product-variant-price" name="it-exchange-product-variant-pricing[{{ data.comboHash }}]" value="{{ data.value }}" data-thousands-separator="{{ data.thousandsSep }}" data-decimal-separator="{{ data.decimalSep }}" data-symbol="{{ data.symbol }}" data-symbol-position="{{ data.symbolPosition }}" />
 			</div>
 			<div class="clear"><a class="delete-variant-price it-exchange-remove-item" href="">&times;</a></div>
 		</div>
