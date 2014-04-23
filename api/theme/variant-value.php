@@ -1,0 +1,101 @@
+<?php
+/**
+ * Variant-value class for THEME API
+ *
+ * @since 0.4.0
+*/
+
+class IT_Theme_API_Variant_Value implements IT_Theme_API {
+
+	/**
+	 * API context
+	 * @var string $_context
+	 * @since 0.4.0
+	*/
+	private $_context = 'variant-value';
+
+	/**u
+	 * Maps api tags to methods
+	 * @var array $_tag_map
+	 * @since 0.4.0
+	*/
+	var $_tag_map = array(
+		'title' => 'title',
+		'image' => 'image',
+		'color' => 'color',
+	);
+
+	/**
+	 * Current product in iThemes Exchange Global
+	 * @var object $product
+	 * @since 0.4.0
+	*/
+	public $variant_value;
+
+	/**
+	 * Constructor
+	 *
+	 * @since 0.4.0
+	 *
+	 * @return void
+	*/
+	function IT_Theme_API_Variant_Value() {
+		// Set the current global product as a property
+		$this->variant_value = empty( $GLOBALS['it_exchange']['variant_value'] ) ? false : $GLOBALS['it_exchange']['variant_value'];
+	}
+
+	/**
+	 * Returns the context. Also helps to confirm we are an iThemes Exchange theme API class
+	 *
+	 * @since 0.4.0
+	 *
+	 * @return string
+	*/
+	function get_api_context() {
+		return $this->_context;
+	}
+
+	/**
+	 * The product title
+	 *
+	 * @since 0.4.0
+	 * @return string
+	*/
+	function title( $options=array() ) {
+
+		// Return boolean if has flag was set
+		if ( $options['supports'] )
+			return true;
+
+		// Return boolean if has flag was set
+		if ( $options['has'] )
+			return true;
+
+		$result   = '';
+		$title    = $this->variant_value->title;
+
+		$defaults = array(
+			'wrap'   => 'span',
+			'format' => 'html',
+		);
+		$options = wp_parse_args( $options, $defaults );
+
+		if ( 'html' == $options['format'] )
+			$result .= '<' . $options['wrap'] . ' class="variant-value-title">';
+
+		$result .= $title;
+
+		if ( 'html' == $options['format'] )
+			$result .= '</' . $options['wrap'] . '>';
+
+		return $result;
+	}
+
+	function image( $options=array() ) {
+		return $this->variant_value->image;
+	}
+
+	function color( $options=array() ) {
+		return $this->variant_value->color;
+	}
+}

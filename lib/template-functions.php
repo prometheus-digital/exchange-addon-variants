@@ -36,6 +36,10 @@ function it_exchange_addon_variants_register_templates( $template_paths, $templa
 	$add_path = false;
 	$templates = array(
 		'content-product/elements/exchange-variants.php',
+		'content-product/elements/select-variant.php',
+		'content-product/elements/radio-variant.php',
+		'content-product/elements/image-variant.php',
+		'content-product/elements/color-variant.php',
 	);  
 	foreach( $templates as $template ) { 
 		if ( in_array( $template, (array) $template_names ) ) 

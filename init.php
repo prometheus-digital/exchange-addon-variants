@@ -35,3 +35,11 @@ include( 'api/load.php' );
  * Template functions
 */
 include( 'lib/template-functions.php' );
+
+/**
+ * Variant Theme API
+*/
+if ( ! is_admin() ) {
+	include( 'api/theme/variant.php' );
+	include( 'api/theme/variant-value.php' );
+}

@@ -535,3 +535,19 @@ function it_exchange_variants_json_api() {
 	return false;
 }
 add_action( 'wp_ajax_it-exchange-variants-json-api', 'it_exchange_variants_json_api' );
+
+/**
+ * Extend the product theme api to include new tags
+ *
+*/
+function it_exchange_addon_variants_extend_product_theme_api( $result, $class, $tag ){
+	if ( is_admin() )
+		return;
+	if ( 'IT_Theme_API_Product'== $class && 'variants' == $tag ) {
+		include_once( dirname( dirname( __FILE__ ) ) . '/api/theme/variant-product.php' );
+		$IT_Theme_API_Product_Extension_For_Variants = new IT_Theme_API_Product_Extension_For_Variants();
+		$result = array( $IT_Theme_API_Product_Extension_For_Variants, 'variants' );
+	}
+	return $result;
+}
+add_filter( 'it_exchange_theme_api_get_extended_tag_functions', 'it_exchange_addon_variants_extend_product_theme_api', 10, 3 );
