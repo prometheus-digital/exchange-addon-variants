@@ -21,7 +21,7 @@
 	<ul class="it-variant-radios">
 		<?php while( it_exchange( 'variant', 'values' ) ) : ?>
 			<?php $checked = it_exchange( 'variant-value', 'get-is-default' ) ? 'checked' : ''; ?>
-			<li><label><input type="radio" class="it-variant-options" <?php esc_attr_e( $checked ); ?>/> <?php it_exchange( 'variant-value', 'title' ); ?></label></li>
+			<li><label><input type="radio" name="it-exchange-variant-<?php esc_attr_e( it_exchange( 'variant', 'get-id' ) ); ?>" class="it-variant-options" <?php esc_attr_e( $checked ); ?>/> <?php it_exchange( 'variant-value', 'title' ); ?></label></li>
 		<?php endwhile; ?>
 	</ul>
 	<?php do_action( 'it_exchange_content_product_end_variant_element' ); ?>

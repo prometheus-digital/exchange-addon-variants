@@ -21,6 +21,7 @@ class IT_Theme_API_Variant_Value implements IT_Theme_API {
 	*/
 	var $_tag_map = array(
 		'title'     => 'title',
+		'id'        => 'id',
 		'image'     => 'image',
 		'color'     => 'color',
 		'isdefault' => 'is_default',
@@ -92,12 +93,16 @@ class IT_Theme_API_Variant_Value implements IT_Theme_API {
 		return $result;
 	}
 
+	function id( $options=array() ) {
+		return empty( $this->variant_value->ID ) ? false : $this->variant_value->ID;
+	}
+
 	function image( $options=array() ) {
-		return $this->variant_value->image;
+		return empty( $this->variant_value->image ) ? '' : $this->variant_value->image;
 	}
 
 	function color( $options=array() ) {
-		return $this->variant_value->color;
+		return empty( $this->variant_value->color ) ? '' : $this->variant_value->color;
 	}
 
 	function is_default( $options=array() ) {

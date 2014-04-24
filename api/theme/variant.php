@@ -21,6 +21,7 @@ class IT_Theme_API_Variant implements IT_Theme_API {
 	*/
 	var $_tag_map = array(
 		'title'   => 'title',
+		'id'      => 'id',
 		'type'    => 'type',
 		'values'  => 'values',
 		'default' => 'default_value',
@@ -91,6 +92,10 @@ class IT_Theme_API_Variant implements IT_Theme_API {
 
 		return $result;
 	}
+
+    function id( $options=array() ) {
+        return empty( $this->variant->ID ) ? false : $this->variant->ID;
+    }
 
 	/**
 	 * The variant typee
