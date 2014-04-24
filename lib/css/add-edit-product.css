@@ -58,7 +58,7 @@
 .add-new-product-images-variant-combination{padding:10px;}
 .add-new-product-images-variant-combination .label{padding-bottom:.5em;}
 .it-exchange-variant-image-combo-selects, .it-exchange-update-variant-image-combo-selects {padding-bottom:1em;}
-.it-exchange-variant-image-combo-selects select, .it-exchange-update-variant-image-combo-selects select {width: 100%;margin-bottom:5px}
+.it-exchange-variant-image-combo-selects select, .it-exchange-update-variant-image-combo-selects select {display: block;margin-bottom:5px}
 .it-exchange-select-update-variant-images-combo .it-exchange-update-variant-images-create-combo-button {margin-bottom: 1.5em;}
 .it-exchange-variant-image-item-title-img{float:left;margin-right:5px;}
 .it-exchange-variant-image-item-title-img img{width:20px;}
