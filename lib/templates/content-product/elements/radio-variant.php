@@ -17,10 +17,11 @@
 <?php do_action( 'it_exchange_content_product_before_variant_element' ); ?>
 <div class="it-variant-options it-variant-radio-options">
 	<?php do_action( 'it_exchange_content_product_begin_variant_element' ); ?>
-	<div class="it-variant-title">Radio Variants</div>
+	<div class="it-variant-title"><?php it_exchange( 'variant', 'title', 'format=text' ); ?></div>
 	<ul class="it-variant-radios">
 		<?php while( it_exchange( 'variant', 'values' ) ) : ?>
-		<li><label><input type="radio" class="it-variant-options" checked/> <?php it_exchange( 'variant-value', 'title' ); ?></label></li>
+			<?php $checked = it_exchange( 'variant-value', 'get-is-default' ) ? 'checked' : ''; ?>
+			<li><label><input type="radio" class="it-variant-options" <?php esc_attr_e( $checked ); ?>/> <?php it_exchange( 'variant-value', 'title' ); ?></label></li>
 		<?php endwhile; ?>
 	</ul>
 	<?php do_action( 'it_exchange_content_product_end_variant_element' ); ?>

@@ -20,9 +20,10 @@ class IT_Theme_API_Variant implements IT_Theme_API {
 	 * @since 0.4.0
 	*/
 	var $_tag_map = array(
-		'title'  => 'title',
-		'type'   => 'type',
-		'values' => 'values',
+		'title'   => 'title',
+		'type'    => 'type',
+		'values'  => 'values',
+		'default' => 'default_value',
 	);
 
 	/**
@@ -109,6 +110,57 @@ class IT_Theme_API_Variant implements IT_Theme_API {
 		return $this->variant->ui_type;
 	}
 
+	/**
+	 * Returns the default value for this variant
+	 *
+	 * @since 1.0.0
+	 * @return string
+	*/
+	function default_value( $options=array() ) {
+		if ( $options['supports'] )
+			return true;
+
+		// Find default setting and confirm it exists in values
+		$default       = empty( $this->variant->default ) ? false : $this->variant->default;
+		$default_value = false;
+		foreach( (array) $this->variant->values as $key => $value ) {
+			if ( ! empty( $value->ID ) && $value->ID == $default ) {
+				$default_value = $value;
+				$default_value_index = $key;
+				break;
+			}
+		}
+
+		$defaults = array(
+			'format'   => 'text',
+			'property' => 'ID',
+		);
+		$options = wp_parse_args( $options, $defaults );
+
+		switch( $options['property'] ) {
+			case 'ID' :
+			case 'id' :
+				$return = $default_value->ID;
+				break;
+			case 'title' :
+				$return = empty( $default_value->post_title ) ? false : $default_value->post_title;
+				break;
+			case 'object' :
+				$return = empty( $default_value ) ? false : $default_value;
+				break;
+			case 'values-index' :
+				$return = empty( $default_value_index ) ? false : $default_value_index;
+				break;
+			default :
+				$return = false;
+		}
+
+		if ( $options['has'] )
+			return ! empty( $return );
+
+		return $return;
+	}
+
 	function values( $options=array() ) {
         // Return boolean if has flag was set.
         if ( $options['supports'] )
@@ -120,12 +172,12 @@ class IT_Theme_API_Variant implements IT_Theme_API {
 
         // If we made it here, we're doing a loop of variant-valuess for the current variant.
         // This will init/reset the variant_values global and loop through them. the /api/theme/variant-values.php file will handle individual products.
-        if ( empty( $GLOBALS['it_exchange']['variant_value'] ) ) { 
+        if ( empty( $GLOBALS['it_exchange']['variant_value'] ) ) {
             $GLOBALS['it_exchange']['variant_values'] = $this->variant->values;
             $GLOBALS['it_exchange']['variant_value'] = reset( $GLOBALS['it_exchange']['variant_values'] );
             return true;
         } else {
-            if ( next( $GLOBALS['it_exchange']['variant_values'] ) ) { 
+            if ( next( $GLOBALS['it_exchange']['variant_values'] ) ) {
                 $GLOBALS['it_exchange']['variant_value'] = current( $GLOBALS['it_exchange']['variant_values'] );
                 return true;
             } else {
@@ -133,7 +185,7 @@ class IT_Theme_API_Variant implements IT_Theme_API {
                 end( $GLOBALS['it_exchange']['variant_values'] );
                 $GLOBALS['it_exchange']['variant_value'] = false;
                 return false;
-            }   
-        }   
-    } 
+            }
+        }
+    }
 }

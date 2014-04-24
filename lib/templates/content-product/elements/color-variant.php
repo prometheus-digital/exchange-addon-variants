@@ -17,12 +17,15 @@
 <?php do_action( 'it_exchange_content_product_before_variant_element' ); ?>
 <div class="it-variant-options it-variant-hex-options">
 	<?php do_action( 'it_exchange_content_product_begin_variant_element' ); ?>
-	<div class="it-variant-title">Color Variants</div>
+	<div class="it-variant-title"><?php it_exchange( 'variant', 'title', 'format=text' ); ?><?php _e( ':', 'LION' ); ?>
+		<span class="it-variant-title-selected"><?php it_exchange( 'variant', 'default', array( 'property' => 'title' ) ); ?></span>
+	</div>
 	<ul class="it-variant-hex-list">
 		<?php while( it_exchange( 'variant', 'values' ) ) : ?>
-		<li class="it-variant-color">
-			<div class="it-variant-color-inner" style="height:55px;width:55px;background:<?php it_exchange( 'variant-value', 'color' ); ?>"></div>
-		</li>
+			<?php $selected_class = it_exchange( 'variant-value', 'get-is-default' ) ? 'selected' : ''; ?>
+			<li class="it-variant-color <?php esc_attr_e( $selected_class ); ?>">
+				<div class="it-variant-color-inner" title="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>" style="height:55px;width:55px;background:<?php it_exchange( 'variant-value', 'color' ); ?>"></div>
+			</li>
 		<?php endwhile; ?>
 	</ul>
 	<?php do_action( 'it_exchange_content_product_end_variant_element' ); ?>

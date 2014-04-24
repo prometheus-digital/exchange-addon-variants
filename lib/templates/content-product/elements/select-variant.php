@@ -20,7 +20,8 @@
 	<div class="it-variant-title"><?php it_exchange( 'variant', 'title', 'format=text' ); ?></div>
 	<select class="it-variant-select">
 		<?php while ( it_exchange( 'variant', 'values' ) ) : ?>
-		<option><?php it_exchange( 'variant-value', 'title' ); ?></option>
+			<?php $selected = it_exchange( 'variant-value', 'get-is-default' ) ? 'selected' : ''; ?>
+			<option <?php esc_attr_e( $selected ); ?>><?php it_exchange( 'variant-value', 'title' ); ?></option>
 		<?php endwhile; ?>
 	</select>
 	<?php do_action( 'it_exchange_content_product_end_variant_element' ); ?>

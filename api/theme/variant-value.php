@@ -20,9 +20,10 @@ class IT_Theme_API_Variant_Value implements IT_Theme_API {
 	 * @since 0.4.0
 	*/
 	var $_tag_map = array(
-		'title' => 'title',
-		'image' => 'image',
-		'color' => 'color',
+		'title'     => 'title',
+		'image'     => 'image',
+		'color'     => 'color',
+		'isdefault' => 'is_default',
 	);
 
 	/**
@@ -97,5 +98,9 @@ class IT_Theme_API_Variant_Value implements IT_Theme_API {
 
 	function color( $options=array() ) {
 		return $this->variant_value->color;
+	}
+
+	function is_default( $options=array() ) {
+		return ! empty( $GLOBALS['it_exchange']['variant']->default ) && ! empty( $this->variant_value->ID ) && $GLOBALS['it_exchange']['variant']->default == $this->variant_value->ID;
 	}
 }
