@@ -20,10 +20,6 @@
 		<?php do_action( 'it_exchange_content_product_begin_variants_element' ); ?>
 		<?php while( it_exchange( 'product', 'variants' ) ) :  ?>
 			<?php it_exchange_get_template_part( 'content', 'product/elements/' . it_exchange( 'variant', 'get-type' ) . '-variant' ); ?>
-			<?php 
-			// Do not remove this or variants will not work
-			it_exchange_add_hidden_variant_field();
-			?>
 		<?php endwhile; ?>
 		<?php do_action( 'it_exchange_content_product_end_variants_element' ); ?>
 	</div>

@@ -196,5 +196,5 @@ function it_exchange_add_hidden_variant_field() {
 
 	$default = empty( $GLOBALS['it_exchange']['variant']->default ) ? '' : $GLOBALS['it_exchange']['variant']->default;
 
-	?><input type="hidden" name="it-exchange-selected-variants[<?php esc_attr_e( $GLOBALS['it_exchange']['variant']->ID ); ?>]" value="<?php esc_attr_e( $default ); ?>" /><?php
+	?><input type="hidden" class="it-exchange-selected-variants-field" name="it-exchange-selected-variants[<?php esc_attr_e( $GLOBALS['it_exchange']['variant']->ID ); ?>]" value="<?php esc_attr_e( $default ); ?>" /><?php
 }

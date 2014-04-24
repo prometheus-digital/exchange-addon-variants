@@ -24,10 +24,11 @@
 		<?php while( it_exchange( 'variant', 'values' ) ) : ?>
 			<?php $selected_class = it_exchange( 'variant-value', 'get-is-default' ) ? 'selected' : ''; ?>
 			<li class="it-variant-color <?php esc_attr_e( $selected_class ); ?>">
-				<div class="it-variant-color-inner" title="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>" style="height:55px;width:55px;background:<?php it_exchange( 'variant-value', 'color' ); ?>"></div>
+				<div class="it-variant-color-inner" title="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>" style="height:55px;width:55px;background:<?php it_exchange( 'variant-value', 'color' ); ?>" data-id="<?php esc_attr_e( it_exchange( 'variant-value', 'get-id' ) ); ?>"></div>
 			</li>
 		<?php endwhile; ?>
 	</ul>
+	<?php it_exchange_add_hidden_variant_field(); // Do not remove this or variants will not work ?>
 	<?php do_action( 'it_exchange_content_product_end_variant_element' ); ?>
 </div>
 <?php do_action( 'it_exchange_content_product_after_variants_element' ); ?>

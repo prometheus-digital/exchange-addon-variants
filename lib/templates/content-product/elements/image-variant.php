@@ -24,10 +24,11 @@
 		<?php while( it_exchange( 'variant', 'values' ) ) : ?>
 			<?php $selected_class = it_exchange( 'variant-value', 'get-is-default' ) ? 'selected' : ''; ?>
 			<li class="it-variant-image <?php esc_attr_e( $selected_class ); ?>">
-				<img width="55px" height="55px" title="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>" alt="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>" src="<?php it_exchange( 'variant-value', 'image' ); ?>" />
+				<img width="55px" height="55px" title="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>" alt="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>" src="<?php it_exchange( 'variant-value', 'image' ); ?>" data-id="<?php esc_attr_e( it_exchange( 'variant-value', 'get-id' ) ); ?>"/>
 			</li>
 		<?php endwhile; ?>
 	</ul>
+	<?php it_exchange_add_hidden_variant_field(); // Do not remove this or variants will not work ?>
 	<?php do_action( 'it_exchange_content_product_end_variant_element' ); ?>
 </div>
 <?php do_action( 'it_exchange_content_product_after_variant_element' ); ?>

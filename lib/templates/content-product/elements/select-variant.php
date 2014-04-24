@@ -21,9 +21,10 @@
 	<select class="it-variant-select">
 		<?php while ( it_exchange( 'variant', 'values' ) ) : ?>
 			<?php $selected = it_exchange( 'variant-value', 'get-is-default' ) ? 'selected' : ''; ?>
-			<option <?php esc_attr_e( $selected ); ?>><?php it_exchange( 'variant-value', 'title' ); ?></option>
+			<option <?php esc_attr_e( $selected ); ?> value="<?php esc_attr_e( it_exchange( 'variant-value', 'get-id' ) ); ?>"><?php it_exchange( 'variant-value', 'title' ); ?></option>
 		<?php endwhile; ?>
 	</select>
+	<?php it_exchange_add_hidden_variant_field(); // Do not remove this or variants will not work ?>
 	<?php do_action( 'it_exchange_content_product_end_variant_element' ); ?>
 </div>
 <?php do_action( 'it_exchange_content_product_after_variant_element' ); ?>
