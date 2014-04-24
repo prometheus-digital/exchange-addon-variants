@@ -15,9 +15,43 @@ function it_exchange_variants_addon_enqueue_scripts() {
 	if ( it_exchange_product_has_feature( $product_id, 'variants' ) ) {
 		wp_enqueue_script( 'it-exchange-variants-addon-frontend-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/frontend-product.js' );
 		wp_enqueue_style( 'it-exchange-variants-addon-frontend-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/css/frontend-product.css' );
+		add_filter( 'wp_footer', 'it_exchange_variants_addon_print_product_variant_js' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'it_exchange_variants_addon_enqueue_scripts' );
+
+/**
+ * Maybe define the ajax URL in JS
+ *
+ * @since 1.0.0
+ * @return void
+*/
+function it_exchange_variants_addon_print_product_variant_js() {
+	$product_id = it_exchange_get_the_product_id();
+	?>
+	<script type="text/javascript">
+		if ( typeof ajaxurl === 'undefined' ) {
+			// Added by exchange-addon-variants in lib/hooks.php if not already defined
+			var ajaxurl = '<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>';
+		}
+		var itExchangeVariantPricing = [];
+		var itExchangeVariantImages  = [];
+		<?php
+		if ( $pricing = it_exchange_get_product_feature( $product_id, 'base-price', array( 'setting' => 'variants' ) ) ) {
+			foreach( (array) $pricing as $combo => $price_data ) {
+				?>itExchangeVariantPricing['<?php echo esc_js( $combo ); ?>'] = '<?php echo esc_js( it_exchange_format_price( $price_data['value'] ) ); ?>';
+				<?php
+			}
+		}
+		if ( $images = it_exchange_get_product_feature( $product_id, 'product-images', array( 'setting' => 'variants' ) ) ) {
+			foreach( (array) $pricing as $combo => $price_data ) {
+				?>itExchangeVariantImages.push('<?php echo esc_js( $combo ); ?>');<?php
+			}
+		}
+		?>
+	</script>
+	<?php
+}
 
 /**
  * Enqueues Variant scripts to WordPress Dashboard
