@@ -189,3 +189,12 @@ function it_exchange_variants_addon_get_product_feature_controller( $product_id,
 	include_once( dirname( dirname( __FILE__ ) ) . '/lib/class.variant-meta-for-product-feature.php' );
 	return new IT_Exchange_Variants_Addon_Product_Feature_Combos( $product_id, $product_feature, $product_feature_options );
 }
+
+function it_exchange_add_hidden_variant_field() {
+	if ( empty( $GLOBALS['it_exchange']['variant']->ID ) )
+		return ;
+
+	$default = empty( $GLOBALS['it_exchange']['variant']->default ) ? '' : $GLOBALS['it_exchange']['variant']->default;
+
+	?><input type="hidden" name="it-exchange-selected-variants[<?php esc_attr_e( $GLOBALS['it_exchange']['variant']->ID ); ?>]" value="<?php esc_attr_e( $default ); ?>" /><?php
+}
