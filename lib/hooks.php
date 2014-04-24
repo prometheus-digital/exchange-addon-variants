@@ -36,6 +36,7 @@ function it_exchange_variants_addon_print_product_variant_js() {
 		}
 		var itExchangeVariantPricing = [];
 		var itExchangeVariantImages  = [];
+		itExchangeVariantPricing['base_price'] = '<?php echo esc_js( it_exchange_format_price( it_exchange_get_product_feature( $product_id, 'base-price' ) ) ); ?>';
 		<?php
 		if ( $pricing = it_exchange_get_product_feature( $product_id, 'base-price', array( 'setting' => 'variants' ) ) ) {
 			foreach( (array) $pricing as $combo => $price_data ) {
