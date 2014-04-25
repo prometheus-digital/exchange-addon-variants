@@ -34,6 +34,10 @@ function it_exchange_variants_addon_print_product_variant_js() {
 			// Added by exchange-addon-variants in lib/hooks.php if not already defined
 			var ajaxurl = '<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>';
 		}
+		if ( typeof itExchangeProductID === 'undefined' ) {
+			// Added by exchange-addon-variants in lib/hooks.php if not already defined
+			var itExchangeProductID = <?php echo esc_js( $product_id ); ?>;
+		}
 		var itExchangeVariantPricing = [];
 		var itExchangeVariantImages  = [];
 		itExchangeVariantPricing['base_price'] = '<?php echo esc_js( it_exchange_format_price( it_exchange_get_product_feature( $product_id, 'base-price' ) ) ); ?>';
@@ -222,6 +226,7 @@ function it_exchange_variants_json_api() {
 	$ui_type        = empty( $_REQUEST['ui-type'] ) ? false : $_REQUEST['ui-type'];
 	$variants_array = empty( $_REQUEST['variants-array'] ) ? false : (array) $_REQUEST['variants-array'];
 	$include_currency_data = empty( $_REQUEST['include-currency-data'] ) ? false : true;
+	$include_alts   = empty( $_REQUEST['include-alts'] ) ? false : true;
 
 	if ( empty( $endpoint ) )
 		return false;
@@ -451,6 +456,7 @@ function it_exchange_variants_json_api() {
 				$result->hash       = empty( $response['hash'] ) ? $result->hash : $response['hash'];
 				$result->title      = empty( $response['title'] ) ? $result->title : $response['title'];
 				$result->combo      = empty( $response['combo'] ) ? $result->combo : $response['combo'];
+				$result->alts       = empty( $include_alts ) ? false : it_exchange_addon_get_selected_variant_alts( $result->combo, $product_id );
 				$result->allParents = true;
 
 				foreach( $result->combo as $parent => $child ) {

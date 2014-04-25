@@ -114,7 +114,7 @@ function it_exchange_variants_addon_get_selected_variants_id_hash( $array=array(
 	return md5( serialize( $array ) );	
 }
 
-function it_exchange_variants_addon_get_all_variant_combos_for_product( $product_id, $include_alls=true ) {
+function it_exchange_variants_addon_get_all_variant_combos_for_product( $product_id, $include_alls=true, $selected_values=false ) {
 
 	// Grab all 
 	if ( ! $product_variants = it_exchange_get_variants_for_product( $product_id ) )
@@ -128,7 +128,9 @@ function it_exchange_variants_addon_get_all_variant_combos_for_product( $product
 		if ( $include_alls )
 			$combos[$i][] = $variant->ID;
 		foreach( (array) $variant->values as $value ) {
-			$combos[$i][] = $value->ID;
+			// If $selected values is set, we're only going to include those in the returned matrix
+			if ( empty( $selected_values ) || ( ! empty( $selected_values ) && in_array( $value->ID, $selected_values ) ) )
+				$combos[$i][] = $value->ID;
 		}
 		$i++;
 	}

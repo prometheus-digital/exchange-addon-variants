@@ -491,3 +491,14 @@ function it_exchange_variants_addon_get_variant( $post, $break_cache=false ) {
 
 	return $GLOBALS['it_exchange']['variants_cache'][$post_id];
 }
+
+function it_exchange_addon_get_selected_variant_alts( $selected_combo, $product_id ) {
+	$alts = array();
+	$all_possible = it_exchange_variants_addon_get_all_variant_combos_for_product( $product_id, true, $selected_combo );
+	foreach( $all_possible as $combo ) {
+		$atts = it_exchange_get_variant_combo_attributes( $combo );
+		if ( ! empty( $atts['hash'] ) )
+			$alts[] = $atts['hash'];
+	}
+	return $alts;
+}
