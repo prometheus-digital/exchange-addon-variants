@@ -216,6 +216,72 @@ function it_exchange_variants_addon_load_backbone_admin_templates() {
 		include( dirname( __FILE__ ) . '/js/templates/admin-product-pricing-variants.php' );
 }
 
+function it_exchange_addon_add_variant_data_to_cart( $data, $product_id ) {
+	if ( ! empty( $_REQUEST['it-exchange-combo-hash'] ) )
+		$data['it_variant_combo_hash'] =  $_REQUEST['it-exchange-combo-hash'];
+
+	return $data;
+}
+add_filter( 'it_exchange_add_itemized_data_to_cart_product', 'it_exchange_addon_add_variant_data_to_cart', 10, 2 );
+
+function it_exchange_addon_modify_variant_cart_titles( $title, $product ) {
+	if ( empty( $product['itemized_data'] ) )
+		return $title;
+
+	$itemized_data = maybe_unserialize( $product['itemized_data'] );
+	if ( empty( $itemized_data['it_variant_combo_hash'] ) )
+		return $title;
+
+	$atts = it_exchange_get_variant_combo_attributes_from_hash( $product['product_id'], $itemized_data['it_variant_combo_hash'] );
+	if ( ! empty( $atts['title'] ) )
+		$title = $title . ': <br />' . $atts['title'];
+
+	return $title;
+}
+add_filter( 'it_exchange_get_cart_product_title', 'it_exchange_addon_modify_variant_cart_titles', 10, 2 );
+
+function it_exchange_addon_modify_variant_cart_product_base_price( $base, $product ) {
+	if ( empty( $product['itemized_data'] ) )
+		return $base;
+
+	$itemized_data = maybe_unserialize( $product['itemized_data'] );
+	if ( empty( $itemized_data['it_variant_combo_hash'] ) )
+		return $base;
+
+	$itemized_hash = $itemized_data['it_variant_combo_hash'];
+
+	$atts = it_exchange_get_variant_combo_attributes_from_hash( $product['product_id'], $itemized_data['it_variant_combo_hash'] );
+	if ( empty( $atts['combo'] ) )
+		return $base;
+
+	$controller    = it_exchange_variants_addon_get_product_feature_controller( $product['product_id'], 'base-price', array( 'setting' => 'variants' ) );
+	$alt_hashes    = it_exchange_addon_get_selected_variant_alts( $atts['combo'], $product['product_id'] );
+	$price_located = false;
+
+	if ( $atts['hash'] == $itemized_hash ) {
+		if ( ! empty( $controller->post_meta[$itemized_hash]['value'] ) ) {
+			$price = $controller->post_meta[$itemized_hash]['value'];
+			$price_located = true;
+		}
+	}
+
+	// Look for alt hashes if direct match was not found
+	if ( ! $price_located && ! empty( $alt_hashes ) ) {
+		foreach( $alt_hashes as $alt_hash ) {
+			if ( ! empty( $controller->post_meta[$alt_hash]['value'] ) ) {
+				$price = $controller->post_meta[$alt_hash]['value'];
+				$price_located = true;
+			}
+		}
+	}
+	// If still no price, set to false so that we will use default
+	if ( empty( $price_located ) )
+		return $base;
+
+	return $price;
+}
+add_filter( 'it_exchange_get_cart_product_base_price', 'it_exchange_addon_modify_variant_cart_product_base_price', 10, 2 );
+
 function it_exchange_variants_json_api() {
 
 	$endpoint       = empty( $_REQUEST['endpoint'] ) ? false : $_REQUEST['endpoint'];
@@ -458,11 +524,9 @@ function it_exchange_variants_json_api() {
 			// Pricing
 			$price_located = false;
 			$controller    = it_exchange_variants_addon_get_product_feature_controller( $product_id, 'base-price', array( 'setting' => 'variants' ) );
-/*
-ITUtility::print_r($selected_hash);
-ITUtility::print_r($alt_hashes);
-ITUtility::print_r($controller);
-die();
+/**
+ * @TOOD CREATE A FUNCTION TO RETURN THE VARIANT PRICING DATA> IMPLEMENT IT HERE AND IN CART PRICING.
+ * IN THE MEANTIME, MAKE SURE THE LOGIC HERE AND THERE MATCHES!
 */
 			if ( $variant_combos_data['hash'] == $selected_hash ) {
 				if ( ! empty( $controller->post_meta[$selected_hash]['value'] ) ) {
@@ -516,6 +580,7 @@ die();
 			$result['images']['selector']   = '.it-exchange-product-images .it-exchange-column-inner';
 			$result['images']['html']       = apply_filters( 'the_content', it_exchange( 'product', 'get-gallery', array('images' => $images ) ) );
 			$result['images']['transition'] = 'default';
+			$result['comboHash']            = $selected_hash;
 			die( json_encode( $result ) );
 		}
 	} else if ( 'get-atts-from-raw-combo' == $endpoint ) {

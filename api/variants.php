@@ -187,6 +187,17 @@ function it_exchange_get_variant_combo_attributes( $combo ) {
 	return $atts;
 }
 
+function it_exchange_get_variant_combo_attributes_from_hash( $product_id, $hash ) {
+	$all_combos = it_exchange_variants_addon_get_all_variant_combos_for_product( $product_id, true );
+	foreach( $all_combos as $key => $combo ) {
+		if ( $combo_atts = it_exchange_get_variant_combo_attributes( $combo ) ) {
+			if ( $combo_atts['hash'] == $hash )
+				return $combo_atts;
+		}
+	}
+	return false;
+}
+
 function it_exchange_variants_addon_get_product_feature_controller( $product_id, $product_feature, $product_feature_options=array() ) {
 	include_once( dirname( dirname( __FILE__ ) ) . '/lib/class.variant-meta-for-product-feature.php' );
 	return new IT_Exchange_Variants_Addon_Product_Feature_Combos( $product_id, $product_feature, $product_feature_options );
