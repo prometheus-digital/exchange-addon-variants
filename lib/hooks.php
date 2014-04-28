@@ -444,6 +444,80 @@ function it_exchange_variants_json_api() {
 			}
 			die( json_encode( $response ) );
 		}
+	} else if ( 'get-updated-features-html-for-variants' == $endpoint ) {
+		$GLOBALS['it_exchange']['product'] = it_exchange_get_product( $product_id );
+		$GLOBALS['post'] = get_post( $product_id );
+		$result = array();
+
+		if ( $variant_combos_data = it_exchange_get_variant_combo_attributes( $variants_array ) ) {
+			$combos_array  = empty( $variant_combos_data['combo'] ) ? array() : $variant_combos_data['combo'];
+			$selected_hash = empty( $variant_combos_data['hash'] ) ? '' : $variant_combos_data['hash'];
+			$alt_hashes    = it_exchange_addon_get_selected_variant_alts( $combos_array, $product_id );
+
+
+			// Pricing
+			$price_located = false;
+			$controller    = it_exchange_variants_addon_get_product_feature_controller( $product_id, 'base-price', array( 'setting' => 'variants' ) );
+/*
+ITUtility::print_r($selected_hash);
+ITUtility::print_r($alt_hashes);
+ITUtility::print_r($controller);
+die();
+*/
+			if ( $variant_combos_data['hash'] == $selected_hash ) {
+				if ( ! empty( $controller->post_meta[$selected_hash]['value'] ) ) {
+					$price = $controller->post_meta[$selected_hash]['value'];
+					$price_located = true;
+				}
+			}
+			// Look for alt hashes if direct match was not found
+			if ( ! $price_located && ! empty( $alt_hashes ) ) {
+				foreach( $alt_hashes as $alt_hash ) {
+					if ( ! empty( $controller->post_meta[$alt_hash]['value'] ) ) {
+						$price = $controller->post_meta[$alt_hash]['value'];
+						$price_located = true;
+					}
+				}
+			}
+			// If still no price, set to false so that we will use default
+			if ( empty( $price_located ) )
+				$price = false;
+
+			// Setup the response for pricing
+			$result['price']['selector']   = '.it-exchange-product-price';
+			$result['price']['html']       = apply_filters( 'the_content', it_exchange( 'product', 'get-base-price', array('price' => $price ) ) );
+			$result['price']['transition'] = 'default';
+
+			// Images
+			$images_located = false;
+			$controller     = it_exchange_variants_addon_get_product_feature_controller( $product_id, 'product-images', array( 'setting' => 'variants' ) );
+
+			if ( $variant_combos_data['hash'] == $selected_hash ) {
+				if ( ! empty( $controller->post_meta[$selected_hash]['value'] ) ) {
+					$images         = $controller->post_meta[$selected_hash]['value'];
+					$images_located = true;
+				}
+			}
+			// Look for alt hashes if direct match was not found
+			if ( ! $images_located && ! empty( $alt_hashes ) ) {
+				foreach( $alt_hashes as $alt_hash ) {
+					if ( ! empty( $controller->post_meta[$alt_hash]['value'] ) ) {
+						$images         = $controller->post_meta[$alt_hash]['value'];
+						$images_located = true;
+					}
+				}
+			}
+
+			// If still no images, set to false so that we will use default
+			if ( empty( $images_located ) )
+				$images = false;
+
+			// Setup the response for pricing
+			$result['images']['selector']   = '.it-exchange-product-images .it-exchange-column-inner';
+			$result['images']['html']       = apply_filters( 'the_content', it_exchange( 'product', 'get-gallery', array('images' => $images ) ) );
+			$result['images']['transition'] = 'default';
+			die( json_encode( $result ) );
+		}
 	} else if ( 'get-atts-from-raw-combo' == $endpoint ) {
 		if ( ! empty( $variants_array ) ) {
 			$result = new stdClass();
