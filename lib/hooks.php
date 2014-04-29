@@ -581,6 +581,29 @@ function it_exchange_variants_json_api() {
 			$result['images']['html']       = apply_filters( 'the_content', it_exchange( 'product', 'get-gallery', array('images' => $images ) ) );
 			$result['images']['transition'] = 'default';
 			$result['comboHash']            = $selected_hash;
+
+			// Check inventory to make sure this selected combo is available
+			if ( it_exchange_get_product_feature( $product_id, 'inventory', array( 'setting' => 'variants' ) ) ) {
+				$inventory_located = false;
+				$controller        = it_exchange_variants_addon_get_product_feature_controller( $product_id, 'inventory', array( 'setting' => 'variants' ) );
+
+				if ( $variant_combos_data['hash'] == $selected_hash ) {
+					if ( ! empty( $controller->post_meta[$selected_hash]['value'] ) ) {
+						$inventory         = $controller->post_meta[$selected_hash]['value'];
+						$inventory_located = true;
+					}
+				}
+
+				// If still no inventory, set to false so that we will use default
+				if ( empty( $inventory_located ) )
+					$inventory = it_exchange_get_product_feature( $product_id, 'inventory' );
+
+				// Setup the response for pricing
+				$result['inventory']['selector']   = '.it-exchange-sw-product .purchase-options';
+				$result['inventory']['html']       = it_exchange( 'product', 'get-purchase-options', array( 'out-of-stock-label' => __( 'This option is not currenlty in stock.', 'LION' ), 'add-to-cart-edit-quantity' => false, 'buy-now-edit-quantity' => false, 'product-in-stock' => (boolean) $inventory ) );
+				$result['inventory']['transition'] = 'default';
+				$result['comboHash']               = $selected_hash;
+			}
 			die( json_encode( $result ) );
 		}
 	} else if ( 'get-atts-from-raw-combo' == $endpoint ) {
