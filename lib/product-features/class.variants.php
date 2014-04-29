@@ -53,6 +53,8 @@ class IT_Exchange_Product_Feature_Variants {
 		// Add it to all enabled product-type addons
 		$products = it_exchange_get_enabled_addons( array( 'category' => 'product-type' ) );
 		foreach( $products as $key => $params ) {
+			if ( in_array( $params['slug'], array('invoices-product-type', 'membership-product-type') ) )
+				continue;
 			it_exchange_add_feature_support_to_product_type( 'variants', $params['slug'] );
 		}
 	}
