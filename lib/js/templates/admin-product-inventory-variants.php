@@ -7,7 +7,6 @@ $variants_ui_enabled = ( 'yes' == it_exchange_get_product_feature( $product_id, 
 
 <!-- Inventory Variant Combos Container -->
 <script type="text/template" id="tmpl-it-exchange-product-inventory-variants-container">
-	<p class="intro-description">Use this to set the product's current inventory number.</p>
 	<p>
 		<input type="checkbox" id="it-exchange-enable-product-variant-inventory" class="it-exchange-checkbox-enable" name="it-exchange-enable-product-variant-inventory" value="yes" <?php esc_attr_e( $variants_ui_enabled ); ?>/>
 		<label for="it-exchange-enable-product-variant-inventory">Enable Inventory Tracking for variants?</label>
