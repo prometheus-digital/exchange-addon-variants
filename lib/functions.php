@@ -17,8 +17,14 @@ function it_exchange_variants_addon_create_inital_presets() {
 	$core_presets_args   = it_exchange_variants_addon_get_core_presets_args();
 	$existing_presets    = it_exchange_variants_addon_get_presets( array( 'core_only' => true ) );
 
+	/** @todo Cleanup beta data. Delete these 3 lines near launch */
+	$addon_settings['deleted-core-presets']['ithemes-colors'] = true;
+	if ( $colors_id = $GLOBALS['wpdb']->get_var('SELECT ID FROM ' . $GLOBALS['wpdb']->posts . ' WHERE post_name = "ithemes-colors"') )
+		wp_delete_post( $colors_id, true );
+
 	// Loop through preset args and add, update or skip each preset
 	foreach( $core_presets_args as $preset ) {
+
 		// Don't create it if it was already deleted by the store owner
 		if ( ! empty( $addon_settings['deleted-core-presets'][$preset['slug']] ) )
 			continue;
@@ -65,7 +71,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 0,
 			'core'     => true,
 			'ui-type'  => 'select',
-			'version'  => '0.0.24',
+			'version'  => '0.0.26',
 		),
 		'template-radio' => array(
 			'slug'     => 'template-radio',
@@ -86,7 +92,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 3,
 			'core'     => true,
 			'ui-type'  => 'radio',
-			'version'  => '0.0.24',
+			'version'  => '0.0.26',
 		),
 		'tempalte-hex'   => array(
 			'slug'     => 'template-hex',
@@ -109,7 +115,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 5,
 			'core'     => true,
 			'ui-type'  => 'color',
-			'version'  => '0.0.24',
+			'version'  => '0.0.26',
 		),
 		'tempalte-image' => array(
 			'slug'     => 'template-image',
@@ -130,42 +136,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 8,
 			'core'     => true,
 			'ui-type'  => 'image',
-			'version'  => '0.0.24',
-		),
-		'ithemes-colors'       => array(
-			'slug'    => 'ithemes-colors',
-			'title'   => __( 'iThemes Colors', 'LION' ),
-			'values'  => array(
-				'88C53E' => array(
-					'slug'    => '88C53E',
-					'title'   => __( 'iThemes Green', 'LION' ),
-					'color'   => '#88C53E',
-					'order'   => 0,
-				),
-				'0082CA' => array(
-					'slug'    => '0082CA',
-					'title'   => __( 'iThemes Blue', 'LION' ),
-					'color'   => '#0082CA',
-					'order'   => 1,
-				),
-				'F1FFDE' => array(
-					'slug'    => 'F1FFDE',
-					'title'   => __( 'Exchange Green', 'LION' ),
-					'color'   => '#F1FFDE',
-					'order'   => 2,
-				),
-				'334940' => array(
-					'slug'    => '334940',
-					'title'   => __( 'Exchange Dark Green', 'LION' ),
-					'color'   => '#334940',
-					'order'   => 3,
-				),
-			),
-			'default' => false,
-			'order'   => 5,
-			'core'    => true,
-			'ui-type' => 'color',
-			'version' => '0.0.24',
+			'version'  => '0.0.26',
 		),
 		'ithemes-sizes'  => array(
 			'slug'    => 'ithemes-sizes',
@@ -192,11 +163,11 @@ function it_exchange_variants_addon_get_core_presets_args() {
 					'order' => 4,
 				),
 			),
-			'default' => false,
+			'default' => 's',
 			'order'   => 0,
 			'core'    => true,
 			'ui-type' => 'select',
-			'version' => '0.0.24',
+			'version' => '0.0.26',
 		),
 	);
 	return $args;
