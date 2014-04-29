@@ -355,7 +355,7 @@ function it_exchange_variants_json_api() {
 				$response_value->color         = empty( $value['color'] ) ? false : $value['color'];
 				$response_value->imageUrl      = empty( $value['image'] ) ? '' : $value['image'];
 				$response_value->uiType        = empty( $preset->ui_type ) ? false : $preset->ui_type;
-				$response_value->isDefault     = empty( $preset->default ) ? '' : 'checked';
+				$response_value->isDefault     = ( ! empty( $preset->default ) && $preset->default == $value['slug'] ) ? 'checked' : '';
 				$response_value->presetSlug    = empty( $preset->slug ) ? false : $preset->slug;
 
 				$response[] = $response_value;

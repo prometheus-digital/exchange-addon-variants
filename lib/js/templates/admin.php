@@ -31,7 +31,7 @@ if ( ! is_admin() )
 				<!-- Saved Presets -->
 				<div class="it-exchange-variant-presets-saved it-exchange-variant-presets-column">
 					<div class="it-exchange-variant-column-inner">
-						<div class="label"><?php _e( 'My Presets', 'LION' ); ?></div>
+						<div class="label"><?php _e( 'Presets', 'LION' ); ?></div>
 					</div>
 				</div>
 			</div>
@@ -143,6 +143,6 @@ if ( ! is_admin() )
 		<img src="{{ data.imageThumb }}" alt="{{ data.imageAlt }}" />
 
 		<a href="" class="it-exchange-variant-preset-saved-title it-exchange-variant-preset-saved-title-{{ data.slug }}">{{ data.title }}</a>
-		<a href="" class="it-exchange-variant-preset-saved-delete">&times;</a>
+		<!--<a href="" class="it-exchange-variant-preset-saved-delete">&times;</a>-->
 	</div>
 </script>
