@@ -307,6 +307,7 @@ function it_exchange_variants_json_api() {
 				$response_variant = new stdClass();
 				$response_variant->id            = $variant->ID;
 				$response_variant->title         = $variant->post_title;
+				$response_variant->placeholder   = __( 'Variant Title', 'LION' );
 				$response_variant->order         = $variant->menu_order;
 				$response_variant->uiType        = $variant->ui_type;
 				$response_variant->presetSlug    = $variant->preset_slug;
@@ -329,6 +330,7 @@ function it_exchange_variants_json_api() {
 				$response_variant->id            = $variant->ID;
 				$response_variant->parentId     = $variant->post_parent;
 				$response_variant->title         = $variant->post_title;
+				$response_variant->placeholder   = __( 'Variant Value Title', 'LION' );
 				$response_variant->order         = $variant->menu_order;
 				$response_variant->uiType        = empty( $parent->ui_type ) ? false : $parent->ui_type;
 				$response_variant->color         = empty( $variant->color ) ? false : $variant->color;
@@ -351,6 +353,7 @@ function it_exchange_variants_json_api() {
 				$response_value->id            = uniqid(rand());
 				$response_value->parentId      = $parent_id;
 				$response_value->title         = $value['title'];
+				$response_value->placeholder   = __( 'Variant Value Title', 'LION' );
 				$response_value->order         = empty( $value['order'] ) ? 0 : $value['order'];
 				$response_value->color         = empty( $value['color'] ) ? false : $value['color'];
 				$response_value->imageUrl      = empty( $value['image'] ) ? '' : $value['image'];
@@ -375,7 +378,8 @@ function it_exchange_variants_json_api() {
 					$response = new stdClass();
 					$response->id            = uniqid(rand());
 					$response->parentId      = $parent_id;
-					$response->title         = $preset->title;
+					$response->title         = '';
+					$response->placeholder = __( 'Variant Value Title', 'LION' );
 					$response->order         = empty( $value['order'] ) ? 0 : $value['order'];
 					$response->color         = empty( $value['color'] ) ? false : $value['color'];
 					$response->imageUrl      = empty( $value['image'] ) ? '' : $value['image'];
@@ -394,15 +398,16 @@ function it_exchange_variants_json_api() {
 			foreach( $presets as $preset ) {
 				if ( ! $preset->is_template )
 					continue;
-				$core_preset             = new stdClass();
-				$core_preset->id         = $preset->ID;
-				$core_preset->slug       = $preset->slug;
-				$core_preset->title      = $preset->title;
-				$core_preset->values     = $preset->values;
-				$core_preset->order      = empty( $preset->menu_order ) ? 0 : $preset->menu_order;
-				$core_preset->uiType     = empty( $preset->ui_type ) ? '' : $preset->ui_type;
-				$core_preset->imageAlt   = $preset->title;
-				$core_preset->imageThumb = ( ! empty( $preset->ui_type ) && is_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) )
+				$core_preset              = new stdClass();
+				$core_preset->id          = $preset->ID;
+				$core_preset->slug        = $preset->slug;
+				$core_preset->title       = $preset->title;
+				$core_preset->placeholder = __( 'Variant Title', 'LION' );
+				$core_preset->values      = $preset->values;
+				$core_preset->order       = empty( $preset->menu_order ) ? 0 : $preset->menu_order;
+				$core_preset->uiType      = empty( $preset->ui_type ) ? '' : $preset->ui_type;
+				$core_preset->imageAlt    = $preset->title;
+				$core_preset->imageThumb  = ( ! empty( $preset->ui_type ) && is_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) )
 					? ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' )
 					: '';
 
@@ -416,15 +421,16 @@ function it_exchange_variants_json_api() {
 			foreach( $presets as $preset ) {
 				if ( $preset->is_template )
 					continue;
-				$core_preset             = new stdClass();
-				$core_preset->id         = $preset->ID;
-				$core_preset->slug       = $preset->slug;
-				$core_preset->title      = $preset->title;
-				$core_preset->order      = empty( $preset->menu_order ) ? 0 : $preset->menu_order;
-				$core_preset->uiType     = empty( $preset->ui_type ) ? '' : $preset->ui_type;
-				$core_preset->values     = $preset->values;
-				$core_preset->imageAlt   = $preset->title;
-				$core_preset->imageThumb = ( ! empty( $preset->ui_type ) && is_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) )
+				$core_preset              = new stdClass();
+				$core_preset->id          = $preset->ID;
+				$core_preset->slug        = $preset->slug;
+				$core_preset->title       = $preset->title;
+				$core_preset->placeholder = __( 'Variant Title', 'LION' );
+				$core_preset->order       = empty( $preset->menu_order ) ? 0 : $preset->menu_order;
+				$core_preset->uiType      = empty( $preset->ui_type ) ? '' : $preset->ui_type;
+				$core_preset->values      = $preset->values;
+				$core_preset->imageAlt    = $preset->title;
+				$core_preset->imageThumb  = ( ! empty( $preset->ui_type ) && is_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' ) )
 					? ITUtility::get_url_from_file( dirname( __FILE__ ) . '/images/presets/' . $preset->ui_type . '.png' )
 					: '';
 

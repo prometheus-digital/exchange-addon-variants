@@ -49,9 +49,9 @@ if ( ! is_admin() )
 		<span class="variant-title-move">
 			<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][order]" value="{{ data.order }}" class="parent-variant-order-input" />
 		</span>
-		<span class="variant-title-text variant-text-placeholder">{{ data.title }}</span>
+		<span class="variant-title-text variant-text-placeholder"><# if ( '' == data.title ) { #>{{ data.placeholder }}<# } else { #>{{ data.title }} <# } #></span>
 		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][id]" value="{{ data.id }}">
-		<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden">
+		<input type="text" placeholder="{{ data.placeholder }}" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden">
 		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][ui_type]" value="{{ data.uiType }}">
 		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][preset_slug]" value="{{ data.presetSlug }}">
 		<span class="variant-title-values-preview">{{ data.valuesPreview }}</span>
@@ -79,8 +79,8 @@ if ( ! is_admin() )
 	</div>
 	<div class="variant-value-info">
 		<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.parentId }}][default]" value="{{ data.id }}" {{ data.isDefault }} />
-		<span class="variant-value-name variant-text-placeholder">{{ data.title }}</span>
-		<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
+		<span class="variant-value-name variant-text-placeholder"><# if ( '' == data.title ) { #>{{ data.placeholder }}<# } else { #>{{ data.title }} <# } #></span>
+		<input type="text" placeholer={{ data.placeholder }}" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
 		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />
 		<a class="variant-value-image variant-value-has-image">
 			<span class="variant-value-image-placeholder"><img src="{{ data.imageUrl }}" /></span>
@@ -99,8 +99,8 @@ if ( ! is_admin() )
 	</div>
 	<div class="variant-value-info">
 		<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.parentId }}][default]" value="{{ data.id }}" {{ data.isDefault }} />
-		<span class="variant-value-name variant-text-placeholder">{{ data.title }}</span>
-		<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
+		<span class="variant-value-name variant-text-placeholder"><# if ( '' == data.title ) { #>{{ data.placeholder }}<# } else { #>{{ data.title }} <# } #></span>
+		<input type="text" placeholder="{{ data.placeholder }}" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
 		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />
 		<div class="variant-value-hex">
 			<input type="text" value="{{ data.color }}" name="it-exchange-product-variants[variants][{{ data.id }}][color]" class="it-exchange-variants-colorpicker" />
@@ -118,8 +118,8 @@ if ( ! is_admin() )
 	</div>
 	<div class="variant-value-info">
 		<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.parentId }}][default]" value="{{ data.id }}" {{ data.isDefault }} />
-		<span class="variant-value-name variant-text-placeholder">{{ data.title }}</span>
-		<input type="text" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
+		<span class="variant-value-name variant-text-placeholder"><# if ( '' == data.title ) { #>{{ data.placeholder }}<# } else { #>{{ data.title }} <# } #></span>
+		<input type="text" placeholder="{{ data.placeholder }}" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
 		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />
 	</div>
 	<div class="variant-value-delete">

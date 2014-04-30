@@ -243,6 +243,8 @@ class IT_Exchange_Product_Feature_Variants {
 					$args = array();
 					if ( ! empty( $data['title'] ) )
 						$args['post_title'] = $data['title'];
+					if ( empty( $args['post_title'] ) )
+						$args['post_title'] = empty( $data['post_parent'] ) ? __( 'Variant Title', 'LION' ) : __( 'Variant Value Title', 'LION' );
 					if ( ! empty( $data['post_parent'] ) )
 						$args['post_parent'] = $data['post_parent'];
 					if ( ! empty( $data['post_parent'] ) && isset( $new_ids_to_wp_ids[$data['post_parent']] ) )
