@@ -66,7 +66,7 @@ if ( ! is_admin() )
 			<ul class="variant-values-list ui-sortable">
 			</ul>
 			<div class="add-variant-value">
-				<input type="button" class="button add-variant-value-button" value="Add Value">
+				<input type="button" class="button button-primary add-variant-value-button" value="Add Value">
 			</div>
 		</div>
 	</div>
