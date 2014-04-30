@@ -8,6 +8,7 @@ $product_id = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
 <script type="text/template" id="tmpl-it-exchange-product-pricing-variants-container">
 	<label for="product-variant-pricing-field"><?php _e( 'New Price Variant', 'LION' ); ?></label>
 
+	<p class="variant-pricing-description"><?php _e( 'To charge an alternate price for a specific product variation, select which variation you want to apply the modified price to and click Add New Price Variant.', 'LION' ); ?>
 	<div class="add-new-product-pricing-variant-combination">
 		<# if ( data.productVariants.length ) { #>
 
