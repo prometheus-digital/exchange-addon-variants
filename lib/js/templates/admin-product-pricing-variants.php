@@ -27,7 +27,7 @@ $product_id = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
 					<# }); #>
 				</div>
 
-				<input type="button" id="it-exchange-variant-pricing-create-combo-button" value="<?php esc_attr_e( __( 'Add New Combo', 'LION' ) ); ?>" class="button button-primary">
+				<input type="button" id="it-exchange-variant-pricing-create-combo-button" value="<?php esc_attr_e( __( 'Add New Price Variant', 'LION' ) ); ?>" class="button button-primary">
 			</div>
 		<# } else { #>
 			<p><?php _e( 'You must have one or more product variants before you can create a pricing variant.', 'LION' ); ?></p>
