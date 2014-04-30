@@ -18,7 +18,7 @@ if ( ! is_admin() )
 
 			<!-- Add New Variant Button -->
 			<div class="it-exchange-new-variant-add-button">
-				<a class="button button-primary"><?php _e( 'Add Variant', 'LION' ); ?></a>
+				<a class="button button-primary"><?php _e( 'Add New Variant', 'LION' ); ?></a>
 			</div>
 
 			<div class="it-exchange-new-variant-presets hidden clearfix">
