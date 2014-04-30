@@ -20,7 +20,7 @@ $variants_ui_enabled = ( 'yes' == it_exchange_get_product_feature( $product_id, 
 
 <!-- Header Template -->
 <script type="text/template" id="tmpl-it-exchange-product-inventory-table-header">
-	<# var width = ( 100 / ( _.size(data.variants) + 2)  ) #>
+	<# var width = ( 100 / ( _.size(data.variants) + 1)  ) #>
 	<style type="text/css">
 		.it-exchange-product-inventory-variants-table .inventory-variant-header-cell,
 		.it-exchange-product-inventory-variants-table .inventory-variant-cell { max-width: {{ width }}% ; }
