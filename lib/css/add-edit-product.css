@@ -18,7 +18,7 @@
 .it-exchange-existing-variant .variant-title-values-preview{margin-left:.5em;font-size:.8em;color:#AAA;}
 .it-exchange-existing-variant .variant-title-delete{position:absolute;right:.5em;top:.75em;margin:0;color:#AAA;cursor:pointer;}
 /** -----------------------------------------------------:[ values ]:---------- */
-.it-exchange-existing-variant .variant-values{background:#F7F7F7;}
+.it-exchange-existing-variant .variant-values{background:#F7F7F7;box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.05); border-bottom: 1px solid #DFDFDF;}
 .it-exchange-existing-variant .variant-values-list li{position:relative;cursor:move;width:95%;max-width:600px;margin:0 0 5px;background:#FFF;border:1px solid #E8E8E8;}
 .it-exchange-existing-variant .variant-values-list li > div{float:left;}
 .it-exchange-existing-variant .variant-value-info{}
