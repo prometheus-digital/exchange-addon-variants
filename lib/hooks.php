@@ -374,7 +374,7 @@ function it_exchange_variants_json_api() {
 
 					$response = new stdClass();
 					$response->id            = uniqid(rand());
-					$response->parentId      = (int) $parent_id;
+					$response->parentId      = $parent_id;
 					$response->title         = $preset->title;
 					$response->order         = empty( $value['order'] ) ? 0 : $value['order'];
 					$response->color         = empty( $value['color'] ) ? false : $value['color'];
