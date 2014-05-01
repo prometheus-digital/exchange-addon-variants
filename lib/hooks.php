@@ -519,7 +519,7 @@ function it_exchange_variants_json_api() {
 	} else if ( 'get-updated-features-html-for-variants' == $endpoint ) {
 		$GLOBALS['it_exchange']['product'] = it_exchange_get_product( $product_id );
 		$GLOBALS['post'] = get_post( $product_id );
-		$result = array();
+		$result = array( 'price' => array(), 'images' => array(), 'inventory' => array() );
 
 		if ( $variant_combos_data = it_exchange_get_variant_combo_attributes( $variants_array ) ) {
 			$combos_array  = empty( $variant_combos_data['combo'] ) ? array() : $variant_combos_data['combo'];
