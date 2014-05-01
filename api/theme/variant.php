@@ -175,6 +175,11 @@ class IT_Theme_API_Variant implements IT_Theme_API {
         if ( $options['has'] )
             return ! empty( $this->variant->values );
 
+		if ( empty( $this->variant->values ) ) {
+			$GLOBALS['it_exchange']['variant_values'] = false;
+			return false;
+		}
+
         // If we made it here, we're doing a loop of variant-valuess for the current variant.
         // This will init/reset the variant_values global and loop through them. the /api/theme/variant-values.php file will handle individual products.
         if ( empty( $GLOBALS['it_exchange']['variant_value'] ) ) {

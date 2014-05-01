@@ -19,7 +19,9 @@
 	<div class="it-exchange-product-variants">
 		<?php do_action( 'it_exchange_content_product_begin_variants_element' ); ?>
 		<?php while( it_exchange( 'product', 'variants' ) ) :  ?>
-			<?php it_exchange_get_template_part( 'content', 'product/elements/' . it_exchange( 'variant', 'get-type' ) . '-variant' ); ?>
+			<?php if ( it_exchange( 'variant', 'has-values' ) ) : ?>
+				<?php it_exchange_get_template_part( 'content', 'product/elements/' . it_exchange( 'variant', 'get-type' ) . '-variant' ); ?>
+			<?php endif; ?>
 		<?php endwhile; ?>
 		<?php do_action( 'it_exchange_content_product_end_variants_element' ); ?>
 	</div>
