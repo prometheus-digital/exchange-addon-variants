@@ -122,3 +122,9 @@
 #it-exchange-variant-pricing .it-exchange-variant-pricing-item-invalid .it-exchange-variant-pricing-item-title:hover{background:#c6ce69;}
 #it-exchange-variant-pricing .it-exchange-variant-pricing-item-invalid .it-exchange-variant-pricing-update-combo-select {display: block;margin-bottom:5px;}
 #it-exchange-variant-pricing .it-exchange-variant-pricing-item-invalid .it-exchange-update-variant-pricing-create-combo-button{margin-top: 1em;}
+
+
+/*  Responsive help above the default WordPress breaks. The first WP break is at 850, but we need it a little higher */
+@media screen and (max-width: 1200px) and (min-width: 850px) { 
+	.it-exchange-gallery-images .it-exchange-add-new-variant-image a {height: 76px; padding-top: 28px;}
+}
