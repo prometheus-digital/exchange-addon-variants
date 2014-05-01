@@ -80,7 +80,7 @@ if ( ! is_admin() )
 	<div class="variant-value-info">
 		<input type="radio" class="variant-radio-option" name="it-exchange-product-variants[variants][{{ data.parentId }}][default]" value="{{ data.id }}" {{ data.isDefault }} />
 		<span class="variant-value-name variant-text-placeholder"><# if ( '' == data.title ) { #>{{ data.placeholder }}<# } else { #>{{ data.title }} <# } #></span>
-		<input type="text" placeholer={{ data.placeholder }}" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
+		<input type="text" placeholer="{{ data.placeholder }}" name="it-exchange-product-variants[variants][{{ data.id }}][title]" value="{{ data.title }}" class="variant-text-input hidden" />
 		<input type="hidden" name="it-exchange-product-variants[variants][{{ data.id }}][post_parent]" value="{{ data.parentId }}" class="variant-post-parent-hidden" />
 		<a class="variant-value-image variant-value-has-image">
 			<span class="variant-value-image-placeholder"><img src="{{ data.imageUrl }}" /></span>
