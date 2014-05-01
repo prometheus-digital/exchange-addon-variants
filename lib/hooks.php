@@ -606,7 +606,7 @@ function it_exchange_variants_json_api() {
 
 				// Setup the response for pricing
 				$result['inventory']['selector']   = '.it-exchange-sw-product .purchase-options';
-				$result['inventory']['html']       = it_exchange( 'product', 'get-purchase-options', array( 'out-of-stock-text' => __( 'This option is not currenlty in stock.', 'LION' ), 'add-to-cart-edit-quantity' => false, 'buy-now-edit-quantity' => false, 'product-in-stock' => (boolean) $inventory ) );
+				$result['inventory']['html']       = it_exchange( 'product', 'get-purchase-options', array( 'out-of-stock-text' => __( 'This option is currently out of stock.', 'LION' ), 'add-to-cart-edit-quantity' => false, 'buy-now-edit-quantity' => false, 'product-in-stock' => (boolean) $inventory ) );
 				$result['inventory']['transition'] = 'default';
 				$result['comboHash']               = $selected_hash;
 			}
