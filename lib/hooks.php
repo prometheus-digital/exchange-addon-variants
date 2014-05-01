@@ -101,7 +101,7 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 			add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
 
 		// Inventory integration
-		if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post->ID ), 'inventory' ) ) {
+		if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post->ID ), 'inventory' ) && it_exchange_product_supports_feature( $post->ID, 'variants' ) && it_exchange_product_has_feature( $post->ID, 'variants' ) ) {
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-inventory-models',  $url_base . 'models/variant-inventory-models.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-inventory-collections',  $url_base . 'collections/variant-inventory-collections.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-inventory-admin-views',  $url_base . 'views/variant-admin-inventory-views.js', $deps );
@@ -110,7 +110,7 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 		}
 
 		// Product Images integration
-		if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post->ID ), 'product-images' ) ) {
+		if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post->ID ), 'product-images' ) && it_exchange_product_supports_feature( $post->ID, 'variants' ) && it_exchange_product_has_feature( $post->ID, 'variants' ) ) {
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-models',  $url_base . 'models/variant-images-models.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-collections',  $url_base . 'collections/variant-images-collections.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-admin-views',  $url_base . 'views/variant-admin-images-views.js', $deps );
@@ -208,7 +208,7 @@ function it_exchange_variants_addon_load_backbone_admin_templates() {
 		include( dirname( __FILE__ ) . '/js/templates/admin-product-inventory-variants.php' );
 
 	// Product Images
-	if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post_id ), 'product-images' ) )
+	if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post_id ), 'product-images' ) && it_exchange_product_supports_feature( $post_id, 'variants' ) && it_exchange_product_has_feature( $post_id, 'variants' ) )
 		include( dirname( __FILE__ ) . '/js/templates/admin-product-images-variants.php' );
 
 	// Pricing Variants
