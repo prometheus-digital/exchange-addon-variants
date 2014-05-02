@@ -87,6 +87,8 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 	}
 
 	if ( isset( $post_type ) && 'it_exchange_prod' === $post_type && ( 'post.php' == $hook_suffix || 'post-new.php' == $hook_suffix ) ) {
+		if ( ! it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post->ID ), 'variants' ) )
+			return;
 		wp_enqueue_script( 'it-exchange-variants-addon-colorpicker', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/colorpicker/colorpicker.js' );
 		wp_enqueue_script( 'it-exchange-variants-addon-add-edit-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/add-edit-product.js', array( 'jquery', 'it-exchange-dialog', 'it-exchange-variants-addon-colorpicker' ) );
 
@@ -100,11 +102,20 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 		if( ! has_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' ) )
 			add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
 
+		// Grab list of dismissed pointers
+		$dismissed_wp_pointers = get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true );
+		$dismissed_wp_pointers = empty( $dispmissed_wp_pointers ) || ! is_array( $dismissed_wp_pointers ) ? array() : explode( ',', (string) $dismissed_wp_pointers);
+		$GLOBALS['it_exchange']['enqueue_pointers'] = array();
+		if ( ! in_array( 'ite-variant-core-pointer', $dismissed_wp_pointers ) )
+			$GLOBALS['it_exchange']['enqueue_pointers'][] = 'core';
+
 		// Inventory integration
 		if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post->ID ), 'inventory' ) && it_exchange_product_supports_feature( $post->ID, 'variants' ) && it_exchange_product_has_feature( $post->ID, 'variants' ) ) {
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-inventory-models',  $url_base . 'models/variant-inventory-models.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-inventory-collections',  $url_base . 'collections/variant-inventory-collections.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-inventory-admin-views',  $url_base . 'views/variant-admin-inventory-views.js', $deps );
+			if ( ! in_array( 'ite-variant-inventory-pointer', $dismissed_wp_pointers ) )
+				$GLOBALS['it_exchange']['enqueue_pointers'][] = 'inventory';
 			if( ! has_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' ) )
 				add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
 		}
@@ -114,21 +125,114 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-models',  $url_base . 'models/variant-images-models.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-collections',  $url_base . 'collections/variant-images-collections.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-admin-views',  $url_base . 'views/variant-admin-images-views.js', $deps );
+			if ( ! in_array( 'ite-variant-images-pointer', $dismissed_wp_pointers ) )
+				$GLOBALS['it_exchange']['enqueue_pointers'][] = 'images';
 			if( ! has_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' ) )
 				add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
 		}
 
 		// Pricing integration
-		if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post->ID ), 'base-price' ) ) {
+		if ( it_exchange_product_type_supports_feature( it_exchange_get_product_type( $post->ID ), 'base-price' ) && it_exchange_product_supports_feature( $post->ID, 'variants' ) && it_exchange_product_has_feature( $post->ID, 'variants' ) ) {
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-pricing-models',  $url_base . 'models/variant-pricing-models.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-pricing-collections',  $url_base . 'collections/variant-pricing-collections.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-pricing-admin-views',  $url_base . 'views/variant-admin-pricing-views.js', $deps );
+			if ( ! in_array( 'ite-variant-pricing-pointer', $dismissed_wp_pointers ) )
+				$GLOBALS['it_exchange']['enqueue_pointers'][] = 'pricing';
 			if( ! has_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' ) )
 				add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
+		}
+
+		// Enqueue Pointers if we need any
+		if ( ! empty( $GLOBALS['it_exchange']['enqueue_pointers'] ) ) {
+			wp_enqueue_script( 'wp-pointer');
+			wp_enqueue_style( 'wp-pointer');
+			add_action( 'admin_footer', 'it_exchange_variants_addon_load_admin_pointers' );
 		}
 	}
 }
 add_action( 'admin_enqueue_scripts', 'it_exchange_variants_addon_admin_wp_enqueue_scripts' );
+
+/**
+ * Loads the pointer js into the admin footer
+ *
+ * @since 1.0.0
+*/
+function it_exchange_variants_addon_load_admin_pointers() {
+	?>
+	<script type="text/javascript">
+		// Register callback for when the advanced tab has been added. We're going to opn it.
+		jQuery('#it_exchange_advanced-sortables').on('ite-advanced-added', function() {
+			if ( jQuery('#it-exchange-advanced-tabs-toggle').hasClass('advanced-hidden') ) {
+				jQuery('#it-exchange-advanced-tabs-toggle').trigger('click');
+
+				// Open advanced if it was closed
+				<?php
+				foreach( (array) $GLOBALS['it_exchange']['enqueue_pointers'] as $pointer ) {
+					switch ( $pointer ) {
+						case 'core':
+							?>
+							jQuery('#it-exchange-advanced-tab-nav').find('li a[href="#it-exchange-product-variants"]').pointer({
+								content: '<h3><?php echo esc_js( __( 'Product Variants', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Add variant options for your product here', 'LION' ) ); ?></p>',
+								position: {
+									edge: 'left',
+									align: 'center'
+								}
+							}).pointer('open')
+							.on('click', function(element){
+								jQuery(this).pointer('close');
+							});
+							<?php
+							break;
+						case 'inventory' :
+							?>
+							jQuery('#it-exchange-advanced-tab-nav').find('li a[href="#it-exchange-product-inventory"]').pointer({
+								content: '<h3><?php echo esc_js( __( 'Variant Inventory', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Adjust the inventory for your variants in this tab.', 'LION' ) ); ?></p>',
+								position: {
+									edge: 'left',
+									align: 'center'
+								}
+							}).pointer('open')
+							.on('click', function(element){
+								jQuery(this).pointer('close');
+							});
+							<?php
+							break;
+						case 'images' :
+							?>
+							jQuery('.it-exchange-product-images-labels').pointer({
+								content: '<h3><?php echo esc_js( __( 'Variant Images', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Set alternate image galleries for your variants with this tab.', 'LION' ) ); ?></p>',
+								position: {
+									edge: 'bottom',
+									align: 'center'
+								}
+							}).pointer('open')
+							.on('click', function(element){
+								jQuery(this).pointer('close');
+							});
+							<?php
+							break;
+						case 'pricing' :
+							?>
+							jQuery('#it-exchange-advanced-tab-nav').find('li a[href="#it-exchange-product-pricing-variants"]').pointer({
+								content: '<h3><?php echo esc_js( __( 'Variant Pricing', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Adjust the price for your variants in this tab.', 'LION' ) ); ?></p>',
+								position: {
+									edge: 'left',
+									align: 'center'
+								}
+							}).pointer('open')
+							.on('click', function(element){
+								jQuery(this).pointer('close');
+							});
+							<?php
+							break;
+					}
+				}
+				?>
+			}
+		});
+	</script>
+	<?php
+}
 
 /**
  * Enqueues Variant styles to WordPress Dashboard
