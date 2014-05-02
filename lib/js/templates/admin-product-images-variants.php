@@ -4,41 +4,46 @@ if ( ! is_admin() )
 $product_id = empty( $GLOBALS['post']->ID ) ? 0 : $GLOBALS['post']->ID;
 ?>
 
+<!-- Images Variant Tab -->
+<script type="text/template" id="tmpl-it-exchange-product-images-variants-tab">
+	<label id="it-exchange-product-variant-images-tab" class="it-exchange-product-images-tab"><?php _e( 'Variant Images', 'LION' ); ?></label>
+</script>
+
 <!-- Images Variant Combos Container -->
 <script type="text/template" id="tmpl-it-exchange-product-images-variants-container">
-	<label for="product-variant-images-field"><?php _e( 'Variant Images', 'LION' ); ?></label>
+	<div class="inner-variants hide-if-js">
+		<div class="add-new-product-images-variant-combination">
+			<# if ( data.productVariants.length ) { #>
+				<div class="label"><?php _e( 'Add Product Images for Variant Combination:', 'LION' ); ?></div>
 
-	<div class="add-new-product-images-variant-combination">
-		<# if ( data.productVariants.length ) { #>
-			<div class="label"><?php _e( 'Add Product Images for Variant Combination:', 'LION' ); ?></div>
+				<div class="it-exchange-select-new-variant-images-combo-div">
+					<div class="it-exchange-variant-image-item-not-valid-combo it-exchange-variant-image-item-combo-error hidden"><?php _e( 'All combo selects cannot be "Any"', 'LION' ); ?></div>
+					<div class="it-exchange-variant-image-item-already-exists it-exchange-variant-image-item-combo-error hidden"><?php _e( 'Combo already exists', 'LION' ); ?></div>
+					<div class="it-exchange-variant-image-combo-selects">
+						<# var variantVersion = false; #>
+						<# _.each(data.productVariants, function( variant ) { #>
+							<select class="it-exchange-variant-images-add-combo-select">';
+								<option value="{{ variant.get('id') }}"><?php _e( 'Any', 'LION' ); ?> {{ variant.get('title') }}</option>
+								<# _.each(variant.get('values'), function( value ) { #>
+									<option value="{{ value.id }}">{{ value.title }}</option>
+								<# }); #>
+						</select>
+						<# if ( !variantVersion && variant.get('version') ) { variantVersion = variant.get('version') } #>
+						<# }); #>
+					</div>
 
-			<div class="it-exchange-select-new-variant-images-combo-div">
-				<div class="it-exchange-variant-image-item-not-valid-combo it-exchange-variant-image-item-combo-error hidden"><?php _e( 'All combo selects cannot be "Any"', 'LION' ); ?></div>
-				<div class="it-exchange-variant-image-item-already-exists it-exchange-variant-image-item-combo-error hidden"><?php _e( 'Combo already exists', 'LION' ); ?></div>
-				<div class="it-exchange-variant-image-combo-selects">
-					<# var variantVersion = false; #>
-					<# _.each(data.productVariants, function( variant ) { #>
-						<select class="it-exchange-variant-images-add-combo-select">';
-							<option value="{{ variant.get('id') }}"><?php _e( 'Any', 'LION' ); ?> {{ variant.get('title') }}</option>
-							<# _.each(variant.get('values'), function( value ) { #>
-								<option value="{{ value.id }}">{{ value.title }}</option>
-							<# }); #>
-					</select>
-					<# if ( !variantVersion && variant.get('version') ) { variantVersion = variant.get('version') } #>
-					<# }); #>
+					<input type="button" id="it-exchange-variant-images-create-combo-button" value="<?php esc_attr_e( __( 'Create New Image Set', 'LION' ) ); ?>" class="button button-primary">
 				</div>
+			<# } else { #>
+				<p><?php _e( 'You must have one or more product variants before you can create an image gallery for product variant combinations', 'LION' ); ?></p>
+			<# } #>
 
-				<input type="button" id="it-exchange-variant-images-create-combo-button" value="<?php esc_attr_e( __( 'Create New Image Set', 'LION' ) ); ?>" class="button button-primary">
-			</div>
-		<# } else { #>
-			<p><?php _e( 'You must have one or more product variants before you can create an image gallery for product variant combinations', 'LION' ); ?></p>
+		</div>
+		<input id="it-exchange-product-images-variants-version" type="hidden" name="it-exchange-product-images-variants-version" value="{{ variantVersion }}" />
+		<# if ( data.productVariants.length ) { #>
+			<div id="it-exchange-variant-images"></div>
 		<# } #>
-
 	</div>
-	<input id="it-exchange-product-images-variants-version" type="hidden" name="it-exchange-product-images-variants-version" value="{{ variantVersion }}" />
-	<# if ( data.productVariants.length ) { #>
-		<div id="it-exchange-variant-images"></div>
-	<# } #>
 </script>
 
 <script type="text/template" id="tmpl-it-exchange-product-images-variant">
