@@ -54,16 +54,16 @@ function it_exchange_variants_addon_get_core_presets_args() {
 	$args = array(
 		'template-select' => array(
 			'slug'     => 'template-select',
-			'title'    => __( 'Select', 'LION' ),
+			'title'    => __( 'Dropdown', 'LION' ),
 			'values'  => array(
 				0 => array(
 					'slug'    => 'new_default_1',
-					'title'   => __( 'Select 1', 'LION' ),
+					'title'   => __( 'Option 1', 'LION' ),
 					'order'   => 0,
 				),
 				1 => array(
 					'slug'    => 'new_default_2',
-					'title'   => __( 'Select 2', 'LION' ),
+					'title'   => __( 'Option 2', 'LION' ),
 					'order'   => 1,
 				),
 			),
@@ -71,7 +71,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 0,
 			'core'     => true,
 			'ui-type'  => 'select',
-			'version'  => '0.0.30',
+			'version'  => '0.0.31',
 		),
 		'template-radio' => array(
 			'slug'     => 'template-radio',
@@ -92,7 +92,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 3,
 			'core'     => true,
 			'ui-type'  => 'radio',
-			'version'  => '0.0.30',
+			'version'  => '0.0.31',
 		),
 		'tempalte-hex'   => array(
 			'slug'     => 'template-hex',
@@ -115,7 +115,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 5,
 			'core'     => true,
 			'ui-type'  => 'color',
-			'version'  => '0.0.30',
+			'version'  => '0.0.31',
 		),
 		'tempalte-image' => array(
 			'slug'     => 'template-image',
@@ -136,7 +136,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'    => 8,
 			'core'     => true,
 			'ui-type'  => 'image',
-			'version'  => '0.0.30',
+			'version'  => '0.0.31',
 		),
 		'ithemes-sizes'  => array(
 			'slug'    => 'ithemes-sizes',
@@ -167,7 +167,7 @@ function it_exchange_variants_addon_get_core_presets_args() {
 			'order'   => 0,
 			'core'    => true,
 			'ui-type' => 'select',
-			'version' => '0.0.30',
+			'version' => '0.0.31',
 		),
 	);
 	return $args;
