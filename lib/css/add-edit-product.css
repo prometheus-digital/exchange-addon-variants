@@ -123,6 +123,13 @@
 #it-exchange-variant-pricing .it-exchange-variant-pricing-item-invalid .it-exchange-variant-pricing-update-combo-select {display: block;margin-bottom:5px;}
 #it-exchange-variant-pricing .it-exchange-variant-pricing-item-invalid .it-exchange-update-variant-pricing-create-combo-button{margin-top: 1em;}
 
+/** ----------------------------------------------------:[ variant pointers ]: ------------- */
+.it-exchange-variants-pointer .wp-pointer-content h3 {background:#334940;border-color:#334940;}
+.it-exchange-variants-pointer .wp-pointer-content h3:before{color:#88c43d;}
+.it-exchange-variants-core-pointer .wp-pointer-content h3:before {content: "\f163";}
+.it-exchange-variants-inventory-pointer .wp-pointer-content h3:before {content: "\f495";}
+.it-exchange-variants-pricing-pointer .wp-pointer-content h3:before {content: "\f323";}
+.it-exchange-variants-images-pointer .wp-pointer-content h3:before {content: "\f161";}
 
 /*  Responsive help above the default WordPress breaks. The first WP break is at 850, but we need it a little higher */
 @media screen and (max-width: 1200px) and (min-width: 850px) { 
