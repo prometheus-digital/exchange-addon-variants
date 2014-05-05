@@ -104,9 +104,17 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 
 		// Grab list of dismissed pointers
 		$dismissed_wp_pointers = get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true );
-		$dismissed_wp_pointers = empty( $dispmissed_wp_pointers ) || ! is_array( $dismissed_wp_pointers ) ? array() : explode( ',', (string) $dismissed_wp_pointers);
+
+		// Allow user to reset
+		if ( ! empty( $_GET['ite-reset-dismissed-variant-pointers'] ) ) {
+			$dismissed_wp_pointers = preg_replace( '/it-exchange-variants-[A-Za-z0-9-]+,?/', '', $dismissed_wp_pointers );
+			update_user_meta( get_current_user_id(), 'dismissed_wp_pointers', $dismissed_wp_pointers );
+		}
+
+		$dismissed_wp_pointers = empty( $dismissed_wp_pointers ) ? array() : explode( ',', (string) $dismissed_wp_pointers);
 		$GLOBALS['it_exchange']['enqueue_pointers'] = array();
-		if ( ! in_array( 'ite-variant-core-pointer', $dismissed_wp_pointers ) )
+
+		if ( ! in_array( 'it-exchange-variants-core', $dismissed_wp_pointers ) )
 			$GLOBALS['it_exchange']['enqueue_pointers'][] = 'core';
 
 		// Inventory integration
@@ -114,7 +122,7 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-inventory-models',  $url_base . 'models/variant-inventory-models.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-inventory-collections',  $url_base . 'collections/variant-inventory-collections.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-inventory-admin-views',  $url_base . 'views/variant-admin-inventory-views.js', $deps );
-			if ( ! in_array( 'ite-variant-inventory-pointer', $dismissed_wp_pointers ) )
+			if ( ! in_array( 'it-exchange-variants-inventory', $dismissed_wp_pointers ) )
 				$GLOBALS['it_exchange']['enqueue_pointers'][] = 'inventory';
 			if( ! has_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' ) )
 				add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
@@ -125,7 +133,7 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-models',  $url_base . 'models/variant-images-models.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-collections',  $url_base . 'collections/variant-images-collections.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-images-admin-views',  $url_base . 'views/variant-admin-images-views.js', $deps );
-			if ( ! in_array( 'ite-variant-images-pointer', $dismissed_wp_pointers ) )
+			if ( ! in_array( 'it-exchange-variants-images', $dismissed_wp_pointers ) )
 				$GLOBALS['it_exchange']['enqueue_pointers'][] = 'images';
 			if( ! has_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' ) )
 				add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
@@ -136,7 +144,7 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-pricing-models',  $url_base . 'models/variant-pricing-models.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-pricing-collections',  $url_base . 'collections/variant-pricing-collections.js', $deps );
 			wp_enqueue_script( 'it-exchange-variants-addon-variant-pricing-admin-views',  $url_base . 'views/variant-admin-pricing-views.js', $deps );
-			if ( ! in_array( 'ite-variant-pricing-pointer', $dismissed_wp_pointers ) )
+			if ( ! in_array( 'it-exchange-variants-pricing', $dismissed_wp_pointers ) )
 				$GLOBALS['it_exchange']['enqueue_pointers'][] = 'pricing';
 			if( ! has_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' ) )
 				add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
@@ -162,72 +170,135 @@ function it_exchange_variants_addon_load_admin_pointers() {
 	<script type="text/javascript">
 		// Register callback for when the advanced tab has been added. We're going to opn it.
 		jQuery('#it_exchange_advanced-sortables').on('ite-advanced-added', function() {
+
+			// Open advanced if it was closed
 			if ( jQuery('#it-exchange-advanced-tabs-toggle').hasClass('advanced-hidden') ) {
 				jQuery('#it-exchange-advanced-tabs-toggle').trigger('click');
 
-				// Open advanced if it was closed
+				// Init vars
+				var itExchangeVariantPointers = {
+					'core':      false,
+				    'inventory': false,
+					'pricing'  : false,
+					'images'   : false
+				};
+
 				<?php
+
+				// Loop through and add functions / init pointers that haven't been dismissed
 				foreach( (array) $GLOBALS['it_exchange']['enqueue_pointers'] as $pointer ) {
 					switch ( $pointer ) {
 						case 'core':
 							?>
-							jQuery('#it-exchange-advanced-tab-nav').find('li a[href="#it-exchange-product-variants"]').pointer({
-								content: '<h3><?php echo esc_js( __( 'Product Variants', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Add variant options for your product here', 'LION' ) ); ?></p>',
-								position: {
-									edge: 'left',
-									align: 'center'
-								}
-							}).pointer('open')
-							.on('click', function(element){
-								jQuery(this).pointer('close');
-							});
+							itExchangeVariantPointers.core = {};
+							itExchangeVariantPointers.core.$div = jQuery('#it-exchange-advanced-tab-nav').find('li a[href="#it-exchange-product-variants"]');
+							itExchangeVariantPointers.core.init = function() {
+								itExchangeVariantPointers.core.$div.pointer({
+									content: '<h3><?php echo esc_js( __( 'Product Variants', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Add variant options for your product here', 'LION' ) ); ?></p>',
+									position: {
+										edge: 'left',
+										align: 'center'
+									},
+									close: function(){
+										jQuery.post( ajaxurl, {
+											pointer: 'it-exchange-variants-core',
+											action: 'dismiss-wp-pointer'
+										});
+										if ( itExchangeVariantPointers.inventory.$div ) {
+											itExchangeVariantPointers.inventory.init();
+										}
+									}
+								}).on('click', function(element){
+									jQuery(this).pointer('close');
+								}).pointer('open');
+							};
 							<?php
 							break;
 						case 'inventory' :
 							?>
-							jQuery('#it-exchange-advanced-tab-nav').find('li a[href="#it-exchange-product-inventory"]').pointer({
-								content: '<h3><?php echo esc_js( __( 'Variant Inventory', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Adjust the inventory for your variants in this tab.', 'LION' ) ); ?></p>',
-								position: {
-									edge: 'left',
-									align: 'center'
-								}
-							}).pointer('open')
-							.on('click', function(element){
-								jQuery(this).pointer('close');
-							});
-							<?php
-							break;
-						case 'images' :
-							?>
-							jQuery('.it-exchange-product-images-labels').pointer({
-								content: '<h3><?php echo esc_js( __( 'Variant Images', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Set alternate image galleries for your variants with this tab.', 'LION' ) ); ?></p>',
-								position: {
-									edge: 'bottom',
-									align: 'center'
-								}
-							}).pointer('open')
-							.on('click', function(element){
-								jQuery(this).pointer('close');
-							});
+							itExchangeVariantPointers.inventory = {};
+							itExchangeVariantPointers.inventory.$div = jQuery('#it-exchange-advanced-tab-nav').find('li a[href="#it-exchange-product-inventory"]');
+							itExchangeVariantPointers.inventory.init = function() {
+								itExchangeVariantPointers.inventory.$div.pointer({
+									content: '<h3><?php echo esc_js( __( 'Variant Inventory', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Adjust the inventory for your variants in this tab.', 'LION' ) ); ?></p>',
+									position: {
+										edge: 'left',
+										align: 'center'
+									},
+									close: function(){
+										jQuery.post( ajaxurl, {
+											pointer: 'it-exchange-variants-inventory',
+											action: 'dismiss-wp-pointer'
+										});
+										if ( itExchangeVariantPointers.pricing.$div ) {
+											itExchangeVariantPointers.pricing.init();
+										}
+									}
+								}).pointer('open');
+							};
 							<?php
 							break;
 						case 'pricing' :
 							?>
-							jQuery('#it-exchange-advanced-tab-nav').find('li a[href="#it-exchange-product-pricing-variants"]').pointer({
-								content: '<h3><?php echo esc_js( __( 'Variant Pricing', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Adjust the price for your variants in this tab.', 'LION' ) ); ?></p>',
-								position: {
-									edge: 'left',
-									align: 'center'
-								}
-							}).pointer('open')
-							.on('click', function(element){
-								jQuery(this).pointer('close');
-							});
+							itExchangeVariantPointers.pricing = {};
+							itExchangeVariantPointers.pricing.$div = jQuery('#it-exchange-advanced-tab-nav').find('li a[href="#it-exchange-product-pricing-variants"]');
+							itExchangeVariantPointers.pricing.init = function() {
+								itExchangeVariantPointers.pricing.$div.pointer({
+									content: '<h3><?php echo esc_js( __( 'Variant Pricing', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Adjust the price for your variants in this tab.', 'LION' ) ); ?></p>',
+									position: {
+										edge: 'left',
+										align: 'center'
+									},
+									close: function(){
+										jQuery.post( ajaxurl, {
+											pointer: 'it-exchange-variants-pricing',
+											action: 'dismiss-wp-pointer'
+										});
+										if ( itExchangeVariantPointers.images.$div ) {
+											itExchangeVariantPointers.images.init();
+										}
+									}
+								}).pointer('open');
+							};
+							<?php
+							break;
+						case 'images' :
+							?>
+							itExchangeVariantPointers.images = {};
+							itExchangeVariantPointers.images.$div = jQuery('.it-exchange-product-images-labels')
+							itExchangeVariantPointers.images.init = function() {
+								itExchangeVariantPointers.images.$div.pointer({
+									content: '<h3><?php echo esc_js( __( 'Variant Images', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Set alternate image galleries for your variants with this tab.', 'LION' ) ); ?></p>',
+									position: {
+										edge: 'bottom',
+										align: 'center'
+									},
+									close: function() {
+										jQuery.post( ajaxurl, {
+											pointer: 'it-exchange-variants-images',
+											action: 'dismiss-wp-pointer'
+										});
+									}
+								}).pointer('open');
+							};
 							<?php
 							break;
 					}
 				}
 				?>
+				if ( itExchangeVariantPointers.core.$div ) {
+console.log('core');
+					itExchangeVariantPointers.core.init();
+				} else if ( itExchangeVariantPointers.inventory.$div ) {
+console.log('inventory');
+					itExchangeVariantPointers.inventory.init();
+				} else if ( itExchangeVariantPointers.pricing.$div ) {
+console.log('pricing');
+					itExchangeVariantPointers.pricing.init();
+				} else if ( itExchangeVariantPointers.images.$div ) {
+console.log('images');
+					itExchangeVariantPointers.images.init();
+				}
 			}
 		});
 	</script>
