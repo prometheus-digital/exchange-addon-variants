@@ -9,6 +9,7 @@
 #it-exchange-product .it-exchange-product-variants .it-variant-image-options .it-variant-image {margin: 0 10px 0 0;float:left;border:1px solid #ccc;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
 #it-exchange-product .it-exchange-product-variants .it-variant-image-options .it-variant-image.selected {border-color:#000;}
 #it-exchange-product .it-exchange-product-variants .it-variant-image-options .it-variant-image img {margin:0;padding:2px;vertical-align:middle;cursor:pointer;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-border-radius:none;-moz-border-radius:none;border-radius:none;}
+#it-exchange-product .it-exchange-product-variants .it-variant-image-options .it-variant-blank-image {width:51px;height:51px;cursor:pointer;background:url(../images/blank-image-variant.png) bottom right no-repeat;background-image:url(../images/blank-image-variant.svg);background-size:100%;margin:2px;}
 
 #it-exchange-product .it-exchange-product-variants .it-variant-hex-options .it-variant-hex-list {margin:0;padding:0;overflow:hidden;list-style:none;}
 #it-exchange-product .it-exchange-product-variants .it-variant-hex-options .it-variant-color {margin:0 10px 0 0;float:left;border:1px solid #ccc;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;padding:2px;}
