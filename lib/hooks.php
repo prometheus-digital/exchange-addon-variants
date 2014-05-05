@@ -98,6 +98,7 @@ function it_exchange_variants_addon_admin_wp_enqueue_scripts( $hook_suffix ) {
 		wp_enqueue_script( 'it-exchange-variants-addon-variant-models',  $url_base . 'models/variant-models.js', $deps );
 		wp_enqueue_script( 'it-exchange-variants-addon-variant-collections',  $url_base . 'collections/variant-collections.js', $deps );
 		wp_enqueue_script( 'it-exchange-variants-addon-variant-admin-views',  $url_base . 'views/variant-admin-views.js', $deps );
+		wp_localize_script( 'it-exchange-variants-addon-variant-admin-views', 'itExchangeVariantsI18n', array( 'confirmDeleteVariant' => __( 'Are you sure you want to delete this variant and its values?', 'LION' ), 'confirmDeleteVariantValue' => __( 'Are you sure you want to delete this value?', 'LION' ) ) );
 		wp_enqueue_script( 'it-exchange-variants-addon-variant-admin-core',  $url_base . 'admin-variants.js', $deps );
 		if( ! has_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' ) )
 			add_action( 'admin_footer', 'it_exchange_variants_addon_load_backbone_admin_templates' );
