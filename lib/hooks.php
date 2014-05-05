@@ -292,16 +292,12 @@ function it_exchange_variants_addon_load_admin_pointers() {
 				}
 				?>
 				if ( itExchangeVariantPointers.core.$div ) {
-console.log('core');
 					itExchangeVariantPointers.core.init();
 				} else if ( itExchangeVariantPointers.inventory.$div ) {
-console.log('inventory');
 					itExchangeVariantPointers.inventory.init();
 				} else if ( itExchangeVariantPointers.pricing.$div ) {
-console.log('pricing');
 					itExchangeVariantPointers.pricing.init();
 				} else if ( itExchangeVariantPointers.images.$div ) {
-console.log('images');
 					itExchangeVariantPointers.images.init();
 				}
 			}
