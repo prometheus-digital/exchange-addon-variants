@@ -195,7 +195,7 @@ function it_exchange_variants_addon_load_admin_pointers() {
 							itExchangeVariantPointers.core.$div = jQuery('#it-exchange-advanced-tab-nav').find('li a[href="#it-exchange-product-variants"]');
 							itExchangeVariantPointers.core.init = function() {
 								itExchangeVariantPointers.core.$div.pointer({
-									pointerClass: 'it-exchange-variants-core-pointer',
+									pointerClass: 'it-exchange-variants-pointer it-exchange-variants-core-pointer',
 									content: '<h3><?php echo esc_js( __( 'Product Variants', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Add variant options for your product here', 'LION' ) ); ?></p>',
 									position: {
 										edge: 'left',
@@ -222,7 +222,7 @@ function it_exchange_variants_addon_load_admin_pointers() {
 							itExchangeVariantPointers.inventory.$div = jQuery('#it-exchange-advanced-tab-nav').find('li a[href="#it-exchange-product-inventory"]');
 							itExchangeVariantPointers.inventory.init = function() {
 								itExchangeVariantPointers.inventory.$div.pointer({
-									pointerClass: 'it-exchange-variants-inventory-pointer',
+									pointerClass: 'it-exchange-variants-pointer it-exchange-variants-inventory-pointer',
 									content: '<h3><?php echo esc_js( __( 'Variant Inventory', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Adjust the inventory for your variants in this tab.', 'LION' ) ); ?></p>',
 									position: {
 										edge: 'left',
@@ -247,7 +247,7 @@ function it_exchange_variants_addon_load_admin_pointers() {
 							itExchangeVariantPointers.pricing.$div = jQuery('#it-exchange-advanced-tab-nav').find('li a[href="#it-exchange-product-pricing-variants"]');
 							itExchangeVariantPointers.pricing.init = function() {
 								itExchangeVariantPointers.pricing.$div.pointer({
-									pointerClass: 'it-exchange-variants-pricing-pointer',
+									pointerClass: 'it-exchange-variants-pointer it-exchange-variants-pricing-pointer',
 									content: '<h3><?php echo esc_js( __( 'Variant Pricing', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Adjust the price for your variants in this tab.', 'LION' ) ); ?></p>',
 									position: {
 										edge: 'left',
@@ -272,7 +272,7 @@ function it_exchange_variants_addon_load_admin_pointers() {
 							itExchangeVariantPointers.images.$div = jQuery('.it-exchange-product-images-labels')
 							itExchangeVariantPointers.images.init = function() {
 								itExchangeVariantPointers.images.$div.pointer({
-									pointerClass: 'it-exchange-variants-images-pointer',
+									pointerClass: 'it-exchange-variants-pointer it-exchange-variants-images-pointer',
 									content: '<h3><?php echo esc_js( __( 'Variant Images', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Set alternate image galleries for your variants with this tab.', 'LION' ) ); ?></p>',
 									position: {
 										edge: 'bottom',
