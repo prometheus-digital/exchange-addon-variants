@@ -27,7 +27,7 @@
 				<?php if ( ! empty( it_exchange( 'variant-value', 'get-image' ) ) ) { ?>
 					<img width="55px" height="55px" title="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>" alt="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>" src="<?php it_exchange( 'variant-value', 'image' ); ?>" data-id="<?php esc_attr_e( it_exchange( 'variant-value', 'get-id' ) ); ?>"/>
 				<?php } else { ?>
-					<div class="it-variant-blank-image" title="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>"></div>
+					<div class="it-variant-blank-image" title="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>" data-id="<?php esc_attr_e( it_exchange( 'variant-value', 'get-id' ) ); ?>"></div>
 				<?php } ?>
 			</li>
 		<?php endwhile; ?>
