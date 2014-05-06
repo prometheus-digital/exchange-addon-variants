@@ -24,7 +24,7 @@
 		<?php while( it_exchange( 'variant', 'values' ) ) : ?>
 			<?php $selected_class = it_exchange( 'variant-value', 'get-is-default' ) ? 'selected' : ''; ?>
 			<li class="it-variant-image <?php esc_attr_e( $selected_class ); ?>">
-				<?php if ( ! empty( it_exchange( 'variant-value', 'get-image' ) ) ) { ?>
+				<?php if ( false !== it_exchange( 'variant-value', 'get-image' ) ) { ?>
 					<img width="55px" height="55px" title="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>" alt="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>" src="<?php it_exchange( 'variant-value', 'image' ); ?>" data-id="<?php esc_attr_e( it_exchange( 'variant-value', 'get-id' ) ); ?>"/>
 				<?php } else { ?>
 					<div class="it-variant-blank-image" title="<?php esc_attr_e( it_exchange( 'variant-value', 'get-title', array( 'format' => 'text' ) ) ); ?>" data-id="<?php esc_attr_e( it_exchange( 'variant-value', 'get-id' ) ); ?>"></div>
