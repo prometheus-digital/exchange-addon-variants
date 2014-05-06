@@ -61,7 +61,7 @@ if ( ! is_admin() )
 		<div class="edit-variant">
 			<span class="label">
 				Values
-				<span class="it-exchange-tip" data-tip-content="tooltip goes here">i</span>
+				<?php it_exchange_admin_tooltip( __( 'Variants are the product options, e.g.: colors.<br />Values are the choices for the variants, e.g.: Red, Blue, Green.', 'LION' ) ); ?>
 			</span>
 			<ul class="variant-values-list ui-sortable">
 			</ul>
