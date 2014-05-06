@@ -241,6 +241,9 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 
 			// Set is_parent
 			$this->is_parent      = $this->set_is_parent();
+
+			// Set variants title array
+			$this->variants_title_array = $this->generate_variants_title_array( $this->combos_to_hash );
 		}
 	}
 

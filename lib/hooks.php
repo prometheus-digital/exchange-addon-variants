@@ -458,6 +458,40 @@ function it_exchange_addon_modify_variant_cart_product_base_price( $base, $produ
 }
 add_filter( 'it_exchange_get_cart_product_base_price', 'it_exchange_addon_modify_variant_cart_product_base_price', 10, 2 );
 
+/**
+ * Decrease variant inventory on purchase
+ *
+ * @since 1.0.0
+ *
+ * @return array
+*/
+function it_exchange_filter_inventory_params_at_purcahse_for_variants( $params ) {
+	$product_id    = empty( $params['cart_product_data']['product_id'] ) ? false : $params['cart_product_data']['product_id'];
+	$quantity      = empty( $params['quantity'] ) ? 0 : $params['quantity'];
+	$itemized_data = empty( $params['cart_product_data']['itemized_data'] ) ? false : maybe_unserialize( $params['cart_product_data']['itemized_data'] );
+	$combo_hash    = empty( $itemized_data['it_variant_combo_hash'] ) ? false : $itemized_data['it_variant_combo_hash'];
+	if ( empty( $product_id ) || empty( $combo_hash ) )
+		return $params;
+
+	$controller = it_exchange_variants_addon_get_product_feature_controller( $product_id, 'inventory', array( 'setting' => 'variants' ) );
+	$controller->load_existing_from_hash( $combo_hash );
+
+	$itemized_value = empty( $controller->value ) ? 0 : $controller->value;
+	$params['current_inventory'] = absint( $itemized_value );
+	$params['updated_inventory'] = absint( $itemized_value - $quantity );
+	$params['perform_core_inventory_update'] = false; // don't try to update core exchange inventory for this product
+
+	// Update post meta for variant inventory
+	if ( $params['updated_inventory'] !== $params['current_inventory'] ) {
+		$controller->set_value( $params['updated_inventory'] );
+		$controller->update_meta_value_for_current_combo();
+		$controller->save_post_meta();
+	}
+
+	return $params;
+}
+add_filter( 'it_exchange_inventory_params_at_purchase', 'it_exchange_filter_inventory_params_at_purcahse_for_variants' );
+
 function it_exchange_variants_json_api() {
 
 	$endpoint       = empty( $_REQUEST['endpoint'] ) ? false : $_REQUEST['endpoint'];
