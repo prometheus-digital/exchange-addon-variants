@@ -186,9 +186,6 @@ class IT_Exchange_Product_Feature_Variants {
         // Save options
 		if ( isset( $_POST['it-exchange-product-variants'] ) ) {
 
-			// Remove or hook to prevent endless loops.
-			remove_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ), 9 );
-
 			// POST data
 			$new_variant_data = $_POST['it-exchange-product-variants'];
 			$new_variants     = empty( $_POST['it-exchange-product-variants']['variants'] ) ? array() : $_POST['it-exchange-product-variants']['variants'];
@@ -293,9 +290,6 @@ class IT_Exchange_Product_Feature_Variants {
 				// Update
 				it_exchange_update_product_feature( $product_id, 'variants', $existing_variant_data );
 			}
-
-			// Add our action back
-			add_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ), 9 );
 		} else {
 			$existing_variant_data            = (array) it_exchange_get_product_feature( $product_id, 'variants' );
 			$existing_variant_data['enabled'] = 'no';
