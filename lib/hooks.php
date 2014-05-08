@@ -195,7 +195,7 @@ function it_exchange_variants_addon_load_admin_pointers() {
 							$content .= '<h4 class="helpful-links">' . esc_js( __( 'Helpful Links', 'LION' ) ) . '</h4>';
 							$content .= '<ul>';
 							$content .= '<li><a href="http://ithemes.com/2014/05/08/getting-started-product-variants" target="_blank">' . esc_js( __( 'Getting Started with Product Variants', 'LION' ) ) . '</a></li>';
-							$content .= '<li><a href="http://ithemes.com/2014/05/08/ecommerce-product-variants-101">' . esc_js( __( 'Product Variants 101', 'LION' ) ) . '</a></li>';
+							$content .= '<li><a href="http://ithemes.com/2014/05/08/ecommerce-product-variants-101" target="_blank">' . esc_js( __( 'Product Variants 101', 'LION' ) ) . '</a></li>';
 							$content .= '</ul>';
 							?>
 							itExchangeVariantPointers.core = {};
