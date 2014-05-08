@@ -21,7 +21,7 @@
  *
  * @since 1.0.0
 */
-define( 'IT_Exchange_Variants_Addon_Version', '0.0.2' );
+define( 'IT_Exchange_Variants_Addon_Version', '1.0.0' );
 
 /**
  * This registers our plugin as an exchange addon
