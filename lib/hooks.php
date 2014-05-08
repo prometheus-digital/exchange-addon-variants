@@ -381,6 +381,13 @@ function it_exchange_variants_addon_ajax_get_selected_variants_id_hash() {
 add_action( 'wp_ajax_it_exchange_variants_get_selected_id_hash', 'it_exchange_variants_addon_ajax_get_selected_variants_id_hash' );
 add_action( 'wp_ajax_nopriv_it_exchange_variants_get_selected_id_hash', 'it_exchange_variants_addon_ajax_get_selected_variants_id_hash' );
 
+/**
+ * This inserts backbone templates into the admin screen when needed
+ *
+ * @since 1.0.0
+ *
+ * @return void
+*/
 function it_exchange_variants_addon_load_backbone_admin_templates() {
 	include( dirname( __FILE__ ) . '/js/templates/admin.php' );
 
@@ -399,6 +406,16 @@ function it_exchange_variants_addon_load_backbone_admin_templates() {
 		include( dirname( __FILE__ ) . '/js/templates/admin-product-pricing-variants.php' );
 }
 
+/**
+ * This adds the selected variant combination to the cart object on checkout
+ *
+ * @since 1.0.0
+ *
+ * @param array $data the incoming cart object array
+ * @param integer $product_id the product id for the data
+ *
+ * @return array
+*/
 function it_exchange_addon_add_variant_data_to_cart( $data, $product_id ) {
 	if ( ! empty( $_REQUEST['it-exchange-combo-hash'] ) )
 		$data['it_variant_combo_hash'] =  $_REQUEST['it-exchange-combo-hash'];
@@ -407,6 +424,15 @@ function it_exchange_addon_add_variant_data_to_cart( $data, $product_id ) {
 }
 add_filter( 'it_exchange_add_itemized_data_to_cart_product', 'it_exchange_addon_add_variant_data_to_cart', 10, 2 );
 
+/**
+ * Modify the title of a product in the cart when it has selected variant options
+ *
+ * @since 1.0.0
+ *
+ * @param string $title the incoming title
+ * @param array $product the cart product array
+ * @return string
+*/
 function it_exchange_addon_modify_variant_cart_titles( $title, $product ) {
 	if ( empty( $product['itemized_data'] ) )
 		return $title;
@@ -423,6 +449,15 @@ function it_exchange_addon_modify_variant_cart_titles( $title, $product ) {
 }
 add_filter( 'it_exchange_get_cart_product_title', 'it_exchange_addon_modify_variant_cart_titles', 10, 2 );
 
+/**
+ * Modify the base price of a product in the cart when it has selected variant options
+ *
+ * @since 1.0.0
+ *
+ * @param string $base the incoming price 
+ * @param array $product the cart product array
+ * @return string
+*/
 function it_exchange_addon_modify_variant_cart_product_base_price( $base, $product ) {
 	if ( empty( $product['itemized_data'] ) )
 		return $base;
@@ -470,6 +505,7 @@ add_filter( 'it_exchange_get_cart_product_base_price', 'it_exchange_addon_modify
  *
  * @since 1.0.0
  *
+ * @param array $params the param used by the core inventory class to (maybe) decrease inventory
  * @return array
 */
 function it_exchange_filter_inventory_params_at_purcahse_for_variants( $params ) {
@@ -499,6 +535,13 @@ function it_exchange_filter_inventory_params_at_purcahse_for_variants( $params )
 }
 add_filter( 'it_exchange_inventory_params_at_purchase', 'it_exchange_filter_inventory_params_at_purcahse_for_variants' );
 
+/**
+ * Builds JSON requests for backbone and AJAX requests
+ *
+ * @since 1.0.0
+ *
+ * @return void
+*/
 function it_exchange_variants_json_api() {
 
 	$endpoint       = empty( $_REQUEST['endpoint'] ) ? false : $_REQUEST['endpoint'];
@@ -966,6 +1009,7 @@ add_action( 'wp_ajax_nopriv_it-exchange-variants-json-api', 'it_exchange_variant
 /**
  * Extend the product theme api to include new tags
  *
+ * @since 1.0.0
 */
 function it_exchange_addon_variants_extend_product_theme_api( $result, $class, $tag ){
 	if ( is_admin() )
