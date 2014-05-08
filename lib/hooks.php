@@ -190,13 +190,20 @@ function it_exchange_variants_addon_load_admin_pointers() {
 				foreach( (array) $GLOBALS['it_exchange']['enqueue_pointers'] as $pointer ) {
 					switch ( $pointer ) {
 						case 'core':
+							$content  = '<h3>' . esc_js( __( 'Product Variants', 'LION' ) ) . '</h3>';
+							$content .= '<p>' . esc_js( __( 'Add variant options for your product here', 'LION' ) ) . '</p>';
+							$content .= '<h4 class="helpful-links">' . esc_js( __( 'Helpful Links', 'LION' ) ) . '</h4>';
+							$content .= '<ul>';
+							$content .= '<li><a href="http://ithemes.com/2014/05/08/getting-started-product-variants" target="_blank">' . esc_js( __( 'Getting Started with Product Variants', 'LION' ) ) . '</a></li>';
+							$content .= '<li><a href="http://ithemes.com/2014/05/08/ecommerce-product-variants-101">' . esc_js( __( 'Product Variants 101', 'LION' ) ) . '</a></li>';
+							$content .= '</ul>';
 							?>
 							itExchangeVariantPointers.core = {};
 							itExchangeVariantPointers.core.$div = jQuery('#it-exchange-advanced-tab-nav').find('li a[href="#it-exchange-product-variants"]');
 							itExchangeVariantPointers.core.init = function() {
 								itExchangeVariantPointers.core.$div.pointer({
 									pointerClass: 'it-exchange-variants-pointer it-exchange-variants-core-pointer',
-									content: '<h3><?php echo esc_js( __( 'Product Variants', 'LION' ) ); ?></h3><p><?php echo esc_js( __( 'Add variant options for your product here', 'LION' ) ); ?></p>',
+									content: '<?php echo $content; ?>',
 									position: {
 										edge: 'left',
 										align: 'center'
