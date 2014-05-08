@@ -1,3 +1,5 @@
+1.0.3 - 2014-05-08 - Glenn Ansley, Elise Alley
+	Fixed conflict with customer pricing addon
 1.0.2 - 2014-05-08 - Glenn Ansley
 	Updated the Add-ons icon. Left the crazy gif of Cory Miller in lib/images if you want to see it though
 1.0.1 - 2014-05-08 - Glenn Ansley, Ty Carlson, Brad Ulrich, Elise Alley

@@ -481,7 +481,7 @@ function it_exchange_addon_get_selected_variant_alts( $selected_combo, $product_
  *
  * @return void
 */
-function it_exchange_customer_pricing_addon_show_version_nag() {
+function it_exchange_variants_addon_show_version_nag() {
     if ( $GLOBALS['it_exchange']['version'] < '1.8.0' ) {
         ?>
         <div id="it-exchange-add-on-min-version-nag" class="it-exchange-nag">
@@ -497,4 +497,4 @@ function it_exchange_customer_pricing_addon_show_version_nag() {
         <?php
     }
 }
-add_action( 'admin_notices', 'it_exchange_customer_pricing_addon_show_version_nag' );
+add_action( 'admin_notices', 'it_exchange_variants_addon_show_version_nag' );
