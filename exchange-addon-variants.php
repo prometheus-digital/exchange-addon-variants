@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: iThemes Exchange - Product Variants
- * Version: 1.0.1
+ * Version: 1.0.2
  * Description: Allows store owners to add variant options to iThemes Exchange product types.
  * Plugin URI: http://ithemes.com/purchase/product-variants/
  * Author: iThemes
@@ -21,7 +21,7 @@
  *
  * @since 1.0.0
 */
-define( 'IT_Exchange_Variants_Addon_Version', '1.0.1' );
+define( 'IT_Exchange_Variants_Addon_Version', '1.0.2' );
 
 /**
  * This registers our plugin as an exchange addon
@@ -36,7 +36,7 @@ function it_exchange_register_variants_addon() {
 		'description'       => __( 'Allows store owners to add variant options to product types.', 'LION' ),
 		'author'            => 'iThemes',
 		'author_url'        => 'http://ithemes.com/purchase/product-variants/',
-		'icon'              => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/lib/images/variants-50px.gif' ),
+		'icon'              => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/lib/images/variants50.png' ),
 		'file'              => dirname( __FILE__ ) . '/init.php',
 		'category'          => 'product-feature',
 		'basename'          => plugin_basename( __FILE__ ),
