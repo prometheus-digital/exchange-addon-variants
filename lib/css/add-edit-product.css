@@ -130,6 +130,9 @@
 .it-exchange-variants-inventory-pointer .wp-pointer-content h3:before {content: "\f495";}
 .it-exchange-variants-pricing-pointer .wp-pointer-content h3:before {content: "\f323";}
 .it-exchange-variants-images-pointer .wp-pointer-content h3:before {content: "\f161";}
+.it-exchange-variants-pointer .wp-pointer-content h4 {padding:0 15px; margin:.5em 0}
+.it-exchange-variants-pointer .wp-pointer-content ul {padding:0 15px;list-style:disc; list-style-position:inside; margin-top: 0;}
+.it-exchange-variants-pointer .wp-pointer-content ul li {margin-bottom: 0px;}
 
 /*  Responsive help above the default WordPress breaks. The first WP break is at 850, but we need it a little higher */
 @media screen and (max-width: 1200px) and (min-width: 850px) { 

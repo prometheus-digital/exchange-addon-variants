@@ -13,6 +13,6 @@
 #it-exchange-product .it-exchange-product-variants .it-variant-image-options .it-variant-blank-image {width:51px;height:51px;cursor:pointer;background:url(../images/blank-image-variant.png) bottom right no-repeat;background-image:url(../images/blank-image-variant.svg);background-size:100%;margin:2px;}
 
 #it-exchange-product .it-exchange-product-variants .it-variant-hex-options .it-variant-hex-list {margin:0;padding:0;overflow:hidden;list-style:none;}
-#it-exchange-product .it-exchange-product-variants .it-variant-hex-options .it-variant-color {margin:0 10px 0 0;float:left;border:1px solid #ccc;padding:2px;-webkit-transition: .1s ease-in all;-moz-transition: .1s ease-in all;transition: .1s ease-in all;}
+#it-exchange-product .it-exchange-product-variants .it-variant-hex-options .it-variant-color {margin:0 10px 10px 0;float:left;border:1px solid #ccc;padding:2px;-webkit-transition: .1s ease-in all;-moz-transition: .1s ease-in all;transition: .1s ease-in all;}
 #it-exchange-product .it-exchange-product-variants .it-variant-hex-options .it-variant-color .it-variant-color-inner{height:51px;width:51px;cursor:pointer;}
 #it-exchange-product .it-exchange-product-variants .it-variant-hex-options .it-variant-color.selected {border-color:#000;}
