@@ -482,7 +482,7 @@ function it_exchange_addon_get_selected_variant_alts( $selected_combo, $product_
  * @return void
 */
 function it_exchange_variants_addon_show_version_nag() {
-    if ( $GLOBALS['it_exchange']['version'] < '1.8.0' ) {
+	if ( version_compare( $GLOBALS['it_exchange']['version'], '1.8.0', '<' ) ) {
         ?>
         <div id="it-exchange-add-on-min-version-nag" class="it-exchange-nag">
             <?php printf( __( 'The Product Variants add-on requires iThemes Exchange version 1.8.0 or greater. %sPlease upgrade Exchange%s.', 'LION' ), '<a href="' . admin_url( 'update-core.php' ) . '">', '</a>' ); ?>
