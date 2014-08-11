@@ -195,7 +195,7 @@ function it_exchange_variants_addon_core_preset_needs_updated( $existing_preset,
 */
 function it_exchange_variants_addon_create_variant_preset( $args ) {
 	$defaults = array(
-		'status'         => 'publish',
+		'post_status'    => 'publish',
 		'ping_status'    => 'closed',
 		'comment_status' => 'closed',
 	);
