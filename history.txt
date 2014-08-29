@@ -1,3 +1,5 @@
+1.0.6 - 2014-08-29 - Glenn Ansley
+	Fixed bug preventing ability to add new variants in certain situations
 1.0.5 - 2014-08-18 - Lew Ayotte
 	Change status to post_status in default keys
 1.0.4 - 2014-07-21 - Lew Ayotte
