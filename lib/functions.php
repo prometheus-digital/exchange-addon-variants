@@ -213,7 +213,7 @@ function it_exchange_variants_addon_create_variant_preset( $args ) {
 
 	// Convert $args to insert post args
 	$post_args = array();
-	$post_args['post_status']  = $args['status'];
+	$post_args['post_status']  = $args['post_status'];
 	$post_args['post_type']    = 'it_exng_varnt_preset';
 	$post_args['post_title']   = empty( $args['title'] ) ? __( 'New Preset', 'LION' ) : $args['title'];
 	$post_args['post_name']    = empty( $args['post_name'] ) ? 'new-preset' : $args['post_name'];
