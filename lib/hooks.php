@@ -1022,3 +1022,27 @@ function it_exchange_addon_variants_extend_product_theme_api( $result, $class, $
 	return $result;
 }
 add_filter( 'it_exchange_theme_api_get_extended_tag_functions', 'it_exchange_addon_variants_extend_product_theme_api', 10, 3 );
+
+/**
+ * Cleans up some bad data that was generated between 1.0.5 and 1.0.6
+ *
+ * @since 1.0.8
+ *
+ * @retun void
+*/
+function it_exchange_addon_variants_cleanup_bad_105_data() {
+	global $wpdb;
+
+	if ( false == get_option( '_it_exchange_variants_105_cleanup' ) )
+		return;
+
+	// Delete bad post type rows
+	$query = $wpdb->prepare( "DELETE FROM " . $wpdb->posts . " WHERE post_type = %s AND post_status = %s", 'it_exng_varnt_preset', 'draft' );
+	$wpdb->query( $query );
+
+	// Delete bad post_meta rows
+	$query = $wpdb->prepare( "DELETE FROM " . $wpdb->postmeta . " WHERE meta_key = %s AND post_ID NOT IN ((SELECT ID FROM " . $wpdb->posts . " WHERE post_type = %s AND post_status = %s))", '_it_exchange_variants_addon_preset_meta', 'it_exng_varnt_preset', 'publish' );
+	$wpdb->query( $query );
+	update_option( '_it_exchange_variants_105_cleanup', true );
+}
+add_action('admin_init', 'it_exchange_addon_variants_cleanup_bad_105_data' );
