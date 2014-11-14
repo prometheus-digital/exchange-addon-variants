@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: iThemes Exchange - Product Variants
- * Version: 1.0.6
+ * Version: 1.0.7
  * Description: Allows store owners to add variant options to iThemes Exchange product types.
  * Plugin URI: http://ithemes.com/purchase/product-variants/
  * Author: iThemes
