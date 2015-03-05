@@ -1046,3 +1046,231 @@ function it_exchange_addon_variants_cleanup_bad_105_data() {
 	update_option( '_it_exchange_variants_105_cleanup', true );
 }
 add_action('admin_init', 'it_exchange_addon_variants_cleanup_bad_105_data' );
+
+/**
+ * Decouples variant data from original product when new product is created with the 'Duplicate' option
+ *
+ * Without this method, the duplicated product and teh original product will have the same variants.
+ * Changing variant data in one product will change it in the other because variants uses post IDs.
+ * This will decouple by creating new posts for each variant.
+ *
+ * @since CHANGEME
+ *
+ * @param object $post the new post just created
+ * @param int $orig_id the original post ID
+ * @return void
+*/
+function it_exchange_addon_variants_decouple_duplicated_post( $post, $orig_id ) {
+
+	#######################################
+	# Duplicate Actal Variants if Present #
+	#######################################
+
+	// Grab variant post meta data
+	$pm = get_post_meta( $post->ID, '_it-exchange-product-variants', true );
+
+	// Create array to map new IDs to old IDs: array( [OLD_ID] => [NEW_ID] );
+	if ( ! empty( $pm['variants'] ) ) {
+		$old_new_map = array_fill_keys( array_values( $pm['variants'] ), false );
+	}
+
+	$orphaned_children = array();
+	foreach( $pm['variants'] as $variant_id ) {
+
+		// Get the original post
+		$variant_object = get_post( $variant_id );
+
+		// Load its properties as an array
+		$args = get_object_vars( $variant_object );
+
+		// Grab the original post's post_parent
+		$post_parent = $args['post_parent'];
+
+		// Unset args we don't want carried over to new post
+		unset( $args['ID'], $args['post_date'], $args['post_date_gmt'], $args['post_name'], $args['post_modified'], $args['post_modified_gmt'], $args['guid'], $args['post_parent'] );
+
+		// If current post has a parent and we we already have the new post_parent ID, update it now
+		if ( ! empty( $post_parent ) && ! empty( $old_new_map[$post_parent] ) ) {
+			$args['post_parent'] = $old_new_map[$post_parent];
+		}
+
+		// Insert Variant
+		$new_id = wp_insert_post( $args );
+
+		// Update old_new_map
+		$old_new_map[$variant_id] = $new_id;
+
+		// If new post is an orphan (new parent post hasn't been created yet, add it to the queue)
+		if ( ! empty( $post_parent ) && empty( $old_new_map[$post_parent] ) ) {
+			// If old post parent is already a key, add new id to it's array of children
+			if ( ! empty( $orphaned_children[$post_parent] ) ) {
+				$orphaned_children[$post_parent][] = $new_id;
+			} else {
+				// Otherwise create new key from the old post parent and add new id in array
+				$orphaned_children[$post_parent] = array( $new_id );
+			}
+		}
+
+		// If new id was a key in the $orphaned_children array, grab it's orphans and update them
+		if ( ! empty( $orphaned_children[$variant_id] ) ) {
+			foreach( $orphaned_children[$variant_id] as $child_to_update ) {
+				$args = array( 'ID' => $child_to_update, 'post_parent' => $new_id );
+				wp_insert_post( $args );
+			}
+			unset( $orphaned_children[$variant_id] );
+		}
+	}
+
+	// Make sure the orphaned children are all cleared out. If not, try one last time but they're probably never going to see their parents again.
+	foreach( (array) $orphaned_children as $parent => $children ) {
+		if ( ! empty( $old_new_map[$parent] ) ) {
+			foreach( (array) $children as $child ) {
+				$args = array( 'ID' => $child, 'post_parent' => $parent );
+				wp_insert_post( $args );
+			}
+		}
+	}
+	unset( $orphaned_children );
+
+	// Update variants metadata
+	$new_pm                     = $pm;
+	$new_pm['variants']         = array_values( $old_new_map );
+	$new_pm['variants_version'] = md5( serialize( $new_pm['variants'] ) );
+	update_post_meta( $post->ID, '_it-exchange-product-variants', $new_pm );
+
+	// Transfer postmeta from original variants to new varients, updating default child if present
+	foreach( (array) $old_new_map as $old_id => $new_id ) {
+		$pm = get_post_meta( $old_id, '_it_exchange_variants_addon_variant_meta', true );
+		if ( ! empty( $pm['default'] ) ) {
+			$pm['default'] = empty( $old_new_map[$pm['default']] ) ? '' : $old_new_map[$pm['default']];
+		}
+		update_post_meta( $new_id, '_it_exchange_variants_addon_variant_meta', $pm );
+	}
+
+	########################################
+	# Duplicate Variant Pricing if Present #
+	########################################
+
+	// Grab data
+	$variant_pricing = get_post_meta( $post->ID, '_it-exchange-product-pricing-variants', true );
+
+	// Loop through each variant pricing group
+	foreach( (array) $variant_pricing as $group_hash => $data ) {
+		// Replace post IDs in old combos with new post IDs
+		if ( ! empty( $data['raw_combos'] ) ) {
+			$new_combos = array();
+			foreach( (array) $data['raw_combos'] as $combo ) {
+				if ( ! empty( $old_new_map[$combo] ) ) {
+					$new_combos[] = $old_new_map[$combo];
+				}
+			$variant_pricing[$group_hash]['raw_combos'] = $new_combos;
+			}
+		}
+		// Replace post IDs in old combos_to_hash with new post IDs
+		if ( ! empty( $data['combos_to_hash'] ) ) {
+			$new_combos = array();
+			foreach( (array) $data['combos_to_hash'] as $key => $value ) {
+				if ( ! empty( $old_new_map[$key] ) ) {
+					if ( ! empty( $old_new_map[$value] ) ) {
+						$new_combos[$old_new_map[$key]] = $old_new_map[$value];
+					}
+				}
+			$variant_pricing[$group_hash]['combos_to_hash'] = $new_combos;
+			}
+		}
+		// Replace old hash with new hash
+		$new_hash = md5( serialize( $variant_pricing[$group_hash]['combos_to_hash'] ) );
+		$new_variant_pricing[$new_hash] = $variant_pricing[$group_hash];
+	}
+
+	// Update variant pricing
+	update_post_meta( $post->ID, '_it-exchange-product-pricing-variants', $new_variant_pricing );
+
+	// Update variant pricing version
+	update_post_meta( $post->ID, '_it-exchange-product-pricing-variants-version', $new_pm['variants_version'] );
+
+	########################################
+	# Duplicate Variant Images if Present #
+	########################################
+
+	// Grab data
+	$variant_images = get_post_meta( $post->ID, '_it-exchange-product-variant-images', true );
+
+	// Loop through each variant images group
+	foreach( (array) $variant_images as $group_hash => $data ) {
+		// Replace post IDs in old combos with new post IDs
+		if ( ! empty( $data['raw_combos'] ) ) {
+			$new_combos = array();
+			foreach( (array) $data['raw_combos'] as $combo ) {
+				if ( ! empty( $old_new_map[$combo] ) ) {
+					$new_combos[] = $old_new_map[$combo];
+				}
+			$variant_images[$group_hash]['raw_combos'] = $new_combos;
+			}
+		}
+		// Replace post IDs in old combos_to_hash with new post IDs
+		if ( ! empty( $data['combos_to_hash'] ) ) {
+			$new_combos = array();
+			foreach( (array) $data['combos_to_hash'] as $key => $value ) {
+				if ( ! empty( $old_new_map[$key] ) ) {
+					if ( ! empty( $old_new_map[$value] ) ) {
+						$new_combos[$old_new_map[$key]] = $old_new_map[$value];
+					}
+				}
+			$variant_images[$group_hash]['combos_to_hash'] = $new_combos;
+			}
+		}
+		// Replace old hash with new hash
+		$new_hash = md5( serialize( $variant_images[$group_hash]['combos_to_hash'] ) );
+		$new_variant_images[$new_hash] = $variant_images[$group_hash];
+	}
+
+	// Update variant images
+	update_post_meta( $post->ID, '_it-exchange-product-variant-images', $new_variant_images );
+
+	// Update variant images version
+	update_post_meta( $post->ID, '_it-exchange-product-images-variants-version', $new_pm['variants_version'] );
+
+	##########################################
+	# Duplicate Variant Inventory if Present #
+	##########################################
+
+	// Grab data
+	$variant_inventory = get_post_meta( $post->ID, '_it-exchange-product-inventory-variants', true );
+
+	// Loop through each variant inventory group
+	foreach( (array) $variant_inventory as $group_hash => $data ) {
+		// Replace post IDs in old combos with new post IDs
+		if ( ! empty( $data['raw_combos'] ) ) {
+			$new_combos = array();
+			foreach( (array) $data['raw_combos'] as $combo ) {
+				if ( ! empty( $old_new_map[$combo] ) ) {
+					$new_combos[] = $old_new_map[$combo];
+				}
+			$variant_inventory[$group_hash]['raw_combos'] = $new_combos;
+			}
+		}
+		// Replace post IDs in old combos_to_hash with new post IDs
+		if ( ! empty( $data['combos_to_hash'] ) ) {
+			$new_combos = array();
+			foreach( (array) $data['combos_to_hash'] as $key => $value ) {
+				if ( ! empty( $old_new_map[$key] ) ) {
+					if ( ! empty( $old_new_map[$value] ) ) {
+						$new_combos[$old_new_map[$key]] = $old_new_map[$value];
+					}
+				}
+			$variant_inventory[$group_hash]['combos_to_hash'] = $new_combos;
+			}
+		}
+		// Replace old hash with new hash
+		$new_hash = md5( serialize( $variant_inventory[$group_hash]['combos_to_hash'] ) );
+		$new_variant_inventory[$new_hash] = $variant_inventory[$group_hash];
+	}
+
+	// Update variant inventory
+	update_post_meta( $post->ID, '_it-exchange-product-inventory-variants', $new_variant_inventory );
+
+	// Update variant inventory version
+	update_post_meta( $post->ID, '_it-exchange-inventory-variants-version', $new_pm['variants_version'] );
+}
+add_action( 'it_exchange_duplicate_product_addon_default_product_meta', 'it_exchange_addon_variants_decouple_duplicated_post', 10, 2 );
