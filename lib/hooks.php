@@ -1183,11 +1183,13 @@ function it_exchange_addon_variants_decouple_duplicated_post( $post, $orig_id ) 
 		$new_variant_pricing[$new_hash] = $variant_pricing[$group_hash];
 	}
 
-	// Update variant pricing
-	update_post_meta( $post->ID, '_it-exchange-product-pricing-variants', $new_variant_pricing );
+	if ( ! empty( $new_variant_pricing ) ) {
+		// Update variant pricing
+		update_post_meta( $post->ID, '_it-exchange-product-pricing-variants', $new_variant_pricing );
 
-	// Update variant pricing version
-	update_post_meta( $post->ID, '_it-exchange-product-pricing-variants-version', $new_pm['variants_version'] );
+		// Update variant pricing version
+		update_post_meta( $post->ID, '_it-exchange-product-pricing-variants-version', $new_pm['variants_version'] );
+	}
 
 	########################################
 	# Duplicate Variant Images if Present #
@@ -1225,11 +1227,13 @@ function it_exchange_addon_variants_decouple_duplicated_post( $post, $orig_id ) 
 		$new_variant_images[$new_hash] = $variant_images[$group_hash];
 	}
 
-	// Update variant images
-	update_post_meta( $post->ID, '_it-exchange-product-variant-images', $new_variant_images );
+	if ( ! empty( $new_variant_images ) ) {
+		// Update variant images
+		update_post_meta( $post->ID, '_it-exchange-product-variant-images', $new_variant_images );
 
-	// Update variant images version
-	update_post_meta( $post->ID, '_it-exchange-product-images-variants-version', $new_pm['variants_version'] );
+		// Update variant images version
+		update_post_meta( $post->ID, '_it-exchange-product-images-variants-version', $new_pm['variants_version'] );
+	}
 
 	##########################################
 	# Duplicate Variant Inventory if Present #
@@ -1267,10 +1271,12 @@ function it_exchange_addon_variants_decouple_duplicated_post( $post, $orig_id ) 
 		$new_variant_inventory[$new_hash] = $variant_inventory[$group_hash];
 	}
 
-	// Update variant inventory
-	update_post_meta( $post->ID, '_it-exchange-product-inventory-variants', $new_variant_inventory );
+	if ( ! empty( $new_variant_inventory ) ) {
+		// Update variant inventory
+		update_post_meta( $post->ID, '_it-exchange-product-inventory-variants', $new_variant_inventory );
 
-	// Update variant inventory version
-	update_post_meta( $post->ID, '_it-exchange-inventory-variants-version', $new_pm['variants_version'] );
+		// Update variant inventory version
+		update_post_meta( $post->ID, '_it-exchange-inventory-variants-version', $new_pm['variants_version'] );
+	}
 }
 add_action( 'it_exchange_duplicate_product_addon_default_product_meta', 'it_exchange_addon_variants_decouple_duplicated_post', 10, 2 );
