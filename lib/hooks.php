@@ -454,7 +454,7 @@ add_filter( 'it_exchange_get_cart_product_title', 'it_exchange_addon_modify_vari
  *
  * @since 1.0.0
  *
- * @param string $base the incoming price 
+ * @param string $base the incoming price
  * @param array $product the cart product array
  * @return string
 */
@@ -1280,3 +1280,95 @@ function it_exchange_addon_variants_decouple_duplicated_post( $post, $orig_id ) 
 	}
 }
 add_action( 'it_exchange_duplicate_product_addon_default_product_meta', 'it_exchange_addon_variants_decouple_duplicated_post', 10, 2 );
+
+/**
+ * Allows Multiple Variations to be added to the cart
+ *
+ * @since CHANGEME
+ *
+ * @param $state the default state of the superwidget
+ * @return string
+*/
+function it_exchange_addon_variants_modify_default_sw_state( $state ) {
+
+	// If we're not on a product page, return the default state
+	if ( ! it_exchange_is_page( 'product' ) ) {
+		return $state;
+	}
+
+	// If we can't find the product ID or it doesn't have variants, set the state to 'product'
+	it_exchange_set_the_product_id();
+	$id = it_exchange_get_the_product_id();
+	if ( empty( $id ) || ! it_exchange_product_has_feature( $id, 'variants' ) ) {
+		return $state;
+	}
+
+	return 'product';
+}
+add_filter( 'it_exchange_set_inital_sw_state', 'it_exchange_addon_variants_modify_default_sw_state' );
+
+/**
+ * Allows multiple variant products to be added to a cart
+ *
+ * @since CHANGEME
+ *
+ * @param boolean $in_cart incoming from filter
+ * @param int $product_id the product id of the current page
+ * @param object $product the it_exchagne product object for the product id
+ * @param array $cart_products the cart products
+ * @return boolean
+*/
+function it_exchange_addon_variants_modify_is_current_product_in_cart( $in_cart, $product_id, $product, $cart_products ) {
+	if ( ! $in_cart ) {
+		return false;
+	}
+
+	if ( it_exchange_product_has_feature( $product_id, 'variants' ) ) {
+		return false;
+	}
+	return $in_cart;
+}
+add_filter( 'it_exchange_is_current_product_in_cart', 'it_exchange_addon_variants_modify_is_current_product_in_cart', 10, 4 );
+
+/**
+ * Filters the requested SW state when requested via ajax
+ *
+*/
+function it_exchange_variants_filter_sw_state_requested_via_ajax( $state, $ajax_args ) {
+	if ( 'cart' != $state || empty( $ajax_args['product'] ) ) {
+		return $state;
+	}
+
+	if ( it_exchange_product_has_feature( $ajax_args['product'], 'variants' ) ) {
+		return 'product';
+	}
+	return $state;
+}
+add_filter( 'it_exchange_get_sw_state_via_ajax_call', 'it_exchange_variants_filter_sw_state_requested_via_ajax', 10, 2 );
+
+/**
+ * If somone is looking for inventory and it's a variant product, use the variant version
+ *
+ * @since CHANGMEE
+*/
+function it_exchange_addon_variants_override_has_inventory_for_variants( $has_inventory, $product_id, $options ) {
+	// Return if this product doesn't have variants
+	if ( ! it_exchange_product_has_feature( $product_id, 'variants' ) ) {
+		return $has_inventory;
+	}
+
+	// Return the default if we're already checking for variant inventory in options
+	if ( ! empty( $options['setting'] ) && ( 'variants-enabled' == $options['setting'] || 'variants' == $options['setting'] || 'variants-version' == $options['setting'] ) ) {
+		return $has_inventory;
+	}
+
+	// Check to see if product has variant inventory enabled and has variants. Skip the API to avoid redudency
+	$variant_inventory_enabled = get_post_meta( $product_id, '_it-exchange-product-enable-variant-inventory', true );
+	$variant_inventory         = get_post_meta( $product_id, '_it-exchange-product-inventory-variants', true );
+
+	if ( ! empty( $variant_inventory_enabled ) && ! empty( $variant_inventory ) ) {
+		return true;
+	}
+
+}
+add_filter( 'it_exchange_product_has_feature_inventory', 'it_exchange_addon_variants_override_has_inventory_for_variants', 10, 3 );
