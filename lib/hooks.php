@@ -1266,9 +1266,12 @@ function it_exchange_addon_variants_decouple_duplicated_post( $post, $orig_id ) 
 			$variant_inventory[$group_hash]['combos_to_hash'] = $new_combos;
 			}
 		}
+
 		// Replace old hash with new hash
-		$new_hash = md5( serialize( $variant_inventory[$group_hash]['combos_to_hash'] ) );
-		$new_variant_inventory[$new_hash] = $variant_inventory[$group_hash];
+		if ( ! empty( $variant_inventory[$group_hash]['combos_to_hash'] ) ) {
+			$new_hash = md5( serialize( $variant_inventory[$group_hash]['combos_to_hash'] ) );
+			$new_variant_inventory[$new_hash] = $variant_inventory[$group_hash];
+		}
 	}
 
 	if ( ! empty( $new_variant_inventory ) ) {
