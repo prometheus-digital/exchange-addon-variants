@@ -1054,7 +1054,7 @@ add_action('admin_init', 'it_exchange_addon_variants_cleanup_bad_105_data' );
  * Changing variant data in one product will change it in the other because variants uses post IDs.
  * This will decouple by creating new posts for each variant.
  *
- * @since CHANGEME
+ * @since 1.0.8
  *
  * @param object $post the new post just created
  * @param int $orig_id the original post ID
@@ -1287,7 +1287,7 @@ add_action( 'it_exchange_duplicate_product_addon_default_product_meta', 'it_exch
 /**
  * Allows Multiple Variations to be added to the cart
  *
- * @since CHANGEME
+ * @since @since 1.0.8
  *
  * @param $state the default state of the superwidget
  * @return string
@@ -1313,7 +1313,7 @@ add_filter( 'it_exchange_set_inital_sw_state', 'it_exchange_addon_variants_modif
 /**
  * Allows multiple variant products to be added to a cart
  *
- * @since CHANGEME
+ * @since 1.0.8
  *
  * @param boolean $in_cart incoming from filter
  * @param int $product_id the product id of the current page

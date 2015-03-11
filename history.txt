@@ -1,3 +1,6 @@
+1.0.8.2 - 2015-03-11 - Glenn Ansley, Elise Alley
+	Fix bug not showing successful update to 1.0.8.1
+	Fix PHP warnings/notices when product are duplicated
 1.0.8 - 2015-03-09 - Glenn Ansley, Elise Alley
 	Allow multiple product variants to be added to the cart
 	Properly duplicate variant options when product is duplicated
