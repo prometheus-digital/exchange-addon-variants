@@ -1072,6 +1072,8 @@ function it_exchange_addon_variants_decouple_duplicated_post( $post, $orig_id ) 
 	// Create array to map new IDs to old IDs: array( [OLD_ID] => [NEW_ID] );
 	if ( ! empty( $pm['variants'] ) ) {
 		$old_new_map = array_fill_keys( array_values( $pm['variants'] ), false );
+	} else {
+		return;
 	}
 
 	$orphaned_children = array();
