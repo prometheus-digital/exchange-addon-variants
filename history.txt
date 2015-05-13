@@ -1,3 +1,5 @@
+1.1.1 - 2015-05-13 - Glenn Ansley
+	Fix bug caused by packaging wrong updater
 1.1.0 - 2015-05-13 - Glenn Ansley
 	Fix bug causing unlabled variants to be added to the cart (Requires Exchange version 1.13.0 or higher)
 1.0.10 - 2015-04-23 - Packaging Bot (lib/updater)
