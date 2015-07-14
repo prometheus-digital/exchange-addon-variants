@@ -30,3 +30,5 @@
 	Added bottom margin to color selectors on frontend
 1.0.0 - 2014-05-08 - Glenn Ansley, Ty Carlson, Brad Ulrich, Elise Alley
 	Initial Release
+1.1.2 - 2015-07-14 - Packaging Bot (lib/updater)
+	Enhancement: Updated link to iThemes support.
