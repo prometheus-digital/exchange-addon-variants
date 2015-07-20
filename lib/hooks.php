@@ -443,7 +443,7 @@ function it_exchange_addon_modify_variant_cart_titles( $title, $product ) {
 
 	$atts = it_exchange_get_variant_combo_attributes_from_hash( $product['product_id'], $itemized_data['it_variant_combo_hash'] );
 	if ( ! empty( $atts['title'] ) )
-		$title = $title . ': <br />' . $atts['title'];
+		$title = $title . ': ' . $atts['title'];
 
 	return $title;
 }
