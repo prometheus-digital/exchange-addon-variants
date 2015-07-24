@@ -29,7 +29,8 @@ add_action( 'wp_enqueue_scripts', 'it_exchange_variants_addon_enqueue_scripts' )
 function it_exchange_variants_addon_print_product_variant_js() {
 	$product_id = it_exchange_get_the_product_id();
 	?>
-	<script type="text/javascript">
+<script type="text/javascript">
+/* <![CDATA[ */
 		if ( typeof ajaxurl === 'undefined' ) {
 			// Added by exchange-addon-variants in lib/hooks.php if not already defined
 			var ajaxurl = '<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>';
@@ -44,8 +45,11 @@ function it_exchange_variants_addon_print_product_variant_js() {
 		<?php
 		if ( $pricing = it_exchange_get_product_feature( $product_id, 'base-price', array( 'setting' => 'variants' ) ) ) {
 			foreach( (array) $pricing as $combo => $price_data ) {
-				?>itExchangeVariantPricing['<?php echo esc_js( $combo ); ?>'] = '<?php echo esc_js( it_exchange_format_price( $price_data['value'] ) ); ?>';
+				if ( isset( $price_data['value'] ) ) {
+				?>
+				itExchangeVariantPricing['<?php echo esc_js( $combo ); ?>'] = '<?php echo esc_js( it_exchange_format_price( $price_data['value'] ) ); ?>';
 				<?php
+				}
 			}
 		}
 		if ( $images = it_exchange_get_product_feature( $product_id, 'product-images', array( 'setting' => 'variants' ) ) ) {
@@ -54,7 +58,8 @@ function it_exchange_variants_addon_print_product_variant_js() {
 			}
 		}
 		?>
-	</script>
+/* ]]> */
+</script>
 	<?php
 }
 
@@ -443,7 +448,7 @@ function it_exchange_addon_modify_variant_cart_titles( $title, $product ) {
 
 	$atts = it_exchange_get_variant_combo_attributes_from_hash( $product['product_id'], $itemized_data['it_variant_combo_hash'] );
 	if ( ! empty( $atts['title'] ) )
-		$title = $title . ': <br />' . $atts['title'];
+		$title = $title . ': ' . $atts['title'];
 
 	return $title;
 }
@@ -795,7 +800,7 @@ function it_exchange_variants_json_api() {
  * IN THE MEANTIME, MAKE SURE THE LOGIC HERE AND THERE MATCHES!
 */
 			if ( $variant_combos_data['hash'] == $selected_hash ) {
-				if ( ! empty( $controller->post_meta[$selected_hash]['value'] ) ) {
+				if ( !empty( $controller->post_meta[$selected_hash] ) && ! empty( $controller->post_meta[$selected_hash]['value'] ) ) {
 					$price = $controller->post_meta[$selected_hash]['value'];
 					$price_located = true;
 				}
@@ -803,7 +808,7 @@ function it_exchange_variants_json_api() {
 			// Look for alt hashes if direct match was not found
 			if ( ! $price_located && ! empty( $alt_hashes ) ) {
 				foreach( $alt_hashes as $alt_hash ) {
-					if ( ! empty( $controller->post_meta[$alt_hash]['value'] ) ) {
+					if ( ! empty( $controller->post_meta[$alt_hash] ) && ! empty( $controller->post_meta[$alt_hash]['value'] ) ) {
 						$price = $controller->post_meta[$alt_hash]['value'];
 						$price_located = true;
 					}
