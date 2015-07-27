@@ -1,3 +1,9 @@
+1.1.1 - 2015-05-13 - Glenn Ansley
+	Fix bug caused by packaging wrong updater
+1.1.0 - 2015-05-13 - Glenn Ansley
+	Fix bug causing unlabled variants to be added to the cart (Requires Exchange version 1.13.0 or higher)
+1.0.10 - 2015-04-23 - Packaging Bot (lib/updater)
+	Compatibility Fix: Updated plugin and theme update data format to match changes in WordPress 4.2.
 1.0.9 - 2015-04-02 - Glenn Ansley, Cody Smith
 	Fix PHP warnings that appear on fresh installs
 1.0.8.2 - 2015-03-11 - Glenn Ansley, Elise Alley
@@ -24,5 +30,5 @@
 	Added bottom margin to color selectors on frontend
 1.0.0 - 2014-05-08 - Glenn Ansley, Ty Carlson, Brad Ulrich, Elise Alley
 	Initial Release
-1.0.10 - 2015-04-23 - Packaging Bot (lib/updater)
-	Compatibility Fix: Updated plugin and theme update data format to match changes in WordPress 4.2.
+1.1.2 - 2015-07-14 - Packaging Bot (lib/updater)
+	Enhancement: Updated link to iThemes support.
