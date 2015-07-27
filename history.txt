@@ -32,3 +32,8 @@
 	Initial Release
 1.1.2 - 2015-07-14 - Packaging Bot (lib/updater)
 	Enhancement: Updated link to iThemes support.
+1.2.0 - 2015-07-27 - Lew Ayotte
+	Adding filter to modify purchase options arguments when we recall them - it_exchange_variants_product_purchase_options_args
+	Fix for image gallery on variant products
+	Reapply the combo hash to the purchase options after add-to-cart happens
+
