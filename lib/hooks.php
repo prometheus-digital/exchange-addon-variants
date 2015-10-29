@@ -884,7 +884,7 @@ function it_exchange_variants_json_api() {
 			$result->title = '';
 			$result->combo = array();
 			$settings                 = it_exchange_get_option( 'settings_general' );
-			$currency                 = it_exchange_get_currency_symbol( $settings['default-currency'] );
+			$currency                 = html_entity_decode( it_exchange_get_currency_symbol( $settings['default-currency'] ) );
 			if ( $response = it_exchange_get_variant_combo_attributes( $variants_array ) ) {
 				$result->hash       = empty( $response['hash'] ) ? $result->hash : $response['hash'];
 				$result->title      = empty( $response['title'] ) ? $result->title : $response['title'];
@@ -976,7 +976,7 @@ function it_exchange_variants_json_api() {
 		$variants_version         = empty( $product_variants['variants_version'] ) ? false : $product_variants['variants_version'];
 		$pricing_variants_version = it_exchange_get_product_feature( $product_id, 'base-price', array( 'setting' => 'variants-version' ) );
 		$settings                 = it_exchange_get_option( 'settings_general' );
-		$currency                 = it_exchange_get_currency_symbol( $settings['default-currency'] );
+		$currency                 = html_entity_decode( it_exchange_get_currency_symbol( $settings['default-currency'] ) );
 
 		// Grab the value from the product pricing postmeta if it exists
 		if ( $pricing_post_meta = it_exchange_get_product_feature( $product_id, 'base-price', array( 'setting' => 'variants' ) ) ) {
@@ -989,7 +989,7 @@ function it_exchange_variants_json_api() {
 				$combo->hash           = $hash;
 				$combo->variants       = (array) $data['combos_to_hash'];
 				$combo->title          = empty( $data['combos_title'] ) ? '' : $data['combos_title'];
-				$combo->value          = empty( $data['value'] ) ? false : it_exchange_format_price( $data['value'] );
+				$combo->value          = empty( $data['value'] ) ? false : html_entity_decode( it_exchange_format_price( $data['value'] ) );
 				$combo->version        = $variants_version;
 				$combo->invalidCombo   = false;
 				$combo->symbol         = $currency;
