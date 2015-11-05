@@ -38,3 +38,5 @@
 	Reapply the combo hash to the purchase options after add-to-cart happens
 1.3.0 - 2015-10-29 - Lew Ayotte, Elise Alley
 	Decode HTML entities in price/currency AJAX requests
+1.4.0 - 2015-11-05 - Lew Ayotte
+	PHP7 Updates
