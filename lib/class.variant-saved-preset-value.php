@@ -56,7 +56,7 @@ class IT_Exchange_Variants_Addon_Saved_Preset_Value {
 	 * @param mixed $post  wp post id or post object. optional.
 	 * @return void
 	*/
-	function IT_Exchange_Variants_Addon_Saved_Preset_Value( $args ) {
+	function __construct( $args ) {
 		// Return a WP Error if we don't have the $post object by this point
 		if ( empty( $args['title'] ) || empty( $args['slug'] ) )
 			return new WP_Error( 'it-exchange-variant-saved-preset-value-formatted-incorrectly', __( 'The IT_Exchange_Variants_Addon_Saved_Preset_Value class must have a slug and title in its constructor args', 'LION' ) );
@@ -65,6 +65,17 @@ class IT_Exchange_Variants_Addon_Saved_Preset_Value {
 
 		// Setup the properties
 		$this->init_properties();
+	}
+
+	/**
+	 * Deprecated Constructor. Loads post data and variant preset data
+	 *
+	 * @since 1.0.0
+	 * @param mixed $post  wp post id or post object. optional.
+	 * @return void
+	*/
+	function IT_Exchange_Variants_Addon_Saved_Preset_Value( $args ) {
+		self::__construct();
 	}
 
 	/**

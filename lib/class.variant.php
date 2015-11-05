@@ -88,7 +88,7 @@ class IT_Exchange_Variants_Addon_Variant {
 	 * @param mixed $post  wp post id or post object. optional.
 	 * @return void
 	*/
-	function IT_Exchange_Variants_Addon_Variant( $post=false ) {
+	function __construct( $post=false ) {
 
 		// If not an object, try to grab the WP object
 		if ( ! is_object( $post ) )
@@ -113,6 +113,17 @@ class IT_Exchange_Variants_Addon_Variant {
 
 		// Setup the properties
 		$this->init_properties();
+	}
+
+	/**
+	 * Deprecated Constructor. Loads post data and variant preset data
+	 *
+	 * @since 1.0.0
+	 * @param mixed $post  wp post id or post object. optional.
+	 * @return void
+	*/
+	function IT_Exchange_Variants_Addon_Variant( $post=false ) {
+		self::__construct();
 	}
 
 	/**

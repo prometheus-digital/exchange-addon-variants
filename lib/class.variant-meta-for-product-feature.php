@@ -97,12 +97,25 @@ class IT_Exchange_Variants_Addon_Product_Feature_Combos{
 	 * @param array  $product_feature_options options
 	 * @return void
 	*/
-	function IT_Exchange_Variants_Addon_Product_Feature_Combos( $product_id, $product_feature, $product_feature_options=array() ) {
+	function __construct( $product_id, $product_feature, $product_feature_options=array() ) {
 		$this->set_product_id( $product_id );
 		$this->set_product_feature( $product_feature );
 		$this->set_product_feature_options( $product_feature_options );
 		$this->set_post_meta();
 		$this->set_product_feature_variants_version();
+	}
+
+	/**
+	 * Constructor. Loads post data and variant preset data
+	 *
+	 * @since 1.0.0
+	 * @param mixed  $post  wp post id or post object. optional.
+	 * @param string $product_feature this is the slug of a product feature. eg: inventory
+	 * @param array  $product_feature_options options
+	 * @return void
+	*/
+	function IT_Exchange_Variants_Addon_Product_Feature_Combos( $product_id, $product_feature, $product_feature_options=array() ) {
+		self::__construct();
 	}
 
 	/**

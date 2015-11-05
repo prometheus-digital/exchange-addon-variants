@@ -11,11 +11,20 @@ class IT_Theme_API_Product_Extension_For_Variants extends IT_Theme_API_Product {
 	 *
 	 * @since 1.0.0
 	*/
-	function IT_Theme_API_Product_Extension_For_Variants() {
+	function __construct() {
 		parent::__construct();
 
 		// Set GLOBAL variant
 		$this->variant = empty( $GLOBALS['it_exchange']['variant'] ) ? false : $GLOBALS['it_exchange']['variant'];
+	}
+
+	/**
+	 * Deprecated Constructor
+	 *
+	 * @since 1.0.0
+	*/
+	function IT_Theme_API_Product_Extension_For_Variants() {
+		self::__construct();
 	}   
 
 	/**

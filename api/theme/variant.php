@@ -41,9 +41,20 @@ class IT_Theme_API_Variant implements IT_Theme_API {
 	 *
 	 * @return void
 	*/
-	function IT_Theme_API_Variant() {
+	function __construct() {
 		// Set the current global product as a property
 		$this->variant = empty( $GLOBALS['it_exchange']['variant'] ) ? false : $GLOBALS['it_exchange']['variant'];
+	}
+
+	/**
+	 * Deprecated Constructor
+	 *
+	 * @since 0.4.0
+	 *
+	 * @return void
+	*/
+	function IT_Theme_API_Variant() {
+		self::__construct();
 	}
 
 	/**

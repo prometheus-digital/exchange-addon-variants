@@ -41,9 +41,20 @@ class IT_Theme_API_Variant_Value implements IT_Theme_API {
 	 *
 	 * @return void
 	*/
-	function IT_Theme_API_Variant_Value() {
+	function __construct() {
 		// Set the current global product as a property
 		$this->variant_value = empty( $GLOBALS['it_exchange']['variant_value'] ) ? false : $GLOBALS['it_exchange']['variant_value'];
+	}
+
+	/**
+	 * Deprecated Constructor
+	 *
+	 * @since 0.4.0
+	 *
+	 * @return void
+	*/
+	function IT_Theme_API_Variant_Value() {
+		self::__construct();
 	}
 
 	/**
