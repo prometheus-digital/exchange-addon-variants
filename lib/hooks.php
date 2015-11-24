@@ -7,12 +7,18 @@
  * @return void
 */
 function it_exchange_variants_addon_enqueue_scripts() {
-	if ( ! it_exchange_is_page( 'product' ) )
+
+	$has_shortcode = class_exists( 'IT_Exchange_SW_Shortcode' ) && IT_Exchange_SW_Shortcode::has_shortcode();
+
+	if ( ! it_exchange_is_page( 'product' ) && ! $has_shortcode )
 		return;
 
-	it_exchange_set_the_product_id();
+	if ( ! class_exists( 'IT_Exchange_SW_Shortcode' ) ) {
+		it_exchange_set_the_product_id();
+	}
+
 	$product_id = it_exchange_get_the_product_id();
-	if ( it_exchange_product_has_feature( $product_id, 'variants' ) ) {
+	if ( it_exchange_product_has_feature( $product_id, 'variants' ) || $has_shortcode ) {
 		wp_enqueue_script( 'it-exchange-variants-addon-frontend-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/js/frontend-product.js' );
 		wp_enqueue_style( 'it-exchange-variants-addon-frontend-product', ITUtility::get_url_from_file( dirname( __FILE__ ) ) . '/css/frontend-product.css' );
 		add_filter( 'wp_footer', 'it_exchange_variants_addon_print_product_variant_js' );
@@ -1301,14 +1307,18 @@ add_action( 'it_exchange_duplicate_product_addon_default_product_meta', 'it_exch
 */
 function it_exchange_addon_variants_modify_default_sw_state( $state ) {
 
-	// If we're not on a product page, return the default state
-	if ( ! it_exchange_is_page( 'product' ) ) {
+	$has_shortcode = class_exists( 'IT_Exchange_SW_Shortcode' ) && IT_Exchange_SW_Shortcode::has_shortcode();
+
+	if ( ! it_exchange_is_page( 'product' ) && ! $has_shortcode ) {
 		return $state;
 	}
 
-	// If we can't find the product ID or it doesn't have variants, set the state to 'product'
-	it_exchange_set_the_product_id();
+	if ( ! class_exists( 'IT_Exchange_SW_Shortcode' ) ) {
+		it_exchange_set_the_product_id();
+	}
+
 	$id = it_exchange_get_the_product_id();
+
 	if ( empty( $id ) || ! it_exchange_product_has_feature( $id, 'variants' ) ) {
 		return $state;
 	}
