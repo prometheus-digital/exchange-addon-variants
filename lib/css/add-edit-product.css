@@ -36,7 +36,7 @@
 .it-exchange-existing-variant .variant-value-image{width:28px;height:28px;cursor:pointer;position:absolute;right:8px;top:8px;}
 .it-exchange-existing-variant .variant-value-image img{max-width:100%;height:auto;}
 .it-exchange-existing-variant .variant-value-image-placeholder{display:block;width:28px;height:28px;overflow:hidden;border:1px solid #E8E8E8;background:url( '../images/upload.jpg' ) center center no-repeat;}
-.it-exchange-existing-variant .it-exchange-variants-colorpicker{display:block;width:28px;height:28px;border:1px solid #E8E8E8;cursor:pointer;position:absolute;right:8px;top:8px;}
+.it-exchange-existing-variant .it-exchange-variants-colorpicker{display:block;width:28px;height:28px !important;border:1px solid #E8E8E8;cursor:pointer;position:absolute;right:8px;top:8px;}
 .it-exchange-existing-variant .edit-variant{padding:1em;}
 /** -----------------------------------------------------:[ add variant ]:---------- */
 .it-exchange-new-variant{margin-top:1em;position:relative;}
