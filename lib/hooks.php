@@ -864,11 +864,9 @@ function it_exchange_variants_json_api() {
 				$inventory_located = false;
 				$controller        = it_exchange_variants_addon_get_product_feature_controller( $product_id, 'inventory', array( 'setting' => 'variants' ) );
 
-				if ( $variant_combos_data['hash'] == $selected_hash ) {
-					if ( ! empty( $controller->post_meta[$selected_hash]['value'] ) ) {
-						$inventory         = $controller->post_meta[$selected_hash]['value'];
-						$inventory_located = true;
-					}
+				if ( isset( $controller->post_meta[$selected_hash]['value'] ) ) {
+					$inventory         = $controller->post_meta[$selected_hash]['value'];
+					$inventory_located = true;
 				}
 
 				// If still no inventory, set to false so that we will use default
@@ -877,7 +875,14 @@ function it_exchange_variants_json_api() {
 
 				// Setup the response for pricing
 				$result['inventory']['selector']   = '.it-exchange-sw-product .purchase-options';
-				$result['inventory']['html']       = it_exchange( 'product', 'get-purchase-options', apply_filters( 'it_exchange_variants_product_purchase_options_args', array( 'out-of-stock-text' => __( 'This option is currently out of stock.', 'LION' ), 'add-to-cart-edit-quantity' => false, 'buy-now-edit-quantity' => false, 'product-in-stock' => (boolean) $inventory ) ) );
+
+				$result['inventory']['html']       = it_exchange( 'product', 'get-purchase-options', apply_filters( 'it_exchange_variants_product_purchase_options_args', array(
+						'out-of-stock-text' => __( 'This option is currently out of stock.', 'LION' ),
+						'add-to-cart-edit-quantity' => false,
+						'buy-now-edit-quantity' => false,
+						'product-in-stock' => (boolean) $inventory
+				) ) );
+
 				$result['inventory']['transition'] = 'default';
 				$result['comboHash']               = $selected_hash;
 			}
@@ -1386,9 +1391,31 @@ function it_exchange_addon_variants_override_has_inventory_for_variants( $has_in
 	$variant_inventory_enabled = get_post_meta( $product_id, '_it-exchange-product-enable-variant-inventory', true );
 	$variant_inventory         = get_post_meta( $product_id, '_it-exchange-product-inventory-variants', true );
 
-	if ( ! empty( $variant_inventory_enabled ) && ! empty( $variant_inventory ) ) {
-		return true;
+	if ( empty( $variant_inventory_enabled ) || empty( $variant_inventory ) ) {
+		return $has_inventory;
 	}
 
+	if ( empty( $_GET['variants-array'] ) ) {
+		return $has_inventory;
+	}
+
+	$combo = $_GET['variants-array'];
+
+	$variants_to_hash = array();
+
+	foreach ( $combo as $id ) {
+
+		if ( $variant = it_exchange_variants_addon_get_variant( $id ) ) {
+			$variants_to_hash[ empty( $variant->post_parent ) ? $id : $variant->post_parent ] = $id;
+		}
+	}
+
+	$hash = it_exchange_variants_addon_get_selected_variants_id_hash( $variants_to_hash );
+
+	if ( isset( $variant_inventory[ $hash ] ) ) {
+		return empty( $variant_inventory[ $hash ]['value'] ) ? false : true;
+	}
+
+	return $has_inventory;
 }
-add_filter( 'it_exchange_product_has_feature_inventory', 'it_exchange_addon_variants_override_has_inventory_for_variants', 10, 3 );
+add_filter( 'it_exchange_product_has_feature_inventory', 'it_exchange_addon_variants_override_has_inventory_for_variants', 20, 3 );
