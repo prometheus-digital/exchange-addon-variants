@@ -824,6 +824,10 @@ function it_exchange_variants_json_api() {
 			if ( empty( $price_located ) )
 				$price = false;
 
+			if ( $price !== false && $price != it_exchange_get_product_feature( $product_id, 'base-price' ) ) {
+				remove_filter( 'it_exchange_api_theme_product_base_price', 'it_exchange_add_sale_information_to_base_price_theme', 20 );
+			}
+
 			// Setup the response for pricing
 			$result['price']['selector']   = '.it-exchange-product-price';
 			$result['price']['html']       = apply_filters( 'the_content', it_exchange( 'product', 'get-base-price', array('price' => $price ) ) );
