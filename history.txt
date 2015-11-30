@@ -40,3 +40,8 @@
 	Decode HTML entities in price/currency AJAX requests
 1.4.0 - 2015-11-05 - Lew Ayotte
 	PHP7 Updates
+1.5.0 - 2015-11-30 - Timothy Jacobs, Lew Ayotte
+	Remove sales API filter when prices don't match
+	Fix colorbox styling
+	Ensure that a customer is prevented from purchasing a variant with no inventory
+	Add support for ability to embed the SW in shortcodes
