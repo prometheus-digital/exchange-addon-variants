@@ -45,3 +45,5 @@
 	Fix colorbox styling
 	Ensure that a customer is prevented from purchasing a variant with no inventory
 	Add support for ability to embed the SW in shortcodes
+1.5.1 - 2015-12-10 - Timothy B. Jacobs, Lew Ayotte
+	Update to CSS
