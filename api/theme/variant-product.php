@@ -44,9 +44,11 @@ class IT_Theme_API_Product_Extension_For_Variants extends IT_Theme_API_Product {
 
 		// If we made it here, we're doing a loop of variants for the current product.
 		// This will init/reset the variants global and loop through them. the /api/theme/product-variant.php file will handle individual products.
-		if ( empty( $GLOBALS['it_exchange']['variant'] ) ) { 
-			$GLOBALS['it_exchange']['variants'] = it_exchange_get_variants_for_product( $this->product->ID );
-			//$GLOBALS['it_exchange']['variants'] = it_exchange_get_products( apply_filters( 'it_exchange_store_get_products_args',  array( 'posts_per_page' => -1, 'order' => $settings['store-product-order'], 'orderby' => $settings['store-product-order-by'] ) ) );
+		if ( empty( $GLOBALS['it_exchange']['variant'] ) ) {
+
+			$variants =  it_exchange_get_variants_for_product( $this->product->ID );
+
+			$GLOBALS['it_exchange']['variants'] = is_array( $variants ) ? $variants : array();
 			$GLOBALS['it_exchange']['variant'] = reset( $GLOBALS['it_exchange']['variants'] );
 			return true;
 		} else {
