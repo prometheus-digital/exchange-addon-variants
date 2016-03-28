@@ -47,3 +47,5 @@
 	Add support for ability to embed the SW in shortcodes
 1.5.1 - 2015-12-10 - Timothy B. Jacobs, Lew Ayotte
 	Update to CSS
+1.5.2 - 2016-03-28 - Timothy B. Jacobs
+	Fix: Error if variants enabled without being configured
