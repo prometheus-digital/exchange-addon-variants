@@ -1021,7 +1021,8 @@ function it_exchange_variants_json_api() {
 			die( json_encode( $response ) );
 		}
 	}
-	return false;
+	
+	die(json_encode(array()));
 }
 add_action( 'wp_ajax_it-exchange-variants-json-api', 'it_exchange_variants_json_api' );
 add_action( 'wp_ajax_nopriv_it-exchange-variants-json-api', 'it_exchange_variants_json_api' );
