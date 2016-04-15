@@ -20,7 +20,7 @@ class IT_Exchange_Product_Feature_Variants {
 		if ( is_admin() ) {
 			add_action( 'load-post-new.php', array( $this, 'init_feature_metaboxes' ) );
 			add_action( 'load-post.php', array( $this, 'init_feature_metaboxes' ) );
-			add_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ), 9 );
+			add_action( 'it_exchange_save_product', array( $this, 'save_feature_on_product_save' ), 11 );
 		}
 		add_action( 'it_exchange_enabled_addons_loaded', array( $this, 'register_feature_support' ) );
 		add_action( 'it_exchange_enabled_addons_loaded', array( $this, 'add_feature_support_to_product_types' ) );
