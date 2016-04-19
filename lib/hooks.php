@@ -829,8 +829,8 @@ function it_exchange_variants_json_api() {
 			}
 
 			// Setup the response for pricing
-			$result['price']['selector']   = '.it-exchange-product-price';
-			$result['price']['html']       = apply_filters( 'the_content', it_exchange( 'product', 'get-base-price', array('price' => $price ) ) );
+			$result['price']['selector']   = '.it-exchange-product-price .it-exchange-base-price';
+			$result['price']['html']       = it_exchange( 'product', 'get-base-price', array('price' => $price ) );
 			$result['price']['transition'] = 'default';
 
 			// Images
