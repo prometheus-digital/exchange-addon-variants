@@ -488,7 +488,11 @@ function it_exchange_addon_modify_variant_cart_product_base_price( $base, $produ
 	$price_located = false;
 
 	if ( $atts['hash'] == $itemized_hash ) {
-		if ( ! empty( $controller->post_meta[$itemized_hash]['value'] ) ) {
+		if (
+			! empty( $controller->post_cache[$itemized_hash] ) &&
+		     is_array( $controller->post_cache[$itemized_hash] ) &&
+		     ! empty( $controller->post_meta[$itemized_hash]['value'] ) 
+		) {
 			$price = $controller->post_meta[$itemized_hash]['value'];
 			$price_located = true;
 		}
