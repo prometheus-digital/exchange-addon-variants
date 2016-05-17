@@ -1428,3 +1428,83 @@ function it_exchange_addon_variants_override_has_inventory_for_variants( $has_in
 	return $has_inventory;
 }
 add_filter( 'it_exchange_product_has_feature_inventory', 'it_exchange_addon_variants_override_has_inventory_for_variants', 20, 3 );
+
+/**
+ * Filter the max product quantity allowed for variant products.
+ *
+ * @since 1.5.4
+ *
+ * @param int                 $allowed
+ * @param IT_Exchange_Product $product
+ * @param string              $cart_product_id
+ *
+ * @return int
+ */
+function it_exchange_variants_override_max_product_quantity_allowed( $allowed, IT_Exchange_Product $product, $cart_product_id ) {
+
+	if ( empty( $cart_product_id ) ) {
+		return $allowed;
+	}
+
+	if ( ! $product->has_feature( 'variants' ) ) {
+		return $allowed;
+	}
+
+	if ( $product->get_feature( 'inventory', array( 'setting' => 'variants-enabled' ) ) === 'no' ) {
+		return $allowed;
+	}
+
+	$cart_products = it_exchange_get_cart_products();
+
+	foreach ( $cart_products as $id => $_product ) {
+		if ( $id === $cart_product_id ) {
+			$cart_product = $_product;
+
+			break;
+		}
+	}
+
+	if ( ! isset( $cart_product ) ) {
+		return $allowed;
+	}
+
+	if ( ! empty( $cart_product['itemized_data'] ) ) {
+		$itemized = maybe_unserialize( $cart_product['itemized_data'] );
+
+		if ( ! empty( $itemized['it_variant_combo_hash'] ) ) {
+			$combo_hash = $itemized['it_variant_combo_hash'];
+		}
+	}
+
+	$found_inventory = false;
+
+	if ( ! isset( $combo_hash ) ) {
+		return $allowed;
+	}
+
+	$variant_combos_data = it_exchange_get_variant_combo_attributes_from_hash( $product->ID, $combo_hash );
+	$combos_array        = empty( $variant_combos_data['combo'] ) ? array() : $variant_combos_data['combo'];
+	$alt_hashes          = it_exchange_addon_get_selected_variant_alts( $combos_array, $product->ID );
+
+	$controller = it_exchange_variants_addon_get_product_feature_controller( $product->ID, 'product-images', array( 'setting' => 'variants' ) );
+
+	if ( $variant_combos_data['hash'] == $combo_hash ) {
+		if ( ! empty( $controller->post_meta[ $combo_hash ]['value'] ) ) {
+			$allowed = $controller->post_meta[ $combo_hash ]['value'];
+			$found_inventory = true;
+		}
+	}
+
+	// Look for alt hashes if direct match was not found
+	if ( ! $found_inventory && ! empty( $alt_hashes ) ) {
+		foreach ( $alt_hashes as $alt_hash ) {
+			if ( ! empty( $controller->post_meta[ $alt_hash ]['value'] ) ) {
+				$allowed = $controller->post_meta[ $alt_hash ]['value'];
+			}
+		}
+	}
+
+	return $allowed;
+}
+
+add_filter( 'it_exchange_get_max_product_quantity_allowed', 'it_exchange_variants_override_max_product_quantity_allowed', 10, 3 );
