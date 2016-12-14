@@ -445,6 +445,7 @@ add_filter( 'it_exchange_add_itemized_data_to_cart_product', 'it_exchange_addon_
  * @return string
 */
 function it_exchange_addon_modify_variant_cart_titles( $title, $product ) {
+
 	if ( empty( $product['itemized_data'] ) )
 		return $title;
 
@@ -459,6 +460,31 @@ function it_exchange_addon_modify_variant_cart_titles( $title, $product ) {
 	return $title;
 }
 add_filter( 'it_exchange_get_cart_product_title', 'it_exchange_addon_modify_variant_cart_titles', 10, 2 );
+
+/**
+ * Remove the variant title from the email. The email already includes the variant details.
+ *
+ * @since 1.6.0
+ *
+ * @param string            $name
+ * @param ITE_Cart_Product $product
+ *
+ * @return string
+ */
+function it_exchange_addon_remove_variant_title_from_email( $name, ITE_Cart_Product $product ) {
+
+	if ( ! isset( $GLOBALS['it_exchange']['email_context'] ) ) {
+		return $name;
+	}
+
+	if ( $product->has_itemized_data( 'it_variant_combo_hash' ) ) {
+		$name = preg_replace( '/\:(?:.(?!\:))+$/', '', $name, 1 );
+	}
+
+	return $name;
+}
+
+add_filter( 'it_theme_api_line_item_name', 'it_exchange_addon_remove_variant_title_from_email', 10, 2 );
 
 /**
  * Modify the base price of a product in the cart when it has selected variant options
