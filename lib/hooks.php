@@ -466,18 +466,22 @@ add_filter( 'it_exchange_get_cart_product_title', 'it_exchange_addon_modify_vari
  *
  * @since 1.6.0
  *
- * @param string            $name
- * @param ITE_Cart_Product $product
+ * @param string        $name
+ * @param ITE_Line_Item $item
  *
  * @return string
  */
-function it_exchange_addon_remove_variant_title_from_email( $name, ITE_Cart_Product $product ) {
+function it_exchange_addon_remove_variant_title_from_email( $name, ITE_Line_Item $item ) {
+
+	if ( ! $item instanceof ITE_Cart_Product ) {
+		return $name;
+	}
 
 	if ( ! isset( $GLOBALS['it_exchange']['email_context'] ) ) {
 		return $name;
 	}
 
-	if ( $product->has_itemized_data( 'it_variant_combo_hash' ) ) {
+	if ( $item->has_itemized_data( 'it_variant_combo_hash' ) ) {
 		$name = preg_replace( '/\:(?:.(?!\:))+$/', '', $name, 1 );
 	}
 
