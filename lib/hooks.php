@@ -1067,13 +1067,14 @@ add_action( 'wp_ajax_nopriv_it-exchange-variants-json-api', 'it_exchange_variant
  * @since 1.0.0
 */
 function it_exchange_addon_variants_extend_product_theme_api( $result, $class, $tag ){
-	if ( is_admin() )
-		return;
-	if ( 'IT_Theme_API_Product'== $class && 'variants' == $tag ) {
-		include_once( dirname( dirname( __FILE__ ) ) . '/api/theme/variant-product.php' );
-		$IT_Theme_API_Product_Extension_For_Variants = new IT_Theme_API_Product_Extension_For_Variants();
-		$result = array( $IT_Theme_API_Product_Extension_For_Variants, 'variants' );
+
+	if ( 'IT_Theme_API_Product' === $class && 'variants' === $tag ) {
+		require_once dirname( dirname( __FILE__ ) ) . '/api/theme/variant-product.php';
+
+		$variants = new IT_Theme_API_Product_Extension_For_Variants();
+		$result   = array( $variants, 'variants' );
 	}
+
 	return $result;
 }
 add_filter( 'it_exchange_theme_api_get_extended_tag_functions', 'it_exchange_addon_variants_extend_product_theme_api', 10, 3 );
