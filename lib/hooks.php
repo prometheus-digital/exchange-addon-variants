@@ -428,8 +428,10 @@ function it_exchange_variants_addon_load_backbone_admin_templates() {
  * @return array
 */
 function it_exchange_addon_add_variant_data_to_cart( $data, $product_id ) {
-	if ( ! empty( $_REQUEST['it-exchange-combo-hash'] ) )
-		$data['it_variant_combo_hash'] =  $_REQUEST['it-exchange-combo-hash'];
+
+	if ( ! empty( $_REQUEST['it-exchange-combo-hash'] ) ) {
+		$data['it_variant_combo_hash'] = $_REQUEST['it-exchange-combo-hash'];
+	}
 
 	return $data;
 }
