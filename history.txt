@@ -52,3 +52,5 @@
 1.5.3 - 2016-04-20 - Timothy B. Jacobs, Elise Alley
 	Fix: Deleted variants would not show up for reassignment
 	Fix: Customizations to the base-price template would be lost upon refresh
+1.5.4 - 2016-05-23 - Timothy B. Jacobs, Elise Alley
+	Fix: Use correct inventory when determining maximum inventory allowed.
