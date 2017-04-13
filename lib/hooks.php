@@ -583,6 +583,51 @@ function it_exchange_filter_inventory_params_at_purcahse_for_variants( $params )
 add_filter( 'it_exchange_inventory_params_at_purchase', 'it_exchange_filter_inventory_params_at_purcahse_for_variants' );
 
 /**
+ * Use the default variant combination for displaying the stock status in the purchase options HTML.
+ *
+ * @since 1.9.0
+ *
+ * @param bool                $in_stock
+ * @param IT_Exchange_Product $product
+ *
+ * @return bool
+ */
+function it_exchange_variants_use_default_variant_for_purchase_options_stock( $in_stock = true, $product ) {
+
+    if ( isset( $_REQUEST['endpoint'] ) && $_REQUEST['endpoint'] === 'get-updated-features-html-for-variants' ) {
+        return $in_stock;
+    }
+
+    if ( ! $product ) {
+        return $in_stock;
+    }
+
+    $product_id = $product->ID;
+
+    if ( ! it_exchange_get_product_feature( $product_id, 'inventory', array( 'setting' => 'variants' ) ) ) {
+        return $in_stock;
+    }
+
+    $variants = it_exchange_get_variants_for_product( $product->ID );
+    $defaults = array();
+
+    foreach ( $variants as $variant ) {
+        $defaults[ $variant->ID ] = $variant->default;
+    }
+
+	$hash       = it_exchange_variants_addon_get_selected_variants_id_hash( $defaults );
+	$controller = it_exchange_variants_addon_get_product_feature_controller( $product_id, 'inventory', array( 'setting' => 'variants' ) );
+
+	if ( $controller && isset( $controller->post_meta[ $hash ]['value'] ) ) {
+		$in_stock = (bool) $controller->post_meta[ $hash ]['value'];
+	}
+
+    return $in_stock;
+}
+
+add_filter( 'it_exchange_purchase_options_product_in_stock', 'it_exchange_variants_use_default_variant_for_purchase_options_stock', 10, 2 );
+
+/**
  * Builds JSON requests for backbone and AJAX requests
  *
  * @since 1.0.0
@@ -901,17 +946,19 @@ function it_exchange_variants_json_api() {
 
 			// Check inventory to make sure this selected combo is available
 			if ( it_exchange_get_product_feature( $product_id, 'inventory', array( 'setting' => 'variants' ) ) ) {
+				$inventory         = false;
 				$inventory_located = false;
 				$controller        = it_exchange_variants_addon_get_product_feature_controller( $product_id, 'inventory', array( 'setting' => 'variants' ) );
 
-				if ( isset( $controller->post_meta[$selected_hash]['value'] ) ) {
-					$inventory         = $controller->post_meta[$selected_hash]['value'];
+				if ( isset( $controller->post_meta[ $selected_hash ]['value'] ) ) {
+					$inventory         = $controller->post_meta[ $selected_hash ]['value'];
 					$inventory_located = true;
 				}
 
 				// If still no inventory, set to false so that we will use default
-				if ( empty( $inventory_located ) )
+				if ( ! $inventory_located ) {
 					$inventory = it_exchange_get_product_feature( $product_id, 'inventory' );
+				}
 
 				// Setup the response for pricing
 				$result['inventory']['selector']   = '.it-exchange-sw-product .purchase-options';
@@ -920,7 +967,7 @@ function it_exchange_variants_json_api() {
 						'out-of-stock-text' => __( 'This option is currently out of stock.', 'LION' ),
 						'add-to-cart-edit-quantity' => false,
 						'buy-now-edit-quantity' => false,
-						'product-in-stock' => (boolean) $inventory
+						'product-in-stock' => (bool) $inventory
 				) ) );
 
 				$result['inventory']['transition'] = 'default';

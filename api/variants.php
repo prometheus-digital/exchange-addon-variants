@@ -10,7 +10,8 @@
  * @since 1.0.0
  *
  * @param  int $product_id the product id
- * @reutrn array an array of variant objects
+ *
+ * @return IT_Exchange_Variants_Addon_Variant[]
 */
 function it_exchange_get_variants_for_product( $product_id, $break_cache=false ) {
 
