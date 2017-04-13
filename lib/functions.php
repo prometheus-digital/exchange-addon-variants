@@ -475,6 +475,27 @@ function it_exchange_addon_get_selected_variant_alts( $selected_combo, $product_
 }
 
 /**
+ * Get the default combo hash for a variant.
+ * 
+ * @since 1.9.0
+ * 
+ * @param int $product_id
+ *
+ * @return string
+ */
+function it_exchange_get_default_variant_combo_hash( $product_id ) {
+    
+	$variants = it_exchange_get_variants_for_product( $product_id );
+	$defaults = array();
+
+	foreach ( $variants as $variant ) {
+		$defaults[ $variant->ID ] = $variant->default;
+	}
+
+	return it_exchange_variants_addon_get_selected_variants_id_hash( $defaults );
+}
+
+/**
  * Shows the nag when needed.
  *
  * @since 1.0.0

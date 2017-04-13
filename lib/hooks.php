@@ -429,7 +429,13 @@ function it_exchange_variants_addon_load_backbone_admin_templates() {
 */
 function it_exchange_addon_add_variant_data_to_cart( $data, $product_id ) {
 
-	if ( ! empty( $_REQUEST['it-exchange-combo-hash'] ) ) {
+    if ( ! it_exchange_product_has_feature( $product_id, 'variants' ) ) {
+        return $data;
+    }
+
+	if ( empty( $_REQUEST['it-exchange-combo-hash'] ) ) {
+		$data['it_variant_combo_hash'] = it_exchange_get_default_variant_combo_hash( $product_id );
+	} else {
 		$data['it_variant_combo_hash'] = $_REQUEST['it-exchange-combo-hash'];
 	}
 
@@ -608,14 +614,8 @@ function it_exchange_variants_use_default_variant_for_purchase_options_stock( $i
         return $in_stock;
     }
 
-    $variants = it_exchange_get_variants_for_product( $product->ID );
-    $defaults = array();
 
-    foreach ( $variants as $variant ) {
-        $defaults[ $variant->ID ] = $variant->default;
-    }
-
-	$hash       = it_exchange_variants_addon_get_selected_variants_id_hash( $defaults );
+    $hash       = it_exchange_get_default_variant_combo_hash( $product_id );
 	$controller = it_exchange_variants_addon_get_product_feature_controller( $product_id, 'inventory', array( 'setting' => 'variants' ) );
 
 	if ( $controller && isset( $controller->post_meta[ $hash ]['value'] ) ) {
