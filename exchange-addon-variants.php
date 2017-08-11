@@ -1,13 +1,13 @@
 <?php
 /*
- * Plugin Name: iThemes Exchange - Product Variants
+ * Plugin Name: ExchangeWP - Product Variants
  * Version: 1.5.4
- * Description: Allows store owners to add variant options to iThemes Exchange product types.
- * Plugin URI: http://ithemes.com/purchase/product-variants/
- * Author: iThemes
- * Author URI: http://ithemes.com
- * iThemes Package: exchange-addon-variants
- 
+ * Description: Allows store owners to add variant options to ExchangeWP product types.
+ * Plugin URI: https://exchangewp.com/downloads/product-variants/
+ * Author: ExchangeWP
+ * Author URI: https://exchangewp.com
+ * ExchangeWP Package: exchange-addon-variants
+
  * Installation:
  * 1. Download and unzip the latest release zip file.
  * 2. If you use the WordPress plugin uploader to install this plugin skip to step 4.
@@ -34,7 +34,7 @@ function it_exchange_register_variants_addon() {
 	$options = array(
 		'name'              => __( 'Product Variants', 'LION' ),
 		'description'       => __( 'Allows store owners to add variant options to product types.', 'LION' ),
-		'author'            => 'iThemes',
+		'author'            => 'ExchangeWP',
 		'author_url'        => 'http://ithemes.com/purchase/product-variants/',
 		'icon'              => ITUtility::get_url_from_file( dirname( __FILE__ ) . '/lib/images/variants50.png' ),
 		'file'              => dirname( __FILE__ ) . '/init.php',
@@ -65,8 +65,8 @@ add_action( 'plugins_loaded', 'it_exchange_variants_addon_set_textdomain' );
  * @param object $updater ithemes updater object
  * @return void
 */
-function it_exchange_variants_addon_register( $updater ) { 
+function it_exchange_variants_addon_register( $updater ) {
 	    $updater->register( 'exchange-addon-variants', __FILE__ );
 }
 add_action( 'ithemes_updater_register', 'it_exchange_variants_addon_register' );
-require( dirname( __FILE__ ) . '/lib/updater/load.php' );
+// require( dirname( __FILE__ ) . '/lib/updater/load.php' );

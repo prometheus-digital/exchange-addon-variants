@@ -48,7 +48,7 @@ class IT_Exchange_Product_Feature_Variants {
 	function register_feature_support() {
 		// Register the product feature
 		$slug        = 'variants';
-		$description = __( 'Allows store owners to add variant options to iThemes Exchange product types.', 'LION' );
+		$description = __( 'Allows store owners to add variant options to ExchangeWP product types.', 'LION' );
 		it_exchange_register_product_feature( $slug, $description );
 	}
 
