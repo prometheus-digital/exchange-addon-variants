@@ -28,7 +28,7 @@ class IT_Theme_API_Variant implements IT_Theme_API {
 	);
 
 	/**
-	 * Current product in iThemes Exchange Global
+	 * Current product in ExchangeWP Global
 	 * @var object $product
 	 * @since 0.4.0
 	*/
@@ -58,7 +58,7 @@ class IT_Theme_API_Variant implements IT_Theme_API {
 	}
 
 	/**
-	 * Returns the context. Also helps to confirm we are an iThemes Exchange theme API class
+	 * Returns the context. Also helps to confirm we are an ExchangeWP theme API class
 	 *
 	 * @since 0.4.0
 	 *

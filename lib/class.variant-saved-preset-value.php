@@ -1,6 +1,6 @@
 <?php
 /**
- * This file holds the class for an iThemes Exchange Variant Saved Preset Value
+ * This file holds the class for an ExchangeWP Variant Saved Preset Value
  *
  * @package IT_Exchange
  * @since 1.0.0

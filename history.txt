@@ -54,3 +54,5 @@
 	Fix: Customizations to the base-price template would be lost upon refresh
 1.5.4 - 2016-05-23 - Timothy B. Jacobs, Elise Alley
 	Fix: Use correct inventory when determining maximum inventory allowed.
+1.5.5 - 2017-08-01 - AJ oOrris
+	Rebrand and new licesning system.

@@ -22,7 +22,7 @@ function it_exchange_variants_addon_register_post_types() {
 	);
 	$args = array(
 		'labels' => $labels,
-		'description'  => __( 'An iThemes Exchange Post Type for storing Product Variants in the system', 'LION' ),
+		'description'  => __( 'An ExchangeWP Post Type for storing Product Variants in the system', 'LION' ),
 		'public'       => false,
 		'show_ui'      => false,
 		'hierarchical' => false,
@@ -43,7 +43,7 @@ function it_exchange_variants_addon_register_post_types() {
 	);
 	$args = array(
 		'labels' => $labels,
-		'description'  => __( 'An iThemes Exchange Post Type for storing Product Variant Preset options in the system', 'LION' ),
+		'description'  => __( 'An ExchangeWP Post Type for storing Product Variant Preset options in the system', 'LION' ),
 		'public'       => false,
 		'show_ui'      => false,
 		'hierarchical' => true,

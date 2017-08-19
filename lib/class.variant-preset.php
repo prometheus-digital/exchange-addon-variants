@@ -1,13 +1,13 @@
 <?php
 /**
- * This file holds the class for an iThemes Exchange Variant Preset 
+ * This file holds the class for an ExchangeWP Variant Preset
  *
  * @package IT_Exchange
  * @since 1.0.0
 */
 
 /**
- * Merges a WP Post with iThemes Exchange Variant Addon Preset data
+ * Merges a WP Post with ExchangeWP Variant Addon Preset data
  *
  * @since 1.0.0
 */
