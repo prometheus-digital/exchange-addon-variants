@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: ExchangeWP - Product Variants
- * Version: 1.5.5
+ * Version: 0.0.1
  * Description: Allows store owners to add variant options to ExchangeWP product types.
  * Plugin URI: https://exchangewp.com/downloads/product-variants/
  * Author: ExchangeWP
@@ -40,7 +40,6 @@ function it_exchange_register_variants_addon() {
 		'file'              => dirname( __FILE__ ) . '/init.php',
 		'category'          => 'product-feature',
 		'basename'          => plugin_basename( __FILE__ ),
-		'settings-callback' => 'it_exchange_product_variants_addon_settings_callback',
 	);
 	it_exchange_register_addon( 'product-variants', $options );
 }
@@ -66,38 +65,26 @@ add_action( 'plugins_loaded', 'it_exchange_variants_addon_set_textdomain' );
  * @param object $updater ithemes updater object
  * @return void
 */
-function it_exchange_variants_addon_register( $updater ) {
-	    $updater->register( 'exchange-addon-variants', __FILE__ );
+function exchange_variants_plugin_updater() {
+
+	$license_check = get_transient( 'exchangewp_license_check' );
+
+	if ($license_check->license == 'valid' ) {
+		$license_key = it_exchange_get_option( 'exchangewp_licenses' );
+		$license = $license_key['exchange_license'];
+
+		$edd_updater = new EDD_SL_Plugin_Updater( 'https://exchangewp.com', __FILE__, array(
+				'version' 		=> '0.0.1', 				// current version number
+				'license' 		=> $license, 		// license key (used get_option above to retrieve from DB)
+				'item_name' 	=> 'product-variants', 	  // name of this plugin
+				'author' 	  	=> 'ExchangeWP',    // author of this plugin
+				'url'       	=> home_url(),
+				'wp_override' => true,
+				'beta'		  	=> false
+			)
+		);
+	}
+
 }
-add_action( 'ithemes_updater_register', 'it_exchange_variants_addon_register' );
-// require( dirname( __FILE__ ) . '/lib/updater/load.php' );
 
-if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) )  {
- 	require_once 'EDD_SL_Plugin_Updater.php';
- }
-
- function exchange_product_variants_plugin_updater() {
-
- 	// retrieve our license key from the DB
- 	// this is going to have to be pulled from a seralized array to get the actual key.
- 	// $license_key = trim( get_option( 'exchange_product_variants_license_key' ) );
- 	$exchangewp_product_variants_options = get_option( 'it-storage-exchange_product_variants-addon' );
- 	$license_key = $exchangewp_product_variants_options['product_variants-license-key'];
-
- 	// setup the updater
- 	$edd_updater = new EDD_SL_Plugin_Updater( 'https://exchangewp.com', __FILE__, array(
- 			'version' 		=> '1.5.5', 				// current version number
- 			'license' 		=> $license_key, 		// license key (used get_option above to retrieve from DB)
- 			'item_name' 	=> 'product-variants', 	  // name of this plugin
- 			'author' 	  	=> 'ExchangeWP',    // author of this plugin
- 			'url'       	=> home_url(),
- 			'wp_override' => true,
- 			'beta'		  	=> false
- 		)
- 	);
- 	// var_dump($edd_updater);
- 	// die();
-
- }
-
- add_action( 'admin_init', 'exchange_product_variants_plugin_updater', 0 );
+add_action( 'admin_init', 'exchange_variants_plugin_updater', 0 );
