@@ -58,11 +58,11 @@ function it_exchange_variants_addon_set_textdomain() {
 add_action( 'plugins_loaded', 'it_exchange_variants_addon_set_textdomain' );
 
 /**
- * Registers Plugin with iThemes updater class
+ * Registers Plugin with ExchangeWP updater class
  *
  * @since 1.0.0
  *
- * @param object $updater ithemes updater object
+ * @param object $updater ExchangeWP updater object
  * @return void
 */
 function exchange_variants_plugin_updater() {
